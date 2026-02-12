@@ -105,36 +105,7 @@
         };
 
         // ========== INITIALIZATION ==========
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set today's date
-            const today = new Date();
-            document.getElementById('todayDate').textContent = formatDate(today);
-            document.getElementById('attendanceDate').value = today.toISOString().split('T')[0];
-            document.getElementById('attendanceReportDate').value = today.toISOString().split('T')[0];
-            document.getElementById('leaveFrom').value = today.toISOString().split('T')[0];
-            document.getElementById('leaveTo').value = today.toISOString().split('T')[0];
-            document.getElementById('taskDueDate').value = today.toISOString().split('T')[0];
-            document.getElementById('taskStartDate').value = today.toISOString().split('T')[0];
-            document.getElementById('joinDate').value = today.toISOString().split('T')[0];
-            
-            // Set current month for payroll
-            const currentMonth = today.toISOString().substring(0, 7);
-            document.getElementById('payrollMonth').value = currentMonth;
-            document.getElementById('payrollFilterMonth').value = currentMonth;
-            document.getElementById('reportMonth').value = currentMonth;
-            
-            // Set current week for roster
-            const currentWeek = getWeekNumber(today);
-            document.getElementById('rosterWeek').value = currentWeek;
-            document.getElementById('viewRosterWeek').value = currentWeek;
-            
-            // Initialize application
-            changeRole('hr');
-            loadAllData();
-            setupEventListeners();
-            initializeCharts();
-            updateDashboardStats();
-        });
+       
 
         // ========== EVENT LISTENERS SETUP ==========
         function setupEventListeners() {

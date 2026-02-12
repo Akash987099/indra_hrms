@@ -11,7 +11,7 @@ use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\DepartmentController;
 
 Route::controller(LoginController::class)->group(function () {
     Route::get('login', 'login')->name('login');
@@ -27,7 +27,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::prefix('employee')->controller(EmployeeController::class)->name('employee.')->group(function () {
         Route::get('', 'index')->name('index');
         Route::post('store', 'store')->name('store');
-        Route::put('{id}', 'update')->name('update');
+        Route::post('update/{id}', 'update')->name('update');
         Route::get('onboarding', 'onboarding')->name('onboarding');
         Route::get('transfer/{id}', 'transfer')->name('transfer');
         Route::get('view/{id}', 'view')->name('view');
@@ -35,6 +35,15 @@ Route::middleware(['auth:admin'])->group(function () {
         // approval
         Route::post('approval', 'approval')->name('approval');
         Route::post('status', 'updateStatus')->name('status');
+    });
+
+    Route::prefix('department')->controller(DepartmentController::class)->name('department.')->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::get('list', 'list')->name('list');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::post('store', 'store')->name('store');
+        Route::post('update/{id}', 'update')->name('update');
+        Route::delete('delete/{id}', 'delete')->name('delete');
     });
 
     Route::prefix('attendance')->controller(AttendanceController::class)->name('attendance.')->group(function () {
@@ -63,13 +72,6 @@ Route::middleware(['auth:admin'])->group(function () {
     });
 
     Route::prefix('task')->controller(TaskController::class)->name('task.')->group(function () {
-        Route::get('', 'index')->name('index');
-        Route::post('store', 'store')->name('store');
-        Route::post('{id}/status', 'updateStatus')->name('status');
-        Route::post('{id}/delete', 'destroy')->name('delete');
-    });
-    
-    Route::prefix('designation')->controller(DesignationController::class)->name('designation.')->group(function () {
         Route::get('', 'index')->name('index');
         Route::post('store', 'store')->name('store');
         Route::post('{id}/status', 'updateStatus')->name('status');

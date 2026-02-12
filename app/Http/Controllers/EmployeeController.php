@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\User;
+use App\Models\Department;
 use App\Models\EmployeeOnboarding;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -13,8 +14,9 @@ use Illuminate\Support\Facades\Hash;
 class EmployeeController extends Controller
 {
     public function index(){
+        $department = Department::all();
         $employee = Employee::orderBy('id', 'desc')->paginate(config('constants.pagination_limit'));
-        return view('admin.employee.index', compact('employee'));
+        return view('admin.employee.index', compact('employee', 'department'));
     }
     
     public function transfer($id)

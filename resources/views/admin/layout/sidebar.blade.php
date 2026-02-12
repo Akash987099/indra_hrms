@@ -24,17 +24,18 @@
                        <span>Dashboard</span>
                    </a>
                </li>
+
+                <li class="nav-item">
+                   <a href="{{route('admin.department.index')}}" class="nav-link" data-module="employee">
+                       <i class="fas fa-users"></i>
+                       <span>Department Management</span>
+                   </a>
+               </li>
+               
                <li class="nav-item">
                    <a href="{{route('admin.employee.index')}}" class="nav-link" data-module="employee">
                        <i class="fas fa-users"></i>
                        <span>Employee Management</span>
-                   </a>
-               </li>
-               
-                <li class="nav-item">
-                   <a href="{{route('admin.designation.index')}}" class="nav-link" data-module="employee">
-                       <i class="fas fa-users"></i>
-                       <span>Designation Management</span>
                    </a>
                </li>
                

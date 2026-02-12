@@ -51,12 +51,12 @@
     </td>
 
     <td>
-        @if($item->employee_id == null)
+        {{-- @if($item->employee_id == null)
         <a href="{{ route('admin.employee.transfer', $item->id) }}"
            class="btn btn-sm btn-info">
             <i class="fas fa-random"></i> Transfer
         </a>
-        @endif
+        @endif --}}
         
         <a href="{{ route('admin.employee.view', $item->id) }}"
            class="btn btn-sm btn-warning">
