@@ -402,4 +402,22 @@
 
         });
     </script>
+
+    <script>
+$(document).on('click','.copy-employee-link',function(){
+
+let link=$(this).data('link');
+
+// fallback copy method (works on HTTP also)
+let temp=$("<input>");
+$("body").append(temp);
+temp.val(link).select();
+document.execCommand("copy");
+temp.remove();
+
+alert('Employee view link copied!');
+
+});
+</script>
+
 @endsection
