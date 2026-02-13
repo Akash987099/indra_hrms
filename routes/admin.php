@@ -12,6 +12,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DesignationController;
 
 Route::controller(LoginController::class)->group(function () {
     Route::get('login', 'login')->name('login');
@@ -38,6 +39,15 @@ Route::middleware(['auth:admin'])->group(function () {
     });
 
     Route::prefix('department')->controller(DepartmentController::class)->name('department.')->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::get('list', 'list')->name('list');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::post('store', 'store')->name('store');
+        Route::post('update/{id}', 'update')->name('update');
+        Route::delete('delete/{id}', 'delete')->name('delete');
+    });
+
+    Route::prefix('designation')->controller(DesignationController::class)->name('designation.')->group(function () {
         Route::get('', 'index')->name('index');
         Route::get('list', 'list')->name('list');
         Route::get('edit/{id}', 'edit')->name('edit');
