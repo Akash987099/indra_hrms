@@ -75,7 +75,7 @@
                                     <th>Employee ID</th>
                                     <th>Name</th>
                                     <th>Department</th>
-                                    <th>Store/Area</th>
+                                    <th>Designation</th>
                                     <th>Role</th>
                                     <th>Action</th>
                                     <th>Status</th>
@@ -89,7 +89,7 @@
                                     <tr data-id="{{ $item->id }}" data-employee_code="{{ $item->employee_code }}"
                                         data-first_name="{{ $item->first_name }}" data-last_name="{{ $item->last_name }}"
                                         data-email="{{ $item->email }}" data-phone="{{ $item->phone }}"
-                                        data-department="{{ $item->department }}" data-store_area="{{ $item->store_area }}"
+                                        data-department="{{ $item->department }}" data-store_area="{{ $item->role }}"
                                         data-role="{{ $item->role }}" data-shift="{{ $item->shift }}"
                                         data-join_date="{{ $item->join_date }}" data-salary="{{ $item->salary }}"
                                         data-address="{{ $item->address }}" data-status="{{ $item->status }}">
@@ -195,6 +195,14 @@
 
                     <div class="form-row">
                         <div class="form-group">
+                            <label for="firstName">Employee ID *</label>
+                            <input type="text" id="employeeid" class="form-control" placeholder="Enter Unique employee id"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
                             <label for="firstName">First Name *</label>
                             <input type="text" id="firstName" class="form-control" placeholder="Enter first name"
                                 required>
@@ -229,18 +237,23 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="role">Role/Position *</label>
-                            <input type="text" id="role" class="form-control" required
-                                placeholder="e.g., Cashier, Supervisor">
+                            <label for="role">Designation *</label>
+                            {{-- <input type="text" id="role" class="form-control" required
+                                placeholder="e.g., Cashier, Supervisor"> --}}
+                                <select id="role" class="form-control" required>
+                                @foreach ($designation as $key => $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="store">Store/Area *</label>
                             <input type="text" id="store" class="form-control" required
                                 placeholder="e.g., Store #12, Floor 2">
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="shift">Preferred Shift</label>
                             <select id="shift" class="form-control">
@@ -356,6 +369,7 @@
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
                         firstName: $('#firstName').val(),
+                        employeeid: $('#employeeid').val(),
                         lastName: $('#lastName').val(),
                         email: $('#email').val(),
                         phone: $('#phone').val(),

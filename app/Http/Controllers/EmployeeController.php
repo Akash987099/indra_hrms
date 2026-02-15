@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\User;
 use App\Models\Department;
+use App\Models\Designation;
 use App\Models\EmployeeOnboarding;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +16,9 @@ class EmployeeController extends Controller
 {
     public function index(){
         $department = Department::all();
+        $designation = Designation::all();
         $employee = Employee::orderBy('id', 'desc')->paginate(config('constants.pagination_limit'));
-        return view('admin.employee.index', compact('employee', 'department'));
+        return view('admin.employee.index', compact('employee', 'department', 'designation'));
     }
     
     public function transfer($id)
@@ -109,12 +111,13 @@ class EmployeeController extends Controller
     {
         $validated = $request->validate([
             'firstName'  => 'required|string|max:100',
+            'employeeid'  => 'required|string|max:100',
             'lastName'   => 'required|string|max:100',
             'email'      => 'required|email|max:150|unique:employees,email',
             'phone'      => 'required|string|max:20',
             'department' => 'required|string|max:100',
             'role'       => 'required|string|max:120',
-            'store'      => 'required|string|max:150',
+            // 'store'      => 'required|string|max:150',
             'shift'      => 'nullable|string|max:30',
             'joinDate'   => 'required|date',
             'salary'     => 'nullable|numeric|min:0',
@@ -123,14 +126,14 @@ class EmployeeController extends Controller
         ]);
 
         $employee = Employee::create([
-            'employee_code' => 'EMP-' . rand(100000, 999999),
+            'employee_code' => $validated['employeeid'] ?? 'EMP-' . rand(100000, 999999),
             'first_name' => $validated['firstName'],
             'last_name'  => $validated['lastName'],
             'email'      => $validated['email'],
             'phone'      => $validated['phone'],
             'department' => $validated['department'],
             'role'       => $validated['role'],
-            'store_area' => $validated['store'],
+            'store_area' => '0',
             'shift'      => $validated['shift'] ?? null,
             'join_date'  => $validated['joinDate'],
             'salary'     => $validated['salary'] ?? null,
