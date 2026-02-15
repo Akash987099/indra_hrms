@@ -105,15 +105,15 @@
                                                 {{ $item->last_name }}</p>
                                         </td>
                                         <td>
-    <p class="text-xs font-weight-bold mb-0">
-        {{ $item->department_name }}
-    </p>
-</td>
+                                            <p class="text-xs font-weight-bold mb-0">
+                                                {{ $item->department_name }}
+                                            </p>
+                                        </td>
                                         <td>
-    <p class="text-xs font-weight-bold mb-0">
-        {{ $item->role_name }}
-    </p>
-</td>
+                                            <p class="text-xs font-weight-bold mb-0">
+                                                {{ $item->role_name }}
+                                            </p>
+                                        </td>
                                         <td>
                                             <form action="{{ route('admin.employee.approval') }}" method="POST">
                                                 @csrf
@@ -302,8 +302,15 @@
         </div>
     </div>
 
+            
+<script>
+    window.updateUrl = "{{ route('admin.employee.update', ':id') }}";
+    window.storeUrl = "{{ route('admin.employee.store') }}";
+</script>
+
     <script>
         $(document).ready(function() {
+            
 
             // ================= OPEN MODAL (ADD) =================
             $('#addEmployeeBtn').click(function() {
@@ -364,8 +371,9 @@
                 let id = $('#employeeId').val();
 
                 let url = id ?
-                    `/admin/employee/update/${id}` :
-                    `/admin/employee/store`;
+                    window.updateUrl.replace(':id', id) :
+                    window.storeUrl;
+
 
                 $.ajax({
                     url: url,
