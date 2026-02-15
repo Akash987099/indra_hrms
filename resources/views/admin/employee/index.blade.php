@@ -75,8 +75,7 @@
                                     <th>Employee ID</th>
                                     <th>Name</th>
                                     <th>Department</th>
-                                    <th>Designation</th>
-                                    <th>Role</th>
+                                    <th>Designation / Role</th>
                                     <th>Action</th>
                                     <th>Status</th>
                                     <th>Link Generated</th>
@@ -89,10 +88,11 @@
                                     <tr data-id="{{ $item->id }}" data-employee_code="{{ $item->employee_code }}"
                                         data-first_name="{{ $item->first_name }}" data-last_name="{{ $item->last_name }}"
                                         data-email="{{ $item->email }}" data-phone="{{ $item->phone }}"
-                                        data-department="{{ $item->department }}" data-store_area="{{ $item->role }}"
-                                        data-role="{{ $item->role }}" data-shift="{{ $item->shift }}"
-                                        data-join_date="{{ $item->join_date }}" data-salary="{{ $item->salary }}"
-                                        data-address="{{ $item->address }}" data-status="{{ $item->status }}">
+                                        data-department_id="{{ $item->department_id }}" data-role_id="{{ $item->role_id }}"
+                                        data-shift="{{ $item->shift }}" data-join_date="{{ $item->join_date }}"
+                                        data-salary="{{ $item->salary }}" data-address="{{ $item->address }}"
+                                        data-status="{{ $item->status }}">
+
                                         <td>
                                             {{ $employee->firstItem() + $key }}
                                         </td>
@@ -105,14 +105,15 @@
                                                 {{ $item->last_name }}</p>
                                         </td>
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $item->department }}</p>
-                                        </td>
+    <p class="text-xs font-weight-bold mb-0">
+        {{ $item->department_name }}
+    </p>
+</td>
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $item->store_area }}</p>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $item->role }}</p>
-                                        </td>
+    <p class="text-xs font-weight-bold mb-0">
+        {{ $item->role_name }}
+    </p>
+</td>
                                         <td>
                                             <form action="{{ route('admin.employee.approval') }}" method="POST">
                                                 @csrf
@@ -196,8 +197,8 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">Employee ID *</label>
-                            <input type="text" id="employeeid" class="form-control" placeholder="Enter Unique employee id"
-                                required>
+                            <input type="text" id="employeeid" class="form-control"
+                                placeholder="Enter Unique employee id" required>
                         </div>
                     </div>
 
@@ -240,7 +241,7 @@
                             <label for="role">Designation *</label>
                             {{-- <input type="text" id="role" class="form-control" required
                                 placeholder="e.g., Cashier, Supervisor"> --}}
-                                <select id="role" class="form-control" required>
+                            <select id="role" class="form-control" required>
                                 @foreach ($designation as $key => $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
@@ -331,13 +332,18 @@
 
                 $('#employeeId').val(id);
 
+                // ✅ FIXED
+                $('#employeeid').val(tr.data('employee_code'));
+
                 $('#firstName').val(tr.data('first_name'));
                 $('#lastName').val(tr.data('last_name'));
                 $('#email').val(tr.data('email'));
                 $('#phone').val(tr.data('phone'));
-                $('#department').val(tr.data('department'));
-                $('#role').val(tr.data('role'));
-                $('#store').val(tr.data('store_area'));
+
+                // ✅ IMPORTANT (ID set karna hai)
+                $('#department').val(tr.data('department_id')).trigger('change');
+                $('#role').val(tr.data('role_id')).trigger('change');
+
                 $('#shift').val(tr.data('shift'));
                 $('#joinDate').val(tr.data('join_date'));
                 $('#salary').val(tr.data('salary'));
@@ -348,9 +354,7 @@
                 $('#submitBtn').text('Update Employee');
 
                 $('#employeeModal').fadeIn();
-
             });
-
 
             // ================= STORE / UPDATE =================
             $('#employeeForm').submit(function(e) {
@@ -418,20 +422,19 @@
     </script>
 
     <script>
-$(document).on('click','.copy-employee-link',function(){
+        $(document).on('click', '.copy-employee-link', function() {
 
-let link=$(this).data('link');
+            let link = $(this).data('link');
 
-// fallback copy method (works on HTTP also)
-let temp=$("<input>");
-$("body").append(temp);
-temp.val(link).select();
-document.execCommand("copy");
-temp.remove();
+            // fallback copy method (works on HTTP also)
+            let temp = $("<input>");
+            $("body").append(temp);
+            temp.val(link).select();
+            document.execCommand("copy");
+            temp.remove();
 
-alert('Employee view link copied!');
+            alert('Employee view link copied!');
 
-});
-</script>
-
+        });
+    </script>
 @endsection
