@@ -89,10 +89,12 @@
                                     <tr data-id="{{ $item->id }}" data-employee_code="{{ $item->employee_code }}"
                                         data-first_name="{{ $item->first_name }}" data-last_name="{{ $item->last_name }}"
                                         data-email="{{ $item->email }}" data-phone="{{ $item->phone }}"
-                                        data-department_id="{{ $item->department_id }}" data-role_id="{{ $item->role_id }}"
+                                        data-department="{{ $item->department }}" {{-- ✅ FIX --}}
+                                        data-role="{{ $item->role }}" {{-- ✅ FIX --}}
                                         data-shift="{{ $item->shift }}" data-join_date="{{ $item->join_date }}"
                                         data-salary="{{ $item->salary }}" data-address="{{ $item->address }}"
                                         data-status="{{ $item->status }}">
+
 
                                         <td>
                                             {{ $employee->firstItem() + $key }}
@@ -153,7 +155,7 @@
                                         </td>
 
                                         <td>
-                                            <a href="{{route('admin.employee.file', $item->id)}}">File</a>
+                                            <a href="{{ route('admin.employee.file', $item->id) }}">File</a>
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-warning editEmployeeBtn"
@@ -306,15 +308,15 @@
         </div>
     </div>
 
-            
-<script>
-    window.updateUrl = "{{ route('admin.employee.update', ':id') }}";
-    window.storeUrl = "{{ route('admin.employee.store') }}";
-</script>
+
+    <script>
+        window.updateUrl = "{{ route('admin.employee.update', ':id') }}";
+        window.storeUrl = "{{ route('admin.employee.store') }}";
+    </script>
 
     <script>
         $(document).ready(function() {
-            
+
 
             // ================= OPEN MODAL (ADD) =================
             $('#addEmployeeBtn').click(function() {
@@ -341,7 +343,16 @@
                 let id = $(this).data('id');
                 let tr = $(this).closest('tr');
 
+                let joinDate = tr.data('join_date');
+
+                if (joinDate) {
+                    $('#joinDate').val(joinDate.split(' ')[0]);
+                }
+
                 $('#employeeId').val(id);
+
+                console.log(tr);
+
 
                 // ✅ FIXED
                 $('#employeeid').val(tr.data('employee_code'));
@@ -352,11 +363,11 @@
                 $('#phone').val(tr.data('phone'));
 
                 // ✅ IMPORTANT (ID set karna hai)
-                $('#department').val(tr.data('department_id')).trigger('change');
-                $('#role').val(tr.data('role_id')).trigger('change');
+                $('#department').val(tr.data('department')).trigger('change');
+                $('#role').val(tr.data('role')).trigger('change');
 
                 $('#shift').val(tr.data('shift'));
-                $('#joinDate').val(tr.data('join_date'));
+                // $('#joinDate').val(tr.data('join_date'));
                 $('#salary').val(tr.data('salary'));
                 $('#address').val(tr.data('address'));
                 $('#status').val(tr.data('status'));
