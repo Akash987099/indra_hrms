@@ -79,6 +79,7 @@
                                     <th>Action</th>
                                     <th>Status</th>
                                     <th>Link Generated</th>
+                                    <th>File Manager</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -151,6 +152,9 @@
                                             </button>
                                         </td>
 
+                                        <td>
+                                            <a href="{{route('admin.employee.file', $item->id)}}">File</a>
+                                        </td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-warning editEmployeeBtn"
                                                 data-id="{{ $item->id }}">

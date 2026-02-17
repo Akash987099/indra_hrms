@@ -7,10 +7,13 @@ use App\Models\Employee;
 use App\Models\User;
 use App\Models\Department;
 use App\Models\Designation;
+use App\Models\Folder;
 use App\Models\EmployeeOnboarding;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
+use App\Models\Document;
 
 class EmployeeController extends Controller
 {
@@ -111,7 +114,7 @@ class EmployeeController extends Controller
 
         $employeedata = EmployeeOnboarding::where('employee_id', $employee->id)->first();
 
-        return view('welcome', compact('employeedata', 'employee'));
+        return view('welcome', compact('employeedata', 'employee', 'id'));
         // return view('admin.employee.view', compact('employeedata', 'employee'));
 
     }
@@ -273,5 +276,57 @@ class EmployeeController extends Controller
         $employee->save();
 
         return back()->with('success', 'Status updated');
+    }
+
+    public function file($id)
+    {
+        if (!$id) {
+            return redirect()->back()->with('error', 'ID not found!');
+        }
+
+        $employee = Employee::find($id);
+
+        if (!$employee) {
+            return redirect()->back()->with('error', 'Employee not found!');
+        }
+
+        $foldername = $employee->employee_code;
+
+        $path = public_path('documents/' . $foldername);
+
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0777, true, true);
+        }
+
+        $data = Document::where('emp_code', $foldername)->get();
+
+        return view('admin.employee.file_manager', compact('employee', 'data', 'foldername'));
+    }
+
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file',
+            'emp_code' => 'required'
+        ]);
+
+        $folder = public_path('documents/' . $request->emp_code);
+
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0777, true, true);
+        }
+
+        $file = $request->file('file');
+        $filename = time() . '_' . $file->getClientOriginalName();
+
+        $file->move($folder, $filename);
+
+        Document::create([
+            'emp_code' => $request->emp_code,
+            'file_name' => $filename,
+            'file_path' => 'documents/' . $request->emp_code . '/' . $filename
+        ]);
+
+        return back()->with('success', 'File uploaded successfully!');
     }
 }

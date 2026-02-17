@@ -617,9 +617,15 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="fullName" class="required">Employee ID</label>
+                            <input type="text" id="" value="{{$id}}" readonly>
+                        </div>
+
+                        <div class="form-group">
                             <label for="fullName" class="required">Full Name</label>
                             <input type="text" id="fullName" required>
                         </div>
+
                     </div>
 
                     <div class="form-row">

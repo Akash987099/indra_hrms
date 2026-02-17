@@ -36,6 +36,10 @@ Route::middleware(['auth:admin'])->group(function () {
         // approval
         Route::post('approval', 'approval')->name('approval');
         Route::post('status', 'updateStatus')->name('status');
+
+        // File
+        Route::get('file/{id}', 'file')->name('file');
+        Route::post('upload', 'upload')->name('upload');
     });
 
     Route::prefix('department')->controller(DepartmentController::class)->name('department.')->group(function () {
