@@ -8,7 +8,8 @@ use App\Models\Admin;
 
 class LoginController extends Controller
 {
-    public function login(){
+    public function login()
+    {
         return view('admin.login');
     }
 
@@ -22,11 +23,12 @@ class LoginController extends Controller
         }
         return response()->json(['status' => 'error', 'message' => 'Invalid username or password.']);
     }
-    
-    public function userlogin(){
+
+    public function userlogin()
+    {
         return view('user.login');
     }
-    
+
     public function userlogins(Request $request)
     {
         // dd($request->all());
@@ -38,4 +40,13 @@ class LoginController extends Controller
         return response()->json(['status' => 'error', 'message' => 'Invalid username or password.']);
     }
 
+    public function logout(Request $request)
+    {
+        Auth::guard('admin')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin.login');
+    }
 }

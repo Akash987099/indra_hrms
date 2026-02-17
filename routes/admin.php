@@ -18,8 +18,12 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('login', 'login')->name('login');
     Route::post('logins', 'logins')->name('logins');
 });
-     
+
 Route::middleware(['auth:admin'])->group(function () {
+
+    Route::controller(LoginController::class)->group(function () {
+        Route::get('logout', 'logout')->name('logout');
+    });
 
     Route::controller(AdminController::class)->group(function () {
         Route::get('', 'index')->name('index');
@@ -91,7 +95,7 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::post('{id}/status', 'updateStatus')->name('status');
         Route::post('{id}/delete', 'destroy')->name('delete');
     });
-    
+
     Route::prefix('performance')->controller(PerformanceController::class)->name('performance.')->group(function () {
         Route::get('', 'index')->name('index');
         Route::post('/kpi', 'storeKpi')->name('kpi.store');
@@ -101,5 +105,4 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::prefix('report')->controller(ReportController::class)->name('report.')->group(function () {
         Route::get('', 'index')->name('index');
     });
-
 });

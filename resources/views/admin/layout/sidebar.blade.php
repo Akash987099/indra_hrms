@@ -88,6 +88,14 @@
                        <span>Reports & Analytics</span>
                    </a>
                </li>
+
+               <li class="nav-item">
+                   <a href="{{route('admin.logout')}}" class="nav-link" data-module="reports">
+                       <i class="fas fa-sign-out-alt"></i>
+                       <span>Sign out</span>
+                   </a>
+               </li>
+
            </ul>
 
            <!--<div class="role-selector">-->
