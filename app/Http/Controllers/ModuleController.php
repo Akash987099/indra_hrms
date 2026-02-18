@@ -18,20 +18,58 @@ class ModuleController extends Controller
 
     public function store(Request $request)
     {
+        $department_id = $request->department_id;
         $permissions = $request->permissions;
 
+        $grouped = [];
+
         foreach ($permissions as $perm) {
+            $grouped[$perm['module_id']][$perm['type']] = $perm['value'];
+        }
 
-            $column = $perm['type'] == 'add' ? 'update' : $perm['type'];
+        foreach ($grouped as $module_id => $perms) {
 
-            Module::where('id', $perm['module_id'])->update([
-                $column => $perm['value']
-            ]);
+            $module = Module::find($module_id);
+
+            $existing = json_decode($module->department_permissions, true) ?? [];
+
+            // add/update this department
+            $existing[$department_id] = array_merge([
+                'view' => 0,
+                'add' => 0,
+                'edit' => 0,
+                'delete' => 0
+            ], $perms);
+
+            $module->department_permissions = json_encode($existing);
+            $module->save();
         }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Permissions Updated Successfully'
+            'message' => 'Permissions Saved'
         ]);
+    }
+
+    // 🔥 LOAD PERMISSIONS (EDIT)
+    public function getPermissions($department_id)
+    {
+        $modules = Module::all();
+
+        $data = [];
+
+        foreach ($modules as $mod) {
+
+            $permissions = json_decode($mod->department_permissions, true);
+
+            $data[$mod->id] = $permissions[$department_id] ?? [
+                'view' => 0,
+                'add' => 0,
+                'edit' => 0,
+                'delete' => 0
+            ];
+        }
+
+        return response()->json($data);
     }
 }

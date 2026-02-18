@@ -9,5 +9,5 @@ class Module extends Model
 {
     use HasFactory;
     protected $table = 'modules';
-    protected $fillable = ['id', 'name', 'view', 'edit', 'delete', 'update', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'name', 'view', 'edit', 'delete', 'update', 'department_permissions', 'created_at', 'updated_at'];
 }
