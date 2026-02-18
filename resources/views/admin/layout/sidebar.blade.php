@@ -31,6 +31,13 @@
                        <span>Department Management</span>
                    </a>
                </li>
+
+               <li class="nav-item">
+                   <a href="{{route('admin.module.index')}}" class="nav-link" data-module="employee">
+                       <i class="fas fa-users"></i>
+                       <span>Module</span>
+                   </a>
+               </li>
                
                <li class="nav-item">
                    <a href="{{route('admin.designation.index')}}" class="nav-link" data-module="employee">

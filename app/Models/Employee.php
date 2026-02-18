@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Employee extends Model
+class Employee extends Authenticatable
 {
     protected $table = "employees";
 
     protected $fillable = [
         'employee_code','first_name','last_name','email','phone',
         'department','role','store_area','shift',
-        'join_date','salary','address','status'
+        'join_date','salary','address','status', 'password'
     ];
 
     protected $casts = [

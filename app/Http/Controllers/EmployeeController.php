@@ -151,6 +151,7 @@ class EmployeeController extends Controller
             'salary'     => $validated['salary'] ?? null,
             'address'    => $validated['address'] ?? null,
             'status'     => $validated['status'],
+            'password'   => Hash::make($validated['phone']),
         ]);
 
         return response()->json([
@@ -193,6 +194,7 @@ class EmployeeController extends Controller
         ]);
 
         $employee->update([
+            'employee_code' => $validated['employeeid'] ?? 'EMP-' . rand(100000, 999999),
             'first_name' => $validated['firstName'],
             'last_name'  => $validated['lastName'],
             'email'      => $validated['email'],

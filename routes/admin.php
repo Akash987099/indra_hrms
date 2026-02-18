@@ -13,6 +13,7 @@ use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\ModuleController;
 
 Route::controller(LoginController::class)->group(function () {
     Route::get('login', 'login')->name('login');
@@ -105,4 +106,10 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::prefix('report')->controller(ReportController::class)->name('report.')->group(function () {
         Route::get('', 'index')->name('index');
     });
+
+    Route::prefix('module')->controller(ModuleController::class)->name('module.')->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::post('store', 'store')->name('store');
+    });
+
 });
