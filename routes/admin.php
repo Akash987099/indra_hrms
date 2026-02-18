@@ -110,7 +110,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::prefix('module')->controller(ModuleController::class)->name('module.')->group(function () {
         Route::get('', 'index')->name('index');
         Route::post('store', 'store')->name('store');
-        Route::get('/get/{id}', 'getPermissions');
+        Route::get('/get/{id}', 'getPermissions')->name('get');
     });
 
 });
