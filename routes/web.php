@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployeeOnboardingController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\user\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,8 +41,19 @@ Route::controller(LoginController::class)->group(function () {
 
 Route::prefix('user')->middleware(['auth:user'])->name('user.')->group(function () {
 
+    Route::controller(LoginController::class)->group(function () {
+        Route::get('logout', 'logouts')->name('logout');
+    });
+
     Route::controller(UserController::class)->group(function () {
         Route::get('', 'index')->name('index');
+    });
+
+    Route::prefix('attendance')->controller(AttendanceController::class)->name('attendance.')->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::get('get', 'get')->name('get');
+        Route::post('store', 'store')->name('store');
+        Route::get('export', 'export')->name('export');
     });
     
 });
