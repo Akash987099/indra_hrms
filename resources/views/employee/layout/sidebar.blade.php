@@ -1,10 +1,16 @@
+ <style>
+    .logo-img {
+    height: 40px;   /* 👈 perfect navbar size */
+    width: auto;
+    object-fit: contain;
+}
+ </style>
  <nav class="sidebar" id="sidebar">
-     <div class="logo-container">
-         <a href="#" class="logo">
-             {{-- <i class="fas fa-users-cog"></i> --}}
-             <img src="{{asset('assets/img/indra_hrms_logo.png')}}" alt="">
-         </a>
-     </div>
+    <div class="logo-container">
+    <a href="#" class="logo d-flex align-items-center">
+        <img src="{{ asset('assets/img/indra_hrms_logo.png') }}" alt="Logo" class="logo-img">
+    </a>
+</div>
 
      <ul class="nav-menu">
          <li class="nav-item">

@@ -1,10 +1,18 @@
+    <style>
+    .logo-img {
+    height: 40px;   /* 👈 perfect navbar size */
+    width: auto;
+    object-fit: contain;
+}
+ </style>
    <div class="container">
        <!-- Sidebar -->
        <div class="sidebar">
-           <div class="logo">
-               {{-- <h2>Mall<span>HRMS</span></h2> --}}
-               <img src="{{asset('assets/img/indra_hrms_logo.png')}}" alt="">
-           </div>
+             <div class="logo-container">
+    <a href="#" class="logo d-flex align-items-center">
+        <img src="{{ asset('assets/img/indra_hrms_logo.png') }}" alt="Logo" class="logo-img">
+    </a>
+</div>
 
            <div class="user-profile">
                <div class="user-avatar" id="">
