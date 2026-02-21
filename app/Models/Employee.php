@@ -14,7 +14,11 @@ class Employee extends Authenticatable
     protected $fillable = [
         'employee_code','first_name','last_name','email','phone',
         'department','role','store_area','shift',
-        'join_date','salary','address','status', 'password'
+        'join_date','salary','address','status', 'password', 'profile_photo',
+        'email_notification',
+    'leave_notification',
+    'payroll_notification',
+    'training_notification',
     ];
 
     protected $casts = [

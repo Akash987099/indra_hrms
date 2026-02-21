@@ -20,43 +20,43 @@
              </a>
          </li>
          <li class="nav-item">
-             <a class="nav-link" data-page="leaves">
+             <a href="{{route('user.leaves.index')}}" class="nav-link">
                  <i class="fas fa-umbrella-beach"></i>
                  <span>Leaves</span>
              </a>
          </li>
          <li class="nav-item">
-             <a class="nav-link" data-page="payroll">
+             <a href="{{route('user.payroll.index')}}" class="nav-link">
                  <i class="fas fa-file-invoice-dollar"></i>
                  <span>Payroll</span>
              </a>
          </li>
          <li class="nav-item">
-             <a class="nav-link" data-page="performance">
+             <a href="{{route('user.performance.index')}}" class="nav-link">
                  <i class="fas fa-chart-line"></i>
                  <span>Performance</span>
              </a>
          </li>
          <li class="nav-item">
-             <a class="nav-link" data-page="training">
+             <a href="{{route('user.training.index') }}" class="nav-link">
                  <i class="fas fa-graduation-cap"></i>
                  <span>Training</span>
              </a>
          </li>
          <li class="nav-item">
-             <a class="nav-link" data-page="documents">
+             <a  href="{{route('user.document.index') }}" class="nav-link">
                  <i class="fas fa-file-alt"></i>
                  <span>Documents</span>
              </a>
          </li>
          <li class="nav-item">
-             <a class="nav-link" data-page="profile">
+             <a href="{{route('user.profile.index') }}" class="nav-link">
                  <i class="fas fa-user-circle"></i>
                  <span>My Profile</span>
              </a>
          </li>
          <li class="nav-item">
-             <a class="nav-link" data-page="settings">
+             <a href="{{route('user.setting.index') }}" class="nav-link">
                  <i class="fas fa-cog"></i>
                  <span>Settings</span>
              </a>

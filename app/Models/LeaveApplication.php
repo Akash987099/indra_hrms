@@ -22,6 +22,7 @@ class LeaveApplication extends Model
         'action_by',
         'action_at',
         'action_remark',
+        'handover_to',
     ];
 
     protected $casts = [

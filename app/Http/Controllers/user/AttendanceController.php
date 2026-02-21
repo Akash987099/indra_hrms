@@ -3,31 +3,32 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\Attendance;
-use App\Models\Employee;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AttendanceController extends Controller
 {
+    // ✅ LIST + FILTER + PAGINATION
     public function index(Request $request)
     {
-        // report date from query (?date=YYYY-MM-DD)
-        $date = $request->get('date', now()->toDateString());
+        $employee_id = Auth::guard('user')->user()->id;
 
-        // report data (paginated)
-        $attendances = Attendance::with('employee:id,first_name,last_name,department')
-            ->whereDate('attendance_date', $date)
-            ->orderBy('id', 'desc')
-            ->paginate(config('constants.pagination_limit'));
+        $month = $request->get('month', now()->month);
+        $year  = $request->get('year', now()->year);
 
-        // dd($attendances);exit();
+        $attendances = Attendance::where('employee_id', $employee_id)
+            ->whereMonth('attendance_date', $month)
+            ->whereYear('attendance_date', $year)
+            ->orderBy('attendance_date', 'desc')
+            ->paginate(10);
 
-        return view('employee.attendance.index', compact('attendances', 'date'));
+        return view('employee.attendance.index', compact('attendances', 'month', 'year'));
     }
 
+    // ✅ CHECKIN / CHECKOUT
     public function store(Request $request)
     {
         $employee_id = Auth::guard('user')->user()->id;
@@ -40,7 +41,7 @@ class AttendanceController extends Controller
                 ->first();
 
             if (!$exists) {
-                $attendance = Attendance::create([
+                Attendance::create([
                     'employee_id' => $employee_id,
                     'attendance_date' => $today,
                     'check_in_time' => now()->format('H:i:s'),
@@ -80,6 +81,7 @@ class AttendanceController extends Controller
         }
     }
 
+    // ✅ TODAY DATA
     public function get()
     {
         $employee_id = Auth::guard('user')->user()->id;
@@ -95,64 +97,47 @@ class AttendanceController extends Controller
         ]);
     }
 
+    // ✅ EXPORT EXCEL (CSV)
     public function export(Request $request)
     {
-        $date = $request->get('date', now()->toDateString());
+        $employee_id = Auth::guard('user')->user()->id;
 
-        $rows = Attendance::with('employee:id,first_name,last_name,department')
-            ->whereDate('attendance_date', $date)
-            ->orderBy('employee_id')
+        $month = $request->get('month', now()->month);
+        $year  = $request->get('year', now()->year);
+
+        $attendances = Attendance::where('employee_id', $employee_id)
+            ->whereMonth('attendance_date', $month)
+            ->whereYear('attendance_date', $year)
+            ->orderBy('attendance_date', 'desc')
             ->get();
 
-        $filename = "attendance_{$date}.csv";
+        $filename = "attendance_{$month}_{$year}.csv";
 
-        $headers = [
-            'Content-Type'        => 'text/csv',
-            'Content-Disposition' => "attachment; filename=\"$filename\"",
-        ];
+        return new StreamedResponse(function () use ($attendances) {
 
-        $callback = function () use ($rows) {
-            $file = fopen('php://output', 'w');
+            $handle = fopen('php://output', 'w');
 
-            fputcsv($file, [
-                'Employee ID',
-                'Name',
-                'Department',
-                'Date',
-                'Check-in',
-                'Check-out',
-                'Status',
-                'Working Hours',
-                'Remarks',
-            ]);
+            fputcsv($handle, ['Date', 'Check In', 'Check Out', 'Working Hours', 'Status']);
 
-            foreach ($rows as $r) {
-                $name = trim(($r->employee?->first_name ?? '') . ' ' . ($r->employee?->last_name ?? ''));
-                $dept = $r->employee?->department ?? '-';
+            foreach ($attendances as $attendance) {
 
-                $hours = '-';
-                if ($r->working_minutes) {
-                    $h = intdiv($r->working_minutes, 60);
-                    $m = $r->working_minutes % 60;
-                    $hours = "{$h}h {$m}m";
-                }
+                $working = $attendance->working_minutes
+                    ? floor($attendance->working_minutes / 60) . 'h ' . ($attendance->working_minutes % 60) . 'm'
+                    : '-';
 
-                fputcsv($file, [
-                    $r->employee_id,
-                    $name ?: '-',
-                    $dept,
-                    optional($r->attendance_date)->format('Y-m-d'),
-                    $r->check_in_time ?? '-',
-                    $r->check_out_time ?? '-',
-                    $r->status,
-                    $hours,
-                    $r->remarks ?? '',
+                fputcsv($handle, [
+                    Carbon::parse($attendance->attendance_date)->format('d M Y'),
+                    $attendance->check_in_time ? date('h:i A', strtotime($attendance->check_in_time)) : '-',
+                    $attendance->check_out_time ? date('h:i A', strtotime($attendance->check_out_time)) : '-',
+                    $working,
+                    $attendance->status
                 ]);
             }
 
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
+            fclose($handle);
+        }, 200, [
+            "Content-Type" => "text/csv",
+            "Content-Disposition" => "attachment; filename={$filename}",
+        ]);
     }
 }
