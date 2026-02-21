@@ -2,8 +2,8 @@
        <!-- Sidebar -->
        <div class="sidebar">
            <div class="logo">
-               <h2>Mall<span>HRMS</span></h2>
-               <p>Human Resource Management System</p>
+               {{-- <h2>Mall<span>HRMS</span></h2> --}}
+               <img src="{{asset('assets/img/indra_hrms_logo.png')}}" alt="">
            </div>
 
            <div class="user-profile">

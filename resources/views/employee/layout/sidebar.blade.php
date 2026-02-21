@@ -1,8 +1,8 @@
  <nav class="sidebar" id="sidebar">
      <div class="logo-container">
          <a href="#" class="logo">
-             <i class="fas fa-users-cog"></i>
-             <span>HRMS</span>
+             {{-- <i class="fas fa-users-cog"></i> --}}
+             <img src="{{asset('assets/img/indra_hrms_logo.png')}}" alt="">
          </a>
      </div>
 
