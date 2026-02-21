@@ -11,7 +11,7 @@
         <div class="min-h-screen flex flex-col items-center justify-center py-6 px-4">
             <div class="max-w-md w-full">
                 <a href="">
-                    <img src="{{asset('assets/img/indra_hrms_logo.png')}}" class="w-40 mb-4 mx-auto bg-black p-2 rounded-lg" alt="logo">
+                    <img src="{{asset('assets/img/indra_hrms_logo.png')}}" class="w-40 mb-4 mx-auto p-2 rounded-lg" alt="logo">
                 </a>
                 <div class="p-8 rounded-2xl bg-white shadow">
                     <h2 class="text-gray-800 text-center text-2xl font-bold">Admin</h2>
