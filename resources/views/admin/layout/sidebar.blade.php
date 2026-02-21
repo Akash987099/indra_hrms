@@ -25,7 +25,7 @@
                    </a>
                </li>
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                    <a href="{{route('admin.department.index')}}" class="nav-link" data-module="employee">
                        <i class="fas fa-users"></i>
                        <span>Department Management</span>
@@ -44,7 +44,7 @@
                        <i class="fas fa-users"></i>
                        <span>Designation Management</span>
                    </a>
-               </li>
+               </li> --}}
 
                <li class="nav-item">
                    <a href="{{route('admin.employee.index')}}" class="nav-link" data-module="employee">

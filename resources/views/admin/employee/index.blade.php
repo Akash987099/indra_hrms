@@ -17,15 +17,37 @@
     <div class="main-content">
         <div id="employee">
             <div class="card">
-                <div class="card-header">
-                    <h3>Employee Database</h3>
-                    <button type="button" class="btn btn-primary" id="addEmployeeBtn">
-                        <i class="fas fa-plus"></i> Add Employee
-                    </button>
 
-                    <a href="{{ route('admin.employee.onboarding') }}" type="button" class="btn btn-primary" id="">
-                        Employee Onboarding data
-                    </a>
+                <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+
+                    <!-- LEFT TITLE -->
+                    <h3 class="mb-0">Employee Database</h3>
+
+                    <!-- RIGHT BUTTONS -->
+                    <div class="d-flex flex-wrap gap-2">
+
+                        <button type="button" class="btn btn-primary" id="addEmployeeBtn">
+                            <i class="fas fa-plus"></i> Add Employee
+                        </button>
+
+                        <a href="{{ route('admin.department.index') }}" class="btn btn-primary">
+                            Department
+                        </a>
+
+                        <a href="{{ route('admin.designation.index') }}" class="btn btn-primary">
+                            Designation
+                        </a>
+
+                        <a href="{{ route('admin.module.index') }}" class="btn btn-primary">
+                            Modules
+                        </a>
+
+                        <a href="{{ route('admin.employee.onboarding') }}" class="btn btn-primary">
+                            Employee Onboarding
+                        </a>
+
+                    </div>
+
                 </div>
 
                 <div class="card-body">
