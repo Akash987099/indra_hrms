@@ -3,6 +3,7 @@
     height: 40px;   /* 👈 perfect navbar size */
     width: auto;
     object-fit: contain;
+    background-color: #fff !important;
 }
  </style>
    <div class="container">
