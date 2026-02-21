@@ -21,9 +21,10 @@ class AttendanceController extends Controller
 
         // report data (paginated)
         $attendances = Attendance::with('employee:id,first_name,last_name,department')
-            ->whereDate('attendance_date', $date)
-            ->orderBy('id', 'desc')
-            ->paginate(config('constants.pagination_limit'));
+    ->whereDate('attendance_date', $date)
+    ->orderBy('employee_id')
+    ->paginate(config('constants.pagination_limit'))
+    ->appends(['date' => $date]);
             
             // dd($attendances);exit();
 
