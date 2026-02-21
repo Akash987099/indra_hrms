@@ -56,7 +56,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'asset_url' => env('ASSET_URL', 'https://indramart.org/hrms/public/'),
+    'asset_url' => env('ASSET_URL', 'https://indramart.org/indra_mart/public/'),
 
     /*
     |--------------------------------------------------------------------------
