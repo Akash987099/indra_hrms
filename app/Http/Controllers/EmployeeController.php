@@ -17,19 +17,48 @@ use App\Models\Document;
 
 class EmployeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $department = Department::all();
         $designation = Designation::all();
-        $employee = Employee::leftJoin('departments', 'employees.department', '=', 'departments.id')
+
+        $query = Employee::leftJoin('departments', 'employees.department', '=', 'departments.id')
             ->leftJoin('designations', 'employees.role', '=', 'designations.id')
             ->select(
                 'employees.*',
                 'departments.name as department_name',
                 'designations.name as role_name'
-            )
-            ->orderBy('employees.id', 'desc')
-            ->paginate(config('constants.pagination_limit'));
+            );
+
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('employees.first_name', 'like', '%' . $request->search . '%')
+                    ->orWhere('employees.last_name', 'like', '%' . $request->search . '%')
+                    ->orWhere('employees.employee_code', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->department) {
+            $query->where('employees.department', $request->department);
+        }
+
+        if ($request->status) {
+            $query->where('employees.status', $request->status);
+        }
+
+        if ($request->sort == 'name') {
+            $query->orderBy('employees.first_name', 'asc');
+        } elseif ($request->sort == 'name-desc') {
+            $query->orderBy('employees.first_name', 'desc');
+        } elseif ($request->sort == 'date') {
+            $query->orderBy('employees.join_date', 'desc');
+        } elseif ($request->sort == 'date-old') {
+            $query->orderBy('employees.join_date', 'asc');
+        } else {
+            $query->orderBy('employees.id', 'desc');
+        }
+
+        $employee = $query->paginate(10)->appends($request->all());
 
         return view('admin.employee.index', compact('employee', 'department', 'designation'));
     }

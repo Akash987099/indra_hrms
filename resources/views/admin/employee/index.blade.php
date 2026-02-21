@@ -55,39 +55,58 @@
                         <input type="text" id="employeeSearch" placeholder="Search employees by name, ID, department...">
                     </div>
 
-                    <div class="filters">
-                        <div class="filter-group">
-                            <label for="departmentFilter">Department</label>
-                            <select id="departmentFilter" class="form-control">
-                                <option value="">All Departments</option>
-                                @foreach ($department as $key => $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <form method="GET" id="filterForm">
 
-                        <div class="filter-group">
-                            <label for="statusFilter">Status</label>
-                            <select id="statusFilter" class="form-control">
-                                <option value="">All Status</option>
-                                <option value="Active">Active</option>
-                                <option value="On Leave">On Leave</option>
-                                <option value="Inactive">Inactive</option>
-                                <option value="Probation">Probation</option>
-                            </select>
-                        </div>
+<div class="filters">
 
-                        <div class="filter-group">
-                            <label for="sortBy">Sort By</label>
-                            <select id="sortBy" class="form-control">
-                                <option value="name">Name (A-Z)</option>
-                                <option value="name-desc">Name (Z-A)</option>
-                                <option value="department">Department</option>
-                                <option value="date">Join Date (Newest)</option>
-                                <option value="date-old">Join Date (Oldest)</option>
-                            </select>
-                        </div>
-                    </div>
+    <!-- SEARCH -->
+    <div class="filter-group">
+        <label>Search</label>
+        <input type="text" name="search" value="{{ request('search') }}" class="form-control">
+    </div>
+
+    <!-- DEPARTMENT -->
+    <div class="filter-group">
+        <label>Department</label>
+        <select name="department" class="form-control">
+            <option value="">All</option>
+            @foreach ($department as $item)
+                <option value="{{ $item->id }}" {{ request('department') == $item->id ? 'selected' : '' }}>
+                    {{ $item->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <!-- STATUS -->
+    <div class="filter-group">
+        <label>Status</label>
+        <select name="status" class="form-control">
+            <option value="">All</option>
+            <option value="Active" {{ request('status')=='Active'?'selected':'' }}>Active</option>
+            <option value="Inactive" {{ request('status')=='Inactive'?'selected':'' }}>Inactive</option>
+        </select>
+    </div>
+
+    <!-- SORT -->
+    <div class="filter-group">
+        <label>Sort</label>
+        <select name="sort" class="form-control">
+            <option value="name">Name A-Z</option>
+            <option value="name-desc">Name Z-A</option>
+            <option value="date">Newest</option>
+            <option value="date-old">Oldest</option>
+        </select>
+    </div>
+
+    <!-- BUTTON -->
+    <div class="filter-group">
+        <button class="btn btn-primary mt-4">Apply</button>
+    </div>
+
+</div>
+
+</form>
 
                     <div class="table-responsive">
                         <table>
