@@ -93,6 +93,7 @@
                     <th>Type</th>
                     <th>From</th>
                     <th>To</th>
+                    <th>Remark</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -103,6 +104,7 @@
                         <td>{{ $leave->leave_type }}</td>
                         <td>{{ $leave->from_date }}</td>
                         <td>{{ $leave->to_date }}</td>
+                        <td>{{ $leave->action_remark }}</td>
                         <td>
                             <span class="badge bg-warning">{{ $leave->status }}</span>
                         </td>
