@@ -76,6 +76,7 @@
                         <th>From</th>
                         <th>To</th>
                         <th>Days</th>
+                        <th>Remarks</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -88,6 +89,7 @@
                             <td>{{ $leave->from_date }}</td>
                             <td>{{ $leave->to_date }}</td>
                             <td>{{ $leave->duration_days }}</td>
+                            <td>{{ $leave->action_remark }}</td>
                             <td>
                                 <span class="badge bg-warning">
                                     {{ $leave->status }}

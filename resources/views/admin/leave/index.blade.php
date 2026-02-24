@@ -1,6 +1,14 @@
 @extends('admin.layout.app')
 
 @section('content')
+    <style>
+        th,
+        td {
+            padding: 5px !important;
+            /* text-align: left; */
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
     <div class="main-content">
         <div id="leave" class="">
             <div class="dashboard-cards">
@@ -144,6 +152,7 @@
                                 <th>Leave Type</th>
                                 <th>From - To</th>
                                 <th>Duration</th>
+                                <th>Remark</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -158,6 +167,7 @@
                                     <td>{{ $l->leave_type }}</td>
                                     <td>{{ $l->from_date?->format('d-m-Y') }} - {{ $l->to_date?->format('d-m-Y') }}</td>
                                     <td>{{ $l->duration_days }} day(s)</td>
+                                    <td>{{ $l->action_remark ?? '-' }}</td>
                                     <td>{{ $l->status }}</td>
                                     <td>
                                         <form method="POST" action="{{ route('admin.leave.status', $l->id) }}"
@@ -171,13 +181,14 @@
                                             style="display:inline-block;">
                                             @csrf
                                             <input type="hidden" name="status" value="Rejected">
+                                            <input type="text" name="action_remark" class="form-control mb-1"
+                                                placeholder="Enter remark">
                                             <button class="btn btn-danger btn-sm" type="submit">Reject</button>
                                         </form>
 
                                         <form method="POST" action="{{ route('admin.leave.status', $l->id) }}"
                                             style="display:inline-block;">
                                             @csrf
-                                            <input type="hidden" name="status" value="Cancelled">
                                             <button class="btn btn-secondary btn-sm" type="submit">Cancel</button>
                                         </form>
                                     </td>
