@@ -17,7 +17,7 @@ class LeaveController extends Controller
 
         $leaves = LeaveApplication::where('employee_id', $employee_id)
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(config('constants.pagination_limit'));
   
         $total = LeaveApplication::where('employee_id', $employee_id)->count();
 

@@ -17,7 +17,7 @@ class PayrollController extends Controller
         // Payslip data
         $payrolls = Payroll::where('employee_id', $employee_id)
             ->orderBy('payroll_month', 'desc')
-            ->paginate(10);
+            ->paginate(config('constants.pagination_limit'));
 
         // Dashboard calculations
         $currentSalary = Payroll::where('employee_id', $employee_id)

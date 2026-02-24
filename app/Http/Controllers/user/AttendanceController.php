@@ -23,7 +23,7 @@ class AttendanceController extends Controller
             ->whereMonth('attendance_date', $month)
             ->whereYear('attendance_date', $year)
             ->orderBy('attendance_date', 'desc')
-            ->paginate(10);
+            ->paginate(config('constants.pagination_limit'));
 
         return view('employee.attendance.index', compact('attendances', 'month', 'year'));
     }

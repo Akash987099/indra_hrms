@@ -58,7 +58,7 @@ class EmployeeController extends Controller
             $query->orderBy('employees.id', 'desc');
         }
 
-        $employee = $query->paginate(10)->appends($request->all());
+        $employee = $query->paginate(config('constants.pagination_limit'))->appends($request->all());
 
         return view('admin.employee.index', compact('employee', 'department', 'designation'));
     }

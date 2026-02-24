@@ -26,7 +26,7 @@ class DocumentController extends Controller
 
         $documents = Document::where('emp_code', $foldername)
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(config('constants.pagination_limit'));
 
         return view('employee.document.index', compact('documents', 'foldername'));
     }

@@ -26,7 +26,7 @@ class PerformanceController extends Controller
         // Reviews (history)
         $reviews = EmployeePerformance::where('employee_id', $employee_id)
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(config('constants.pagination_limit'));
 
         return view('employee.performance.index', compact(
             'performance',
