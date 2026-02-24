@@ -3,7 +3,6 @@
 @section('content')
 <div class="main-content">
 
-    {{-- SUCCESS MESSAGE --}}
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -78,7 +77,7 @@
                 </div>
             </div>
 
-            <!-- SHIFT CHART -->
+            <!-- SUMMARY -->
             <div class="card">
                 <div class="card-header">
                     <h3>Today's Summary</h3>
@@ -116,6 +115,8 @@
                             <th>Check-out</th>
                             <th>Status</th>
                             <th>Working Hours</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
@@ -123,7 +124,7 @@
                         @forelse ($attendances as $row)
                             <tr>
                                 <td>{{ $row->employee_id }}</td>
-                                <td>{{ $row->employee?->full_name }}</td>
+                                <td>{{ $row->employee?->first_name }} {{ $row->employee?->last_name }}</td>
                                 <td>{{ $row->employee?->department }}</td>
                                 <td>{{ $row->check_in_time ?? '-' }}</td>
                                 <td>{{ $row->check_out_time ?? '-' }}</td>
@@ -136,16 +137,50 @@
                                         -
                                     @endif
                                 </td>
+
+                                <td>{{ $row->remarks ?? '-' }}</td>
+
+                                <td style="min-width:200px;">
+
+                                    <!-- UPDATE -->
+                                    <form action="{{ route('admin.attendance.update', $row->id) }}" method="POST">
+                                        @csrf
+
+                                        <input type="time" name="check_in_time" value="{{ $row->check_in_time }}" class="form-control mb-1">
+                                        <input type="time" name="check_out_time" value="{{ $row->check_out_time }}" class="form-control mb-1">
+
+                                        <select name="status" class="form-control mb-1">
+                                            <option {{ $row->status=='Present'?'selected':'' }}>Present</option>
+                                            <option {{ $row->status=='Absent'?'selected':'' }}>Absent</option>
+                                            <option {{ $row->status=='Late'?'selected':'' }}>Late</option>
+                                            <option {{ $row->status=='Half Day'?'selected':'' }}>Half Day</option>
+                                            <option {{ $row->status=='Week Off'?'selected':'' }}>Week Off</option>
+                                        </select>
+
+                                        <input type="text" name="remarks" value="{{ $row->remarks }}" placeholder="Remark" class="form-control mb-1">
+
+                                        <button class="btn btn-primary btn-sm w-100 mb-1">Update</button>
+                                    </form>
+
+                                    <!-- DELETE -->
+                                    <form action="{{ route('admin.attendance.delete', $row->id) }}" method="POST">
+                                        @csrf
+                                        <button class="btn btn-danger btn-sm w-100"
+                                            onclick="return confirm('Delete this record?')">
+                                            Delete
+                                        </button>
+                                    </form>
+
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center">No Data</td>
+                                <td colspan="9" class="text-center">No Data</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
 
-                <!-- PAGINATION -->
                 {{ $attendances->links() }}
             </div>
         </div>
@@ -156,17 +191,13 @@
 <script>
 document.getElementById('generateAttendanceReport').onclick = function () {
     let date = document.getElementById('attendanceReportDate').value;
-
     if (!date) return alert('Select date');
-
     window.location = "{{ route('admin.attendance.index') }}?date=" + date;
 };
 
 document.getElementById('exportAttendanceBtn').onclick = function () {
     let date = document.getElementById('attendanceReportDate').value;
-
     if (!date) return alert('Select date');
-
     window.location = "{{ route('admin.attendance.export') }}?date=" + date;
 };
 </script>

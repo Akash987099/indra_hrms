@@ -21,12 +21,12 @@ class AttendanceController extends Controller
 
         // report data (paginated)
         $attendances = Attendance::with('employee:id,first_name,last_name,department')
-    ->whereDate('attendance_date', $date)
-    ->orderBy('employee_id')
-    ->paginate(config('constants.pagination_limit'))
-    ->appends(['date' => $date]);
-            
-            // dd($attendances);exit();
+            ->whereDate('attendance_date', $date)
+            ->orderBy('employee_id')
+            ->paginate(config('constants.pagination_limit'))
+            ->appends(['date' => $date]);
+
+        // dd($attendances);exit();
 
         return view('admin.attendance.index', compact('employees', 'attendances', 'date'));
     }
@@ -132,5 +132,44 @@ class AttendanceController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // dd($request->all());
+        $validated = $request->validate([
+            'check_in_time'  => 'nullable',
+            'check_out_time' => 'nullable',
+        ]);
+
+        $attendance = Attendance::findOrFail($id);
+        // dd($attendance);
+
+        $workingMinutes = null;
+
+        if (!empty($validated['check_in_time']) && !empty($validated['check_out_time'])) {
+            $in  = \Carbon\Carbon::createFromFormat('H:i', $validated['check_in_time']);
+            $out = \Carbon\Carbon::createFromFormat('H:i', $validated['check_out_time']);
+
+            if ($out->greaterThan($in)) {
+                $workingMinutes = $in->diffInMinutes($out);
+            }
+        }
+
+        $attendance->update([
+            'check_in_time'   => $validated['check_in_time'],
+            'check_out_time'  => $validated['check_out_time'],
+            'status'          => $request->status,
+            'remarks'         => $request->remarks,
+            'working_minutes' => $workingMinutes,
+        ]);
+
+        return back()->with('success', 'Attendance updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        Attendance::findOrFail($id)->delete();
+        return back()->with('success', 'Attendance deleted successfully.');
     }
 }

@@ -69,6 +69,8 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('', 'index')->name('index');
         Route::post('store', 'store')->name('store');
         Route::get('export', 'export')->name('export');
+        Route::post('/update/{id}', 'update')->name('update');
+        Route::post('/delete/{id}', 'destroy')->name('delete');
     });
 
     Route::prefix('payroll')->controller(PayrollController::class)->name('payroll.')->group(function () {
@@ -112,5 +114,4 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::post('store', 'store')->name('store');
         Route::get('/get/{id}', 'getPermissions')->name('get');
     });
-
 });
