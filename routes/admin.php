@@ -14,6 +14,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\SettingController;
 
 Route::controller(LoginController::class)->group(function () {
     Route::get('login', 'login')->name('login');
@@ -114,4 +115,10 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::post('store', 'store')->name('store');
         Route::get('/get/{id}', 'getPermissions')->name('get');
     });
+
+    Route::prefix('setting')->controller(SettingController::class)->name('setting.')->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::post('update', 'update')->name('update');
+    });
+
 });

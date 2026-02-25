@@ -106,6 +106,13 @@
                </li>
 
                <li class="nav-item">
+             <a href="{{route('admin.setting.index') }}" class="nav-link">
+                 <i class="fas fa-cog"></i>
+                 <span>Settings</span>
+             </a>
+         </li>
+
+               <li class="nav-item">
                    <a href="{{route('admin.logout')}}" class="nav-link" data-module="reports">
                        <i class="fas fa-sign-out-alt"></i>
                        <span>Sign out</span>
