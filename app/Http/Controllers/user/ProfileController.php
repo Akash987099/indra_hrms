@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Models\Department;
+use App\Models\Designation;
 
 class ProfileController extends Controller
 {
@@ -13,8 +15,10 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::guard('user')->user();
+        $department = Department::find($user->department);
+        $designation = Designation::find($user->role);
 
-        return view('employee.profile.index', compact('user'));
+        return view('employee.profile.index', compact('user', 'department', 'designation'));
     }
 
     // ✅ UPDATE PROFILE
