@@ -46,72 +46,140 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('user/logins', 'userlogins')->name('userlogins');
 });
 
-Route::prefix('user')->middleware(['auth:user'])->name('user.')->group(function () {
+Route::middleware(['auth:user'])->name('user.')->group(function () {
 
-    Route::controller(LoginController::class)->group(function () {
-        Route::get('logout', 'logouts')->name('logout');
+    Route::prefix('user')->name('user.')->group(function () {
+
+        Route::controller(LoginController::class)->group(function () {
+            Route::get('logout', 'logouts')->name('logout');
+        });
+
+        // Dashboard
+        Route::controller(UserController::class)->middleware('permission:dashboard,view')->group(function () {
+            Route::get('', 'index')->name('index');
+        });
+
+        // Attendance
+        Route::prefix('attendance')
+            ->middleware('permission:attendance,view')
+            ->controller(AttendanceController::class)
+            ->name('attendance.')
+            ->group(function () {
+
+                Route::get('', 'index')->name('index');
+                Route::get('get', 'get')->name('get');
+
+                Route::post('store', 'store')->middleware('permission:attendance,add')->name('store');
+
+                Route::get('export', 'export')->name('export');
+            });
+
+        // Leaves
+        Route::prefix('leaves')
+            ->middleware('permission:leaves,view')
+            ->controller(LeaveController::class)
+            ->name('leaves.')
+            ->group(function () {
+
+                Route::get('', 'index')->name('index');
+                Route::get('get', 'get')->name('get');
+
+                Route::post('store', 'store')->middleware('permission:leaves,add')->name('store');
+
+                Route::get('export', 'export')->name('export');
+            });
+
+        // Payroll
+        Route::prefix('payroll')
+            ->middleware('permission:payroll,view')
+            ->controller(PayrollController::class)
+            ->name('payroll.')
+            ->group(function () {
+
+                Route::get('', 'index')->name('index');
+                Route::get('get', 'get')->name('get');
+
+                Route::post('store', 'store')->middleware('permission:payroll,add')->name('store');
+
+                Route::get('export', 'export')->name('export');
+            });
+
+        // Performance
+        Route::prefix('performance')
+            ->middleware('permission:performance,view')
+            ->controller(PerformanceController::class)
+            ->name('performance.')
+            ->group(function () {
+
+                Route::get('', 'index')->name('index');
+                Route::get('get', 'get')->name('get');
+
+                Route::post('store', 'store')->middleware('permission:performance,add')->name('store');
+
+                Route::get('export', 'export')->name('export');
+            });
+
+        // Training
+        Route::prefix('training')
+            ->middleware('permission:training,view')
+            ->controller(TraningController::class)
+            ->name('training.')
+            ->group(function () {
+
+                Route::get('', 'index')->name('index');
+                Route::get('get', 'get')->name('get');
+
+                Route::post('store', 'store')->middleware('permission:training,add')->name('store');
+
+                Route::get('export', 'export')->name('export');
+            });
+
+        // Document
+        Route::prefix('document')
+            ->middleware('permission:document,view')
+            ->controller(DocumentController::class)
+            ->name('document.')
+            ->group(function () {
+
+                Route::get('', 'index')->name('index');
+                Route::get('get', 'get')->name('get');
+
+                Route::post('store', 'store')->middleware('permission:document,add')->name('store');
+
+                Route::delete('delete/{id}', 'delete')->middleware('permission:document,delete')->name('delete');
+
+                Route::get('export', 'export')->name('export');
+            });
+
+        // Profile
+        Route::prefix('profile')
+            ->middleware('permission:profile,view')
+            ->controller(ProfileController::class)
+            ->name('profile.')
+            ->group(function () {
+
+                Route::get('', 'index')->name('index');
+
+                Route::post('update', 'update')->middleware('permission:profile,edit')->name('update');
+
+                Route::post('photo', 'uploadPhoto')->name('photo');
+
+                Route::post('store', 'store')->name('store');
+            });
+
+        // Setting
+        Route::prefix('setting')
+            ->middleware('permission:setting,view')
+            ->controller(SettingController::class)
+            ->name('setting.')
+            ->group(function () {
+
+                Route::get('', 'index')->name('index');
+
+                Route::post('update', 'update')->middleware('permission:setting,edit')->name('update');
+
+                Route::post('store', 'store')->name('store');
+            });
+
     });
-
-    Route::controller(UserController::class)->group(function () {
-        Route::get('', 'index')->name('index');
-    });
-
-    Route::prefix('attendance')->controller(AttendanceController::class)->name('attendance.')->group(function () {
-        Route::get('', 'index')->name('index');
-        Route::get('get', 'get')->name('get');
-        Route::post('store', 'store')->name('store');
-        Route::get('export', 'export')->name('export');
-
-        // Route::get('request', 'request')->name('request');
-    });
-
-    Route::prefix('leaves')->controller(LeaveController::class)->name('leaves.')->group(function () {
-        Route::get('', 'index')->name('index');
-        Route::get('get', 'get')->name('get');
-        Route::post('store', 'store')->name('store');
-        Route::get('export', 'export')->name('export');
-    });
-
-    Route::prefix('payroll')->controller(PayrollController::class)->name('payroll.')->group(function () {
-        Route::get('', 'index')->name('index');
-        Route::get('get', 'get')->name('get');
-        Route::post('store', 'store')->name('store');
-        Route::get('export', 'export')->name('export');
-    });
-
-    Route::prefix('performance')->controller(PerformanceController::class)->name('performance.')->group(function () {
-        Route::get('', 'index')->name('index');
-        Route::get('get', 'get')->name('get');
-        Route::post('store', 'store')->name('store');
-        Route::get('export', 'export')->name('export');
-    });
-
-    Route::prefix('training')->controller(TraningController::class)->name('training.')->group(function () {
-        Route::get('', 'index')->name('index');
-        Route::get('get', 'get')->name('get');
-        Route::post('store', 'store')->name('store');
-        Route::get('export', 'export')->name('export');
-    });
-
-    Route::prefix('document')->controller(DocumentController::class)->name('document.')->group(function () {
-        Route::get('', 'index')->name('index');
-        Route::get('get', 'get')->name('get');
-        Route::delete('delete/{id}', 'delete')->name('delete');
-        Route::post('store', 'store')->name('store');
-        Route::get('export', 'export')->name('export');
-    });
-
-    Route::prefix('profile')->controller(ProfileController::class)->name('profile.')->group(function () {
-        Route::get('', 'index')->name('index');
-        Route::post('update', 'update')->name('update');
-        Route::post('photo', 'uploadPhoto')->name('photo');
-        Route::post('store', 'store')->name('store');
-    });
-
-    Route::prefix('setting')->controller(SettingController::class)->name('setting.')->group(function () {
-        Route::get('', 'index')->name('index');
-        Route::post('update', 'update')->name('update');
-        Route::post('store', 'store')->name('store');
-    });
-
 });

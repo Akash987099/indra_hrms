@@ -1,73 +1,102 @@
  <style>
-    .logo-img {
-    height: 40px;   /* 👈 perfect navbar size */
-    width: auto;
-    object-fit: contain;
-     background-color: #fff !important;
-}
+     .logo-img {
+         height: 40px;
+         /* 👈 perfect navbar size */
+         width: auto;
+         object-fit: contain;
+         background-color: #fff !important;
+     }
  </style>
  <nav class="sidebar" id="sidebar">
-    <div class="logo-container">
-    <a href="#" class="logo d-flex align-items-center">
-        <img src="{{ asset('assets/img/indra_hrms_logo.png') }}" alt="Logo" class="logo-img">
-    </a>
-</div>
+     <div class="logo-container">
+         <a href="#" class="logo d-flex align-items-center">
+             <img src="{{ asset('assets/img/indra_hrms_logo.png') }}" alt="Logo" class="logo-img">
+         </a>
+     </div>
 
      <ul class="nav-menu">
-         <li class="nav-item">
-             <a href="{{route('user.index')}}" class="nav-link">
-                 <i class="fas fa-tachometer-alt"></i>
-                 <span>Dashboard</span>
-             </a>
-         </li>
-         <li class="nav-item">
-             <a href="{{ route('user.attendance.index') }}" class="nav-link">
-                 <i class="fas fa-calendar-check"></i>
-                 <span>Attendance</span>
-             </a>
-         </li>
-         <li class="nav-item">
-             <a href="{{route('user.leaves.index')}}" class="nav-link">
-                 <i class="fas fa-umbrella-beach"></i>
-                 <span>Leaves</span>
-             </a>
-         </li>
-         <li class="nav-item">
-             <a href="{{route('user.payroll.index')}}" class="nav-link">
-                 <i class="fas fa-file-invoice-dollar"></i>
-                 <span>Payroll</span>
-             </a>
-         </li>
-         <li class="nav-item">
-             <a href="{{route('user.performance.index')}}" class="nav-link">
-                 <i class="fas fa-chart-line"></i>
-                 <span>Performance</span>
-             </a>
-         </li>
-         <li class="nav-item">
-             <a href="{{route('user.training.index') }}" class="nav-link">
-                 <i class="fas fa-graduation-cap"></i>
-                 <span>Training</span>
-             </a>
-         </li>
-         <li class="nav-item">
-             <a  href="{{route('user.document.index') }}" class="nav-link">
-                 <i class="fas fa-file-alt"></i>
-                 <span>Documents</span>
-             </a>
-         </li>
-         <li class="nav-item">
-             <a href="{{route('user.profile.index') }}" class="nav-link">
-                 <i class="fas fa-user-circle"></i>
-                 <span>My Profile</span>
-             </a>
-         </li>
-         <li class="nav-item">
-             <a href="{{route('user.setting.index') }}" class="nav-link">
-                 <i class="fas fa-cog"></i>
-                 <span>Settings</span>
-             </a>
-         </li>
+
+         @if (hasPermission('dashboard'))
+             <li class="nav-item">
+                 <a href="{{ route('user.index') }}" class="nav-link">
+                     <i class="fas fa-tachometer-alt"></i>
+                     <span>Dashboard</span>
+                 </a>
+             </li>
+         @endif
+
+         @if (hasPermission('attendance'))
+             <li class="nav-item">
+                 <a href="{{ route('user.attendance.index') }}" class="nav-link">
+                     <i class="fas fa-calendar-check"></i>
+                     <span>Attendance</span>
+                 </a>
+             </li>
+         @endif
+
+         @if (hasPermission('leaves'))
+             <li class="nav-item">
+                 <a href="{{ route('user.leaves.index') }}" class="nav-link">
+                     <i class="fas fa-umbrella-beach"></i>
+                     <span>Leaves</span>
+                 </a>
+             </li>
+         @endif
+
+         @if (hasPermission('payroll'))
+             <li class="nav-item">
+                 <a href="{{ route('user.payroll.index') }}" class="nav-link">
+                     <i class="fas fa-file-invoice-dollar"></i>
+                     <span>Payroll</span>
+                 </a>
+             </li>
+         @endif
+
+         @if (hasPermission('performance'))
+             <li class="nav-item">
+                 <a href="{{ route('user.performance.index') }}" class="nav-link">
+                     <i class="fas fa-chart-line"></i>
+                     <span>Performance</span>
+                 </a>
+             </li>
+         @endif
+
+         @if (hasPermission('training'))
+             <li class="nav-item">
+                 <a href="{{ route('user.training.index') }}" class="nav-link">
+                     <i class="fas fa-graduation-cap"></i>
+                     <span>Training</span>
+                 </a>
+             </li>
+         @endif
+
+         @if (hasPermission('document'))
+             <li class="nav-item">
+                 <a href="{{ route('user.document.index') }}" class="nav-link">
+                     <i class="fas fa-file-alt"></i>
+                     <span>Documents</span>
+                 </a>
+             </li>
+         @endif
+
+         @if (hasPermission('profile'))
+             <li class="nav-item">
+                 <a href="{{ route('user.profile.index') }}" class="nav-link">
+                     <i class="fas fa-user-circle"></i>
+                     <span>My Profile</span>
+                 </a>
+             </li>
+         @endif
+
+         @if (hasPermission('setting'))
+             <li class="nav-item">
+                 <a href="{{ route('user.setting.index') }}" class="nav-link">
+                     <i class="fas fa-cog"></i>
+                     <span>Settings</span>
+                 </a>
+             </li>
+         @endif
+
      </ul>
 
      <div class="employee-info">
@@ -88,7 +117,8 @@
              <div class="mobile-toggle" id="mobileToggle">
                  <i class="fas fa-bars"></i>
              </div>
-             <h3 id="pageTitle">Welcome : {{Auth::guard('user')->user()->first_name}} {{Auth::guard('user')->user()->last_name}} ({{Auth::guard('user')->user()->employee_code}})</h3>
+             <h3 id="pageTitle">Welcome : {{ Auth::guard('user')->user()->first_name }}
+                 {{ Auth::guard('user')->user()->last_name }} ({{ Auth::guard('user')->user()->employee_code }})</h3>
              <p class="date-display" id="currentDate"></p>
          </div>
          <div class="header-actions">
