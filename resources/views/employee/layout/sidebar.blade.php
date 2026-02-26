@@ -111,8 +111,6 @@
                 {{ Auth::guard('user')->user()->first_name }}
                 {{ Auth::guard('user')->user()->last_name }}
             </h4>
-
-            <p>{{ Auth::guard('user')->user()->role }}</p>
             <p>{{ Auth::guard('user')->user()->employee_code }}</p>
         </div>
     </div>
