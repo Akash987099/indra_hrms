@@ -60,7 +60,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Department</label>
-                            <input type="text" class="form-control" value="{{ $departmentr->name }}" readonly>
+                            <input type="text" class="form-control" value="{{ $department->name }}" readonly>
                         </div>
 
                         <div class="form-group">
