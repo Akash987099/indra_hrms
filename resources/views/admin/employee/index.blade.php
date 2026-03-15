@@ -61,163 +61,161 @@
 
                     <form method="GET" id="filterForm">
 
-<div class="filters">
+                        <div class="filters">
 
-    <!-- SEARCH -->
-    <div class="filter-group">
-        <label>Search</label>
-        <input type="text" name="search" value="{{ request('search') }}" class="form-control">
-    </div>
+                            <!-- SEARCH -->
+                            <div class="filter-group">
+                                <label>Search</label>
+                                <input type="text" name="search" value="{{ request('search') }}" class="form-control">
+                            </div>
 
-    <!-- DEPARTMENT -->
-    <div class="filter-group">
-        <label>Department</label>
-        <select name="department" class="form-control">
-            <option value="">All</option>
-            @foreach ($department as $item)
-                <option value="{{ $item->id }}" {{ request('department') == $item->id ? 'selected' : '' }}>
-                    {{ $item->name }}
-                </option>
-            @endforeach
-        </select>
-    </div>
+                            <!-- DEPARTMENT -->
+                            <div class="filter-group">
+                                <label>Department</label>
+                                <select name="department" class="form-control">
+                                    <option value="">All</option>
+                                    @foreach ($department as $item)
+                                        <option value="{{ $item->id }}"
+                                            {{ request('department') == $item->id ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-    <!-- STATUS -->
-    <div class="filter-group">
-        <label>Status</label>
-        <select name="status" class="form-control">
-            <option value="">All</option>
-            <option value="Active" {{ request('status')=='Active'?'selected':'' }}>Active</option>
-            <option value="Inactive" {{ request('status')=='Inactive'?'selected':'' }}>Inactive</option>
-        </select>
-    </div>
+                            <!-- STATUS -->
+                            <div class="filter-group">
+                                <label>Status</label>
+                                <select name="status" class="form-control">
+                                    <option value="">All</option>
+                                    <option value="Active" {{ request('status') == 'Active' ? 'selected' : '' }}>Active</option>
+                                    <option value="Inactive" {{ request('status') == 'Inactive' ? 'selected' : '' }}>Inactive
+                                    </option>
+                                </select>
+                            </div>
 
-    <!-- SORT -->
-    <div class="filter-group">
-        <label>Sort</label>
-        <select name="sort" class="form-control">
-            <option value="name">Name A-Z</option>
-            <option value="name-desc">Name Z-A</option>
-            <option value="date">Newest</option>
-            <option value="date-old">Oldest</option>
-        </select>
-    </div>
+                            <!-- SORT -->
+                            <div class="filter-group">
+                                <label>Sort</label>
+                                <select name="sort" class="form-control">
+                                    <option value="name">Name A-Z</option>
+                                    <option value="name-desc">Name Z-A</option>
+                                    <option value="date">Newest</option>
+                                    <option value="date-old">Oldest</option>
+                                </select>
+                            </div>
 
-    <!-- BUTTON -->
-    <div class="filter-group">
-        <button class="btn btn-primary mt-4">Apply</button>
-    </div>
+                            <!-- BUTTON -->
+                            <div class="filter-group">
+                                <button class="btn btn-primary mt-4">Apply</button>
+                            </div>
 
-</div>
+                        </div>
 
-</form>
+                    </form>
 
                     <div class="table-responsive">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>SR. No</th>
-                                    <th>Employee ID</th>
-                                    <th>Name</th>
+
+                                    <th>ID</th>
+                                    <th>Employee Code</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+
                                     <th>Department</th>
-                                    <th>Designation / Role</th>
-                                    <th>Action</th>
+                                    <th>Role</th>
+                                    <th>Store Area</th>
+                                    <th>Shift</th>
+
+                                    <th>Join Date</th>
+                                    <th>Salary</th>
+                                    <th>Address</th>
+
                                     <th>Status</th>
-                                    <th>Link Generated</th>
-                                    <th>File Manager</th>
+                                    <th>Profile Photo</th>
+
+                                    <th>Created</th>
+                                    <th>Updated</th>
+
                                     <th>Actions</th>
+
                                 </tr>
                             </thead>
 
-                            <tbody id="sortable-table">
+                            <tbody>
+
                                 @foreach ($employee as $key => $item)
-                                    <tr data-id="{{ $item->id }}" data-employee_code="{{ $item->employee_code }}"
-                                        data-first_name="{{ $item->first_name }}" data-last_name="{{ $item->last_name }}"
-                                        data-email="{{ $item->email }}" data-phone="{{ $item->phone }}"
-                                        data-department="{{ $item->department }}" {{-- ✅ FIX --}}
-                                        data-role="{{ $item->role }}" {{-- ✅ FIX --}}
-                                        data-shift="{{ $item->shift }}" data-join_date="{{ $item->join_date }}"
-                                        data-salary="{{ $item->salary }}" data-address="{{ $item->address }}"
-                                        data-status="{{ $item->status }}">
+                                    <tr>
 
+                                        <td>{{ $item->id }}</td>
+
+                                        <td>{{ $item->employee_code }}</td>
+
+                                        <td>{{ $item->first_name }}</td>
+
+                                        <td>{{ $item->last_name }}</td>
+
+                                        <td>{{ $item->email }}</td>
+
+                                        <td>{{ $item->phone }}</td>
+
+                                        <td>{{ $item->department_name }}</td>
+
+                                        <td>{{ $item->role_name }}</td>
+
+                                        <td>{{ $item->store_area }}</td>
+
+                                        <td>{{ $item->shift }}</td>
+
+                                        <td>{{ $item->join_date }}</td>
+
+                                        <td>{{ $item->salary }}</td>
+
+                                        <td>{{ $item->address }}</td>
 
                                         <td>
-                                            {{ $employee->firstItem() + $key }}
+
+                                            @if ($item->status == 'Active')
+                                                <span class="badge bg-success">Active</span>
+                                            @else
+                                                <span class="badge bg-danger">{{ $item->status }}</span>
+                                            @endif
+
                                         </td>
 
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $item->employee_code }}</p>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $item->first_name }}
-                                                {{ $item->last_name }}</p>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">
-                                                {{ $item->department_name }}
-                                            </p>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">
-                                                {{ $item->role_name }}
-                                            </p>
-                                        </td>
-                                        <td>
-                                            <form action="{{ route('admin.employee.approval') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $item->id }}">
-                                                <input type="hidden" name="status"
-                                                    value="{{ $item->is_approved == 1 ? 0 : 1 }}">
 
-                                                <button type="submit" style="background:none;border:none;padding:0;"
-                                                    class="text-xs font-weight-bold {{ $item->is_approved == 1 ? 'text-success' : 'text-warning' }}">
+                                            @if ($item->profile_photo)
+                                                <img src="{{ asset('employees/' . $item->profile_photo) }}" width="40">
+                                            @endif
 
-                                                    {{ $item->is_approved == 1 ? 'Approved' : 'Pending' }}
-                                                </button>
-                                            </form>
                                         </td>
 
-                                        <td>
-                                            <form action="{{ route('admin.employee.status') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $item->id }}">
-                                                <input type="hidden" name="status"
-                                                    value="{{ $item->status == 1 ? 0 : 1 }}">
+                                        <td>{{ $item->created_at }}</td>
 
-                                                <button type="submit" style="background:none;border:none;padding:0;"
-                                                    class="text-xs font-weight-bold {{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
-                                                    {{ $item->status == 1 ? 'Active' : 'Inactive' }}
-                                                </button>
-                                            </form>
-                                        </td>
+                                        <td>{{ $item->updated_at }}</td>
 
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-warning copy-employee-link"
-                                                data-link="{{ route('employee.view', $item->employee_code) }}"
-                                                title="Copy employee view link">
-                                                <i class="fas fa-eye"></i> Copy Link
-                                            </button>
-                                        </td>
 
-                                        <td>
-                                            <a href="{{ route('admin.employee.file', $item->id) }}">File</a>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-sm btn-warning editEmployeeBtn"
+                                            <button class="btn btn-warning btn-sm editEmployeeBtn"
                                                 data-id="{{ $item->id }}">
-                                                <i class="fas fa-edit"></i>
+                                                Edit
                                             </button>
 
-                                            <button
-                                                class="btn btn-sm btn-danger text-red-600 hover:underline dark:text-red-400 delete-btn"
-                                                data-id="{{ $item->id }}"
+                                            <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $item->id }}"
                                                 data-url="{{ route('admin.employee.delete', $item->id) }}">
-                                                <i class="fas fa-trash"></i>
+                                                Delete
                                             </button>
 
                                         </td>
+
                                     </tr>
                                 @endforeach
+
                             </tbody>
 
                         </table>
