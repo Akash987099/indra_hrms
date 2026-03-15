@@ -321,7 +321,7 @@
     <div class="subhead">detailed compensation · auto-calculated totals</div>
 
     {{-- <form id="onboardingForm" novalidate> --}}
-        <form method="POST" action="{{ route('admin.employee.store_on') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('employee.store_on') }}" enctype="multipart/form-data">
 @csrf
         <!-- 1. BASIC DETAILS (same as before) -->
         <fieldset>
