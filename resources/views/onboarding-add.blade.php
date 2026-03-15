@@ -333,217 +333,173 @@
 @endif
 
     {{-- <form id="onboardingForm" novalidate> --}}
-        <form method="POST" action="{{ route('employee.store_on') }}" enctype="multipart/form-data">
+        @if(session('success'))
+
+<div style="padding:10px;background:#d4edda;color:#155724;margin-bottom:15px;border-radius:6px;">
+    {{ session('success') }}
+</div>
+@endif
+
+@if(session('error'))
+
+<div style="padding:10px;background:#f8d7da;color:#721c24;margin-bottom:15px;border-radius:6px;">
+    {{ session('error') }}
+</div>
+@endif
+
+<form method="POST" action="{{ route('employee.store_on') }}" enctype="multipart/form-data">
 @csrf
-        <!-- 1. BASIC DETAILS (same as before) -->
-        <fieldset>
-            <legend>1. Basic details</legend>
-            <div class="form-grid">
-                <div class="form-group"><label>Employee ID <i>*</i></label><input type="text" name="empId" id="empId" placeholder="e.g. EMP-1234" required></div>
-                <div class="form-group"><label>Employee name <i>*</i></label><input type="text" name="empName" id="empName" placeholder="Full name" required></div>
-                <div class="form-group"><label>Father’s / Husband’s name</label><input type="text" name="fatherName" placeholder="Father or spouse name"></div>
-                <div class="form-group"><label>Date of birth <i>*</i></label><input type="date" name="dob" id="dob" required></div>
-                <div class="form-group"><label>Gender <i>*</i></label>
-                    <div class="radio-group" id="genderGroup">
-                        <label><input type="radio" name="gender" value="Male" required> Male</label>
-                        <label><input type="radio" name="gender" value="Female"> Female</label>
-                        <label><input type="radio" name="gender" value="Other"> Other</label>
-                    </div>
-                </div>
-                <div class="form-group"><label>Mobile number <i>*</i></label><input type="tel" name="mobile" id="mobile" placeholder="9876543210" required></div>
-                <div class="form-group"><label>Email ID <i>*</i></label><input type="email" name="email" id="email" placeholder="employee@company.com" required></div>
-                <div class="form-group"><label>Marital status</label>
-                    <select name="maritalStatus">
-                        <option value="">-- select --</option>
-                        <option>Single</option>
-                        <option>Married</option>
-                        <option>Divorced</option>
-                        <option>Widowed</option>
-                    </select>
-                </div>
-                <div class="form-group"><label>Blood group</label>
-                    <select name="bloodGroup">
-                        <option value="">-- select --</option>
-                        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                        <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
-                    </select>
-                </div>
-                <div class="form-group full-width"><label>Photograph</label><input type="file" name="photo" accept="image/*"></div>
-            </div>
-        </fieldset>
 
-        <!-- 2. ADDRESS DETAILS (same) -->
-        <fieldset>
-            <legend>2. Address details</legend>
-            <div class="address-utility">
-                <input type="checkbox" id="sameAsCurrent"> 
-                <label for="sameAsCurrent" style="font-weight:500; color:#0c344b;">🔁 Same as Current Address (copies to permanent)</label>
-            </div>
-            <div class="form-grid">
-                <div class="form-group full-width"><label>Current address</label><textarea name="currentAddress" id="currentAddress" rows="2" placeholder="Street, locality ..."></textarea></div>
-                <div class="form-group full-width"><label>Permanent address</label><textarea name="permanentAddress" id="permanentAddress" rows="2" placeholder="Full permanent address"></textarea></div>
-                <div class="form-group"><label>City</label><input type="text" name="city" placeholder="e.g. Mumbai"></div>
-                <div class="form-group"><label>State</label><input type="text" name="state" placeholder="Maharashtra"></div>
-                <div class="form-group full-width"><label>PIN code</label><input type="text" name="pinCode" placeholder="400001"></div>
-            </div>
-        </fieldset>
+<h3>Employee Onboarding</h3>
 
-        <!-- 3. JOB DETAILS (same) -->
-        <fieldset>
-            <legend>3. Job details</legend>
-            <div class="form-grid">
-                <div class="form-group"><label>Department</label><input type="text" name="department" placeholder="Engineering / Sales"></div>
-                <div class="form-group"><label>Designation</label><input type="text" name="designation" placeholder="Software Engineer"></div>
-                <div class="form-group"><label>Work location / Branch</label><input type="text" name="workLocation" placeholder="Pune office"></div>
-                <div class="form-group"><label>Date of joining</label><input type="date" name="doj"></div>
-                <div class="form-group"><label>Employment type</label>
-                    <select name="employmentType">
-                        <option>Full Time</option>
-                        <option>Part Time</option>
-                        <option>Contract</option>
-                    </select>
-                </div>
-                <div class="form-group"><label>Reporting manager</label><input type="text" name="reportingManager" placeholder="Manager name"></div>
-                <div class="form-group full-width"><label>Shift timing</label><input type="text" name="shiftTiming" placeholder="e.g. 9am–6pm / rotational"></div>
-            </div>
-        </fieldset>
+<!-- BASIC DETAILS -->
 
-        <!-- 4. SALARY & BANK DETAILS (UPDATED with compensation table) -->
-        <fieldset>
-            <legend>4. Salary & bank details</legend>
-            <div class="form-grid" style="margin-bottom: 1rem;">
-                <div class="form-group"><label>Bank name</label><input type="text" name="bankName" placeholder="SBI / HDFC ..."></div>
-                <div class="form-group"><label>Account number</label><input type="text" name="accountNo" placeholder="1234567890"></div>
-                <div class="form-group"><label>IFSC code</label><input type="text" name="ifsc" placeholder="SBIN0001234"></div>
-                <div class="form-group full-width"><label>UPI ID (optional)</label><input type="text" name="upi" placeholder="name@bank"></div>
-            </div>
+<label>Employee ID</label> <input type="text" name="empId" placeholder="EMP001">
 
-            <!-- Compensation table (monthly / annual) -->
-            <div class="comp-table-wrapper">
-                <table class="comp-table">
-                    <thead>
-                        <tr><th>Compensation Structure (INR)</th><th>Monthly</th><th>Annually</th></tr>
-                    </thead>
-                    <tbody>
-                        <!-- base components -->
-                        <tr><td>Basic Salary + DA</td>
-                            <td><input type="number" step="0.01" id="basicMonthly" value="10000.00"></td>
-                            <td><input type="number" step="0.01" id="basicAnnual" readonly class="annual-field"></td>
-                        </tr>
-                        <tr><td>House Rent Allowance (HRA)</td>
-                            <td><input type="number" step="0.01" id="hraMonthly" value="5000.00"></td>
-                            <td><input type="number" step="0.01" id="hraAnnual" readonly class="annual-field"></td>
-                        </tr>
-                        <tr><td>Flexi Pay</td>
-                            <td><input type="number" step="0.01" id="flexiMonthly" value="16000.00"></td>
-                            <td><input type="number" step="0.01" id="flexiAnnual" readonly class="annual-field"></td>
-                        </tr>
-                        <tr><td>Acting Allowance</td>
-                            <td><input type="number" step="0.01" id="actingMonthly" value="0.00"></td>
-                            <td><input type="number" step="0.01" id="actingAnnual" readonly class="annual-field"></td>
-                        </tr>
-                        <!-- Subtotal A -->
-                        <tr><td><strong>Sub-Total (A)</strong></td>
-                            <td><input type="number" step="0.01" id="subAMonthly" readonly></td>
-                            <td><input type="number" step="0.01" id="subAAnnual" readonly></td>
-                        </tr>
-                        <!-- Retiral & other benefits header -->
-                        <tr class="section-header"><td colspan="3">Retiral & Other Benefits</td></tr>
-                        <tr><td>Provident Fund (PF)</td>
-                            <td><input type="number" step="0.01" id="pfMonthly" value="1200.00"></td>
-                            <td><input type="number" step="0.01" id="pfAnnual" readonly class="annual-field"></td>
-                        </tr>
-                        <tr><td>ESI</td>
-                            <td><input type="number" step="0.01" id="esiMonthly" value="0.00"></td>
-                            <td><input type="number" step="0.01" id="esiAnnual" readonly class="annual-field"></td>
-                        </tr>
-                        <tr><td><strong>Sub-Total (B)</strong></td>
-                            <td><input type="number" step="0.01" id="subBMonthly" readonly></td>
-                            <td><input type="number" step="0.01" id="subBAnnual" readonly></td>
-                        </tr>
-                        <!-- Annual Fixed CTC -->
-                        <tr><td><strong>Annual Fixed CTC (A)+(B)</strong></td>
-                            <td><input type="number" step="0.01" id="fixedCTCMonthly" readonly></td>
-                            <td><input type="number" step="0.01" id="fixedCTCAnnual" readonly></td>
-                        </tr>
-                        <!-- Performance linked bonus header -->
-                        <tr class="section-header"><td colspan="3">Performance Linked Bonus</td></tr>
-                        <tr><td>Annual PLI</td>
-                            <td><input type="number" step="0.01" id="pliMonthly" value="2000.00"></td>
-                            <td><input type="number" step="0.01" id="pliAnnual" readonly class="annual-field"></td>
-                        </tr>
-                        <tr><td><strong>Sub-Total (C)</strong></td>
-                            <td><input type="number" step="0.01" id="subCMonthly" readonly></td>
-                            <td><input type="number" step="0.01" id="subCAnnual" readonly></td>
-                        </tr>
-                        <!-- GRAND TOTAL -->
-                        <tr><td><strong>Annual Total CTC (A)+(B)+(C)</strong></td>
-                            <td><input type="number" step="0.01" id="totalCTCMonthly" readonly></td>
-                            <td><input type="number" step="0.01" id="totalCTCAnnual" readonly></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </fieldset>
+<label>Employee Name</label> <input type="text" name="empName">
 
-        <!-- 5. GOVERNMENT & COMPLIANCE (same) -->
-        <fieldset>
-            <legend>5. Government & compliance</legend>
-            <div class="form-grid">
-                <div class="form-group"><label>Aadhaar number</label><input type="text" name="aadhaar" placeholder="12 digits" maxlength="12"></div>
-                <div class="form-group"><label>PAN number</label><input type="text" name="pan" placeholder="ABCDE1234F" maxlength="10"></div>
-                <div class="form-group"><label>PF number</label><input type="text" name="pf" placeholder="PF/12345"></div>
-                <div class="form-group"><label>ESIC number</label><input type="text" name="esic" placeholder="ESIC/123"></div>
-                <div class="form-group full-width"><label>UAN number</label><input type="text" name="uan" placeholder="Universal account number"></div>
-            </div>
-        </fieldset>
+<label>Father Name</label> <input type="text" name="fatherName">
 
-        <!-- 6. DOCUMENTS SUBMISSION (same) -->
-        <fieldset>
-            <legend>6. Documents submission</legend>
-            <div class="form-grid">
-                <div class="form-group"><label>Aadhaar submitted</label><div class="radio-group"><label><input type="radio" name="aadhaarSubmitted" value="Yes"> Yes</label><label><input type="radio" name="aadhaarSubmitted" value="No"> No</label></div></div>
-                <div class="form-group"><label>PAN submitted</label><div class="radio-group"><label><input type="radio" name="panSubmitted" value="Yes"> Yes</label><label><input type="radio" name="panSubmitted" value="No"> No</label></div></div>
-                <div class="form-group"><label>Bank passbook / cheque</label><input type="file" name="bankDoc" accept=".pdf,.jpg,.png"></div>
-                <div class="form-group"><label>Educational certificates</label><input type="file" name="eduDocs" multiple></div>
-                <div class="form-group full-width"><label>Experience letter</label><input type="file" name="expLetter"></div>
-            </div>
-        </fieldset>
+<label>DOB</label> <input type="date" name="dob">
 
-        <!-- 7. EMERGENCY CONTACT (same) -->
-        <fieldset>
-            <legend>7. Emergency contact</legend>
-            <div class="form-grid">
-                <div class="form-group"><label>Contact name</label><input type="text" name="emergencyName" placeholder="Next of kin"></div>
-                <div class="form-group"><label>Contact number</label><input type="tel" name="emergencyPhone" placeholder="9876543210"></div>
-                <div class="form-group full-width"><label>Relationship</label><input type="text" name="emergencyRelation" placeholder="Spouse / parent / friend"></div>
-            </div>
-        </fieldset>
+<label>Gender</label> <br> <input type="radio" name="gender" value="Male"> Male <input type="radio" name="gender" value="Female"> Female <input type="radio" name="gender" value="Other"> Other
 
-        <!-- 8. OTHER HR DETAILS (same) -->
-        <fieldset>
-            <legend>8. Other HR details</legend>
-            <div class="form-grid">
-                <div class="form-group"><label>Offer letter issued</label><div class="radio-group"><label><input type="radio" name="offerIssued" value="Yes"> Yes</label><label><input type="radio" name="offerIssued" value="No"> No</label></div></div>
-                <div class="form-group"><label>Appointment letter issued</label><div class="radio-group"><label><input type="radio" name="appointmentIssued" value="Yes"> Yes</label><label><input type="radio" name="appointmentIssued" value="No"> No</label></div></div>
-                <div class="form-group"><label>ID card issued</label><div class="radio-group"><label><input type="radio" name="idCardIssued" value="Yes"> Yes</label><label><input type="radio" name="idCardIssued" value="No"> No</label></div></div>
-                <div class="form-group"><label>Uniform issued</label><div class="radio-group"><label><input type="radio" name="uniformIssued" value="Yes"> Yes</label><label><input type="radio" name="uniformIssued" value="No"> No</label></div></div>
-                <div class="form-group full-width"><label>Status</label>
-                    <select name="empStatus">
-                        <option>Active</option>
-                        <option>Left</option>
-                    </select>
-                </div>
-            </div>
-        </fieldset>
+<br><br>
 
-        <hr>
-        <div class="form-actions">
-            <button type="submit">✅ SUBMIT ONBOARDING</button>
-            <button type="reset">⟲ RESET</button>
-        </div>
-        <div id="formFeedback" class="feedback">All information is secure — compensation auto-calculated</div>
-    </form>
+<label>Mobile</label> <input type="text" name="mobile">
+
+<label>Email</label> <input type="email" name="email">
+
+<label>Marital Status</label> <select name="maritalStatus">
+
+<option value="">Select</option>
+<option>Single</option>
+<option>Married</option>
+</select>
+
+<label>Blood Group</label> <select name="bloodGroup">
+
+<option value="">Select</option>
+<option>A+</option>
+<option>B+</option>
+<option>O+</option>
+<option>AB+</option>
+</select>
+
+<label>Photo</label> <input type="file" name="photo">
+
+<hr>
+
+<!-- ADDRESS -->
+
+<h4>Address</h4>
+
+<label>Current Address</label>
+
+<textarea name="currentAddress"></textarea>
+
+<label>Permanent Address</label>
+
+<textarea name="permanentAddress"></textarea>
+
+<label>City</label> <input type="text" name="city">
+
+<label>State</label> <input type="text" name="state">
+
+<label>Pincode</label> <input type="text" name="pinCode">
+
+<hr>
+
+<!-- JOB DETAILS -->
+
+<h4>Job Details</h4>
+
+<label>Department</label> <input type="text" name="department">
+
+<label>Designation</label> <input type="text" name="designation">
+
+<label>Work Location</label> <input type="text" name="workLocation">
+
+<label>Joining Date</label> <input type="date" name="doj">
+
+<label>Reporting Manager</label> <input type="text" name="reportingManager">
+
+<label>Shift</label> <input type="text" name="shiftTiming">
+
+<hr>
+
+<!-- BANK -->
+
+<h4>Bank Details</h4>
+
+<label>Bank Name</label> <input type="text" name="bankName">
+
+<label>Account Number</label> <input type="text" name="accountNo">
+
+<label>IFSC</label> <input type="text" name="ifsc">
+
+<label>UPI</label> <input type="text" name="upi">
+
+<hr>
+
+<!-- SALARY -->
+
+<h4>Salary Structure</h4>
+
+<label>Basic</label> <input type="number" name="basicMonthly" id="basicMonthly">
+
+<label>HRA</label> <input type="number" name="hraMonthly" id="hraMonthly">
+
+<label>Flexi</label> <input type="number" name="flexiMonthly" id="flexiMonthly">
+
+<label>PF</label> <input type="number" name="pfMonthly" id="pfMonthly">
+
+<label>Total CTC Monthly</label> <input type="number" name="totalCTCMonthly" id="totalCTCMonthly">
+
+<label>Total CTC Annual</label> <input type="number" name="totalCTCAnnual" id="totalCTCAnnual">
+
+<hr>
+
+<!-- GOVERNMENT -->
+
+<h4>Government Details</h4>
+
+<label>Aadhaar</label> <input type="text" name="aadhaar">
+
+<label>PAN</label> <input type="text" name="pan">
+
+<label>PF</label> <input type="text" name="pf">
+
+<label>ESIC</label> <input type="text" name="esic">
+
+<label>UAN</label> <input type="text" name="uan">
+
+<hr>
+
+<!-- EMERGENCY -->
+
+<h4>Emergency Contact</h4>
+
+<label>Name</label> <input type="text" name="emergencyName">
+
+<label>Phone</label> <input type="text" name="emergencyPhone">
+
+<label>Relation</label> <input type="text" name="emergencyRelation">
+
+<hr>
+
+<label>Status</label> <select name="empStatus">
+
+<option value="Active">Active</option>
+<option value="Left">Left</option>
+</select>
+
+<br><br>
+
+<button type="submit">Submit Onboarding</button>
+
+</form>
+
 </div>
 
 <script>
