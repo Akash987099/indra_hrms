@@ -333,173 +333,281 @@
 @endif
 
     {{-- <form id="onboardingForm" novalidate> --}}
-        @if(session('success'))
-
-<div style="padding:10px;background:#d4edda;color:#155724;margin-bottom:15px;border-radius:6px;">
-    {{ session('success') }}
-</div>
-@endif
-
-@if(session('error'))
-
-<div style="padding:10px;background:#f8d7da;color:#721c24;margin-bottom:15px;border-radius:6px;">
-    {{ session('error') }}
-</div>
-@endif
-
-<form method="POST" action="{{ route('employee.store_on') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('employee.store_on') }}" enctype="multipart/form-data">
 @csrf
 
-<h3>Employee Onboarding</h3>
+<!-- 1. BASIC DETAILS -->
+<fieldset>
+<legend>1. Basic details</legend>
 
-<!-- BASIC DETAILS -->
+<div class="form-grid">
 
-<label>Employee ID</label> <input type="text" name="empId" placeholder="EMP001">
+<div class="form-group">
+<label>Employee ID</label>
+<input type="text" name="empId" id="empId" placeholder="e.g. EMP-1234">
+</div>
 
-<label>Employee Name</label> <input type="text" name="empName">
+<div class="form-group">
+<label>Employee name</label>
+<input type="text" name="empName" id="empName">
+</div>
 
-<label>Father Name</label> <input type="text" name="fatherName">
+<div class="form-group">
+<label>Father’s / Husband’s name</label>
+<input type="text" name="fatherName">
+</div>
 
-<label>DOB</label> <input type="date" name="dob">
+<div class="form-group">
+<label>Date of birth</label>
+<input type="date" name="dob" id="dob">
+</div>
 
-<label>Gender</label> <br> <input type="radio" name="gender" value="Male"> Male <input type="radio" name="gender" value="Female"> Female <input type="radio" name="gender" value="Other"> Other
+<div class="form-group">
+<label>Gender</label>
 
-<br><br>
+<div class="radio-group">
+<label><input type="radio" name="gender" value="Male"> Male</label>
+<label><input type="radio" name="gender" value="Female"> Female</label>
+<label><input type="radio" name="gender" value="Other"> Other</label>
+</div>
 
-<label>Mobile</label> <input type="text" name="mobile">
+</div>
 
-<label>Email</label> <input type="email" name="email">
+<div class="form-group">
+<label>Mobile number</label>
+<input type="tel" name="mobile" id="mobile">
+</div>
 
-<label>Marital Status</label> <select name="maritalStatus">
+<div class="form-group">
+<label>Email ID</label>
+<input type="email" name="email" id="email">
+</div>
 
-<option value="">Select</option>
+<div class="form-group">
+<label>Marital status</label>
+<select name="maritalStatus">
+<option value="">-- select --</option>
 <option>Single</option>
 <option>Married</option>
+<option>Divorced</option>
+<option>Widowed</option>
 </select>
+</div>
 
-<label>Blood Group</label> <select name="bloodGroup">
-
-<option value="">Select</option>
+<div class="form-group">
+<label>Blood group</label>
+<select name="bloodGroup">
+<option value="">-- select --</option>
 <option>A+</option>
+<option>A-</option>
 <option>B+</option>
+<option>B-</option>
 <option>O+</option>
+<option>O-</option>
 <option>AB+</option>
+<option>AB-</option>
 </select>
+</div>
 
-<label>Photo</label> <input type="file" name="photo">
+<div class="form-group full-width">
+<label>Photograph</label>
+<input type="file" name="photo">
+</div>
 
-<hr>
+</div>
+</fieldset>
+
 
 <!-- ADDRESS -->
+<fieldset>
+<legend>2. Address details</legend>
 
-<h4>Address</h4>
+<div class="form-grid">
 
-<label>Current Address</label>
+<div class="form-group full-width">
+<label>Current address</label>
+<textarea name="currentAddress" id="currentAddress"></textarea>
+</div>
 
-<textarea name="currentAddress"></textarea>
+<div class="form-group full-width">
+<label>Permanent address</label>
+<textarea name="permanentAddress" id="permanentAddress"></textarea>
+</div>
 
-<label>Permanent Address</label>
+<div class="form-group">
+<label>City</label>
+<input type="text" name="city">
+</div>
 
-<textarea name="permanentAddress"></textarea>
+<div class="form-group">
+<label>State</label>
+<input type="text" name="state">
+</div>
 
-<label>City</label> <input type="text" name="city">
+<div class="form-group full-width">
+<label>PIN code</label>
+<input type="text" name="pinCode">
+</div>
 
-<label>State</label> <input type="text" name="state">
+</div>
+</fieldset>
 
-<label>Pincode</label> <input type="text" name="pinCode">
-
-<hr>
 
 <!-- JOB DETAILS -->
 
-<h4>Job Details</h4>
+<fieldset>
+<legend>3. Job details</legend>
 
-<label>Department</label> <input type="text" name="department">
+<div class="form-grid">
 
-<label>Designation</label> <input type="text" name="designation">
+<div class="form-group">
+<label>Department</label>
+<input type="text" name="department">
+</div>
 
-<label>Work Location</label> <input type="text" name="workLocation">
+<div class="form-group">
+<label>Designation</label>
+<input type="text" name="designation">
+</div>
 
-<label>Joining Date</label> <input type="date" name="doj">
+<div class="form-group">
+<label>Work location</label>
+<input type="text" name="workLocation">
+</div>
 
-<label>Reporting Manager</label> <input type="text" name="reportingManager">
+<div class="form-group">
+<label>Date of joining</label>
+<input type="date" name="doj">
+</div>
 
-<label>Shift</label> <input type="text" name="shiftTiming">
+<div class="form-group">
+<label>Employment type</label>
+<select name="employmentType">
+<option>Full Time</option>
+<option>Part Time</option>
+<option>Contract</option>
+</select>
+</div>
 
-<hr>
+<div class="form-group">
+<label>Reporting manager</label>
+<input type="text" name="reportingManager">
+</div>
 
-<!-- BANK -->
+<div class="form-group full-width">
+<label>Shift timing</label>
+<input type="text" name="shiftTiming">
+</div>
 
-<h4>Bank Details</h4>
+</div>
+</fieldset>
 
-<label>Bank Name</label> <input type="text" name="bankName">
 
-<label>Account Number</label> <input type="text" name="accountNo">
+<!-- SALARY TABLE -->
 
-<label>IFSC</label> <input type="text" name="ifsc">
+<fieldset>
+<legend>4. Salary & bank details</legend>
 
-<label>UPI</label> <input type="text" name="upi">
+<div class="comp-table-wrapper">
 
-<hr>
+<table class="comp-table">
 
-<!-- SALARY -->
+<thead>
+<tr>
+<th>Compensation Structure</th>
+<th>Monthly</th>
+<th>Annual</th>
+</tr>
+</thead>
 
-<h4>Salary Structure</h4>
+<tbody>
 
-<label>Basic</label> <input type="number" name="basicMonthly" id="basicMonthly">
+<tr>
+<td>Basic Salary</td>
+<td><input type="number" name="basicMonthly" id="basicMonthly"></td>
+<td><input type="number" name="basicAnnual" id="basicAnnual" readonly></td>
+</tr>
 
-<label>HRA</label> <input type="number" name="hraMonthly" id="hraMonthly">
+<tr>
+<td>HRA</td>
+<td><input type="number" name="hraMonthly" id="hraMonthly"></td>
+<td><input type="number" name="hraAnnual" id="hraAnnual" readonly></td>
+</tr>
 
-<label>Flexi</label> <input type="number" name="flexiMonthly" id="flexiMonthly">
+<tr>
+<td>Flexi Pay</td>
+<td><input type="number" name="flexiMonthly" id="flexiMonthly"></td>
+<td><input type="number" name="flexiAnnual" id="flexiAnnual" readonly></td>
+</tr>
 
-<label>PF</label> <input type="number" name="pfMonthly" id="pfMonthly">
+<tr>
+<td>Acting Allowance</td>
+<td><input type="number" name="actingMonthly" id="actingMonthly"></td>
+<td><input type="number" name="actingAnnual" id="actingAnnual" readonly></td>
+</tr>
 
-<label>Total CTC Monthly</label> <input type="number" name="totalCTCMonthly" id="totalCTCMonthly">
+<tr>
+<td>PF</td>
+<td><input type="number" name="pfMonthly" id="pfMonthly"></td>
+<td><input type="number" name="pfAnnual" id="pfAnnual" readonly></td>
+</tr>
 
-<label>Total CTC Annual</label> <input type="number" name="totalCTCAnnual" id="totalCTCAnnual">
+<tr>
+<td>ESI</td>
+<td><input type="number" name="esiMonthly" id="esiMonthly"></td>
+<td><input type="number" name="esiAnnual" id="esiAnnual" readonly></td>
+</tr>
 
-<hr>
+<tr>
+<td>Total CTC Monthly</td>
+<td><input type="number" name="totalCTCMonthly" id="totalCTCMonthly" readonly></td>
+<td><input type="number" name="totalCTCAnnual" id="totalCTCAnnual" readonly></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+</fieldset>
+
 
 <!-- GOVERNMENT -->
 
-<h4>Government Details</h4>
+<fieldset>
+<legend>5. Government & compliance</legend>
 
-<label>Aadhaar</label> <input type="text" name="aadhaar">
+<input type="text" name="aadhaar" placeholder="Aadhaar">
 
-<label>PAN</label> <input type="text" name="pan">
+<input type="text" name="pan" placeholder="PAN">
 
-<label>PF</label> <input type="text" name="pf">
+<input type="text" name="pf" placeholder="PF">
 
-<label>ESIC</label> <input type="text" name="esic">
+<input type="text" name="esic" placeholder="ESIC">
 
-<label>UAN</label> <input type="text" name="uan">
+<input type="text" name="uan" placeholder="UAN">
 
-<hr>
+</fieldset>
+
 
 <!-- EMERGENCY -->
 
-<h4>Emergency Contact</h4>
+<fieldset>
 
-<label>Name</label> <input type="text" name="emergencyName">
+<legend>Emergency Contact</legend>
 
-<label>Phone</label> <input type="text" name="emergencyPhone">
+<input type="text" name="emergencyName" placeholder="Name">
 
-<label>Relation</label> <input type="text" name="emergencyRelation">
+<input type="text" name="emergencyPhone" placeholder="Phone">
 
-<hr>
+<input type="text" name="emergencyRelation" placeholder="Relation">
 
-<label>Status</label> <select name="empStatus">
+</fieldset>
 
-<option value="Active">Active</option>
-<option value="Left">Left</option>
-</select>
-
-<br><br>
 
 <button type="submit">Submit Onboarding</button>
 
 </form>
-
 </div>
 
 <script>
