@@ -320,15 +320,14 @@
     <h1>📋 EMPLOYEE ONBOARDING</h1>
     <div class="subhead">detailed compensation · auto-calculated totals</div>
 
-
     @if(session('success'))
-<div class="alert alert-success">
+<div style="padding:10px;background:#d4edda;color:#155724;margin-bottom:10px">
     {{ session('success') }}
 </div>
 @endif
 
 @if(session('error'))
-<div class="alert alert-danger">
+<div style="padding:10px;background:#f8d7da;color:#721c24;margin-bottom:10px">
     {{ session('error') }}
 </div>
 @endif
@@ -664,7 +663,7 @@
 
         // ---------- FORM VALIDATION (required fields) ----------
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
+            // e.preventDefault();
 
             const requiredIds = ['empId', 'empName', 'dob', 'mobile', 'email'];
             let missing = [];
