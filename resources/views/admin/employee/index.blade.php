@@ -43,12 +43,12 @@
                             Modules
                         </a>
 
-                        <a href="{{ route('admin.employee.onboarding') }}" class="btn btn-primary">
-                            Employee Onboarding
-                        </a>
+                        <a href="{{ route('employee.export') }}" class="btn btn-success">
+<i class="fas fa-file-excel"></i> Export Excel
+</a>
 
                     <!-- RIGHT BUTTONS -->
-                    <div class="d-flex flex-wrap gap-2">
+                    {{-- <div class="d-flex flex-wrap gap-2">
 
                         <button type="button" class="btn btn-primary" id="addEmployeeBtn">
                             <i class="fas fa-plus"></i> Add Employee
@@ -74,7 +74,7 @@
                             Employee Onboarding
                         </a>
 
-                    </div>
+                    </div> --}}
 
                 </div>
 

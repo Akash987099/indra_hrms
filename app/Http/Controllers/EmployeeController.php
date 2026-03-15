@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use App\Models\Document;
+use App\Exports\EmployeeExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
@@ -62,6 +64,11 @@ class EmployeeController extends Controller
 
         return view('admin.employee.index', compact('employee', 'department', 'designation'));
     }
+
+    public function exportEmployees()
+{
+    return Excel::download(new EmployeeExport, 'employees.xlsx');
+}
 
     public function transfer($id)
     {
