@@ -30,6 +30,10 @@
                             <i class="fas fa-plus"></i> Add Employee
                         </button>
 
+                        <a href="{{ route('admin.employee.add') }}" class="btn btn-primary">
+                            Add Onboarding
+                        </a>
+
                         <a href="{{ route('admin.department.index') }}" class="btn btn-primary">
                             Department
                         </a>

@@ -360,4 +360,8 @@ class EmployeeController extends Controller
 
         return back()->with('success', 'File uploaded successfully!');
     }
+
+    public function add(){
+        return view('onboarding-add');
+    }
 }
