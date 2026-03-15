@@ -366,132 +366,98 @@ class EmployeeController extends Controller
         return view('onboarding-add');
     }
 
-    public function store_on(Request $request)
-    {
-        DB::beginTransaction();
+   public function store_on(Request $request)
+{
+    DB::beginTransaction();
 
-        try {
+    try {
 
-            // check agar pura form empty hai
-            if (!$request->filled([
-                'empId',
-                'empName',
-                'mobile',
-                'email',
-                'department',
-                'designation'
-            ]) && !$request->hasFile('photo')) {
-
-                return back()->with('error', 'Form empty hai, koi data store nahi hua.');
-            }
-
-            /*
-        |--------------------------------------------------------------------------
-        | Employee Table Data
-        |--------------------------------------------------------------------------
-        */
-
-            $employeeData = array_filter([
-
-                'employee_code' => $request->empId,
-                'first_name'    => $request->empName,
-                'email'         => $request->email,
-                'phone'         => $request->mobile,
-                'department'    => $request->department,
-                'role'          => $request->designation,
-                'join_date'     => $request->doj,
-                'status'        => $request->empStatus ?? 'Active',
-                'password'      => Hash::make('123456')
-
-            ]);
-
-            $employee = Employee::create($employeeData);
-
-            /*
-        |--------------------------------------------------------------------------
-        | Photo Upload
-        |--------------------------------------------------------------------------
-        */
-
-            $photo = null;
-
-            if ($request->hasFile('photo')) {
-
-                $file = $request->file('photo');
-
-                $name = time() . '_' . $file->getClientOriginalName();
-
-                $file->move(public_path('employees'), $name);
-
-                $photo = $name;
-            }
-
-            /*
-        |--------------------------------------------------------------------------
-        | Onboarding Table Data
-        |--------------------------------------------------------------------------
-        */
-
-            $onboardingData = array_filter([
-
-                'employee_id'       => $employee->id,
-
-                'employee_type'     => 'Employee',
-
-                'full_name'         => $request->empName,
-                'mobile'            => $request->mobile,
-                'email'             => $request->email,
-
-                'aadhaar'           => $request->aadhaar,
-                'pan'               => $request->pan,
-
-                'dob'               => $request->dob,
-
-                'joining_date'      => $request->doj,
-
-                'gender'            => $request->gender,
-                'blood_group'       => $request->bloodGroup,
-                'marital_status'    => $request->maritalStatus,
-
-                'address'           => $request->currentAddress,
-                'district'          => $request->city,
-                'state'             => $request->state,
-                'pincode'           => $request->pinCode,
-
-                'emergency_name'    => $request->emergencyName,
-                'emergency_phone'   => $request->emergencyPhone,
-                'emergency_relation' => $request->emergencyRelation,
-
-                'department'        => $request->department,
-                'designation'       => $request->designation,
-                'work_area'         => $request->workLocation,
-                'shift'             => $request->shiftTiming,
-                'reporting_manager' => $request->reportingManager,
-
-                'bank_name'         => $request->bankName,
-                'account_number'    => $request->accountNo,
-                'ifsc_code'         => $request->ifsc,
-                'uan_number'        => $request->uan,
-
-                'additional_notes'  => 'Created from onboarding form',
-
-            ]);
-
-            // photo add karo agar upload hua ho
-            if ($photo) {
-                $onboardingData['documents'] = json_encode(['photo' => $photo]);
-            }
-
-            EmployeeOnboarding::create($onboardingData);
-
-            DB::commit();
-
-            return redirect()->back()->with('success', 'Employee Onboarding Saved Successfully');
-        } catch (\Exception $e) {
-
-            DB::rollback();
-
-            return back()->with('error', $e->getMessage());
+        // check if form empty
+        if(count(array_filter($request->except(['_token']))) == 0 && !$request->hasFile('photo')){
+            return back()->with('error','Form empty hai, koi data store nahi hua.');
         }
+
+        $employeeData = array_filter([
+            'employee_code' => $request->empId,
+            'first_name'    => $request->empName,
+            'email'         => $request->email,
+            'phone'         => $request->mobile,
+            'department'    => $request->department,
+            'role'          => $request->designation,
+            'join_date'     => $request->doj,
+            'status'        => $request->empStatus ?? 'Active',
+            'password'      => Hash::make('123456')
+        ]);
+
+        $employee = Employee::create($employeeData);
+
+        $photo = null;
+
+        if ($request->hasFile('photo')) {
+
+            $file = $request->file('photo');
+            $name = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('employees'),$name);
+
+            $photo = $name;
+        }
+
+        $onboardingData = array_filter([
+            'employee_id'       => $employee->id,
+            'employee_type'     => 'Employee',
+
+            'full_name'         => $request->empName,
+            'mobile'            => $request->mobile,
+            'email'             => $request->email,
+
+            'aadhaar'           => $request->aadhaar,
+            'pan'               => $request->pan,
+
+            'dob'               => $request->dob,
+            'joining_date'      => $request->doj,
+
+            'gender'            => $request->gender,
+            'blood_group'       => $request->bloodGroup,
+            'marital_status'    => $request->maritalStatus,
+
+            'address'           => $request->currentAddress,
+            'district'          => $request->city,
+            'state'             => $request->state,
+            'pincode'           => $request->pinCode,
+
+            'emergency_name'    => $request->emergencyName,
+            'emergency_phone'   => $request->emergencyPhone,
+            'emergency_relation'=> $request->emergencyRelation,
+
+            'department'        => $request->department,
+            'designation'       => $request->designation,
+            'work_area'         => $request->workLocation,
+            'shift'             => $request->shiftTiming,
+            'reporting_manager' => $request->reportingManager,
+
+            'bank_name'         => $request->bankName,
+            'account_number'    => $request->accountNo,
+            'ifsc_code'         => $request->ifsc,
+            'uan_number'        => $request->uan,
+
+            'additional_notes'  => 'Created from onboarding form',
+        ]);
+
+        if ($photo) {
+            $onboardingData['documents'] = json_encode(['photo'=>$photo]);
+        }
+
+        EmployeeOnboarding::create($onboardingData);
+
+        DB::commit();
+
+        return redirect()->back()->with('success','Employee Onboarding Saved Successfully');
+
+    } catch (\Exception $e) {
+
+        DB::rollback();
+
+        return back()->with('error',$e->getMessage());
     }
+}
 }
