@@ -2,28 +2,59 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class Employee extends Authenticatable
 {
     protected $table = "employees";
 
     protected $fillable = [
-        'employee_code','first_name','last_name','email','phone',
-        'department','role','store_area','shift',
-        'join_date','salary','address','status', 'password', 'profile_photo',
+
+        'employee_code',
+
+        'first_name',
+        'last_name',
+
+        'email',
+        'phone',
+
+        'department',
+        'role',
+        'store_area',
+        'shift',
+
+        'join_date',
+
+        'salary',
+
+        'address',
+
+        'status',
+
+        'password',
+
+        'profile_photo',
+
         'email_notification',
-    'leave_notification',
-    'payroll_notification',
-    'training_notification',
+        'leave_notification',
+        'payroll_notification',
+        'training_notification'
     ];
 
     protected $casts = [
         'join_date' => 'date',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
+
+    public function onboarding()
+    {
+        return $this->hasOne(EmployeeOnboarding::class,'employee_id','id');
+    }
 
     public function performance()
     {
@@ -35,15 +66,20 @@ class Employee extends Authenticatable
         return $this->hasMany(EmployeeKpi::class);
     }
 
-    // ✅ optional but recommended
     public function attendances()
     {
-        return $this->hasMany(Attendance::class, 'employee_id', 'id');
+        return $this->hasMany(Attendance::class,'employee_id','id');
     }
 
-    // ✅ optional full name helper
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESSORS
+    |--------------------------------------------------------------------------
+    */
+
     public function getFullNameAttribute()
     {
         return $this->first_name.' '.$this->last_name;
     }
+
 }
