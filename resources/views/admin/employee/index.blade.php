@@ -23,6 +23,30 @@
                     <!-- LEFT TITLE -->
                     <h3 class="mb-0">Employee Database</h3>
 
+                    <button type="button" class="btn btn-primary" id="addEmployeeBtn">
+                            <i class="fas fa-plus"></i> Add Employee
+                        </button>
+
+                        <a href="{{ route('employee.add') }}" class="btn btn-primary">
+                            Add Onboarding
+                        </a>
+
+                        <a href="{{ route('admin.department.index') }}" class="btn btn-primary">
+                            Department
+                        </a>
+
+                        <a href="{{ route('admin.designation.index') }}" class="btn btn-primary">
+                            Designation
+                        </a>
+
+                        <a href="{{ route('admin.module.index') }}" class="btn btn-primary">
+                            Modules
+                        </a>
+
+                        <a href="{{ route('admin.employee.onboarding') }}" class="btn btn-primary">
+                            Employee Onboarding
+                        </a>
+
                     <!-- RIGHT BUTTONS -->
                     <div class="d-flex flex-wrap gap-2">
 
