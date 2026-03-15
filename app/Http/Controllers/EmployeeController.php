@@ -368,7 +368,6 @@ class EmployeeController extends Controller
 
     public function store_on(Request $request)
     {
-        dd($request->all());
         DB::beginTransaction();
 
         try {

@@ -320,6 +320,19 @@
     <h1>📋 EMPLOYEE ONBOARDING</h1>
     <div class="subhead">detailed compensation · auto-calculated totals</div>
 
+
+    @if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
+@endif
+
     {{-- <form id="onboardingForm" novalidate> --}}
         <form method="POST" action="{{ route('employee.store_on') }}" enctype="multipart/form-data">
 @csrf
