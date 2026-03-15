@@ -361,7 +361,83 @@ class EmployeeController extends Controller
         return back()->with('success', 'File uploaded successfully!');
     }
 
-    public function add(){
+    public function add()
+    {
         return view('onboarding-add');
+    }
+
+    public function store_on(Request $request)
+    {
+
+        DB::beginTransaction();
+
+        try {
+
+            $employee = Employee::create([
+                'employee_code' => $request->empId,
+                'first_name' => $request->empName,
+                'email' => $request->email,
+                'phone' => $request->mobile,
+                'department' => $request->department,
+                'role' => $request->designation,
+                'join_date' => $request->doj,
+                'status' => 'Active',
+                'password' => Hash::make('123456')
+            ]);
+
+            $photo = null;
+
+            if ($request->hasFile('photo')) {
+                $file = $request->file('photo');
+                $name = time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('employees'), $name);
+                $photo = $name;
+            }
+
+            EmployeeOnboarding::create([
+
+                'employee_id' => $employee->id,
+                'emp_id' => $request->empId,
+                'emp_name' => $request->empName,
+                'father_name' => $request->fatherName,
+
+                'dob' => $request->dob,
+                'gender' => $request->gender,
+                'mobile' => $request->mobile,
+                'email' => $request->email,
+
+                'current_address' => $request->currentAddress,
+                'permanent_address' => $request->permanentAddress,
+                'city' => $request->city,
+                'state' => $request->state,
+                'pin_code' => $request->pinCode,
+
+                'department' => $request->department,
+                'designation' => $request->designation,
+                'joining_date' => $request->doj,
+
+                'basic_monthly' => $request->basicMonthly,
+                'hra_monthly' => $request->hraMonthly,
+                'flexi_monthly' => $request->flexiMonthly,
+                'pf_monthly' => $request->pfMonthly,
+
+                'total_ctc_monthly' => $request->totalCTCMonthly,
+                'total_ctc_annual' => $request->totalCTCAnnual,
+
+                'aadhaar' => $request->aadhaar,
+                'pan' => $request->pan,
+
+                'photo' => $photo
+            ]);
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Employee Added Successfully');
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return back()->with('error', $e->getMessage());
+        }
     }
 }

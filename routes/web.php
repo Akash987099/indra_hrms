@@ -35,6 +35,7 @@ Route::get('/', function () {
 Route::prefix('employee')->controller(EmployeeController::class)->name('employee.')->group(function () {
     Route::get('view/{id}', 'view')->name('view');
     Route::get('add', 'add')->name('add');
+    Route::post('store_on', 'store_on')->name('store_on');
 });
 
 Route::prefix('employee-onboarding')->group(function () {
