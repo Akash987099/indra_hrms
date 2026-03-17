@@ -7,7 +7,7 @@
 
 <style>
 
-/* ====== SAME CSS (UNCHANGED) ====== */
+/* ===== SAME DESIGN ===== */
 
 *{
 margin:0;
@@ -129,16 +129,14 @@ cursor:pointer;
 }
 
 </style>
-
 </head>
+
 <body>
 
 <div class="container">
 
 <h1>📋 EMPLOYEE ONBOARDING</h1>
 <div class="subhead">detailed compensation · auto-calculated totals</div>
-
-{{-- SUCCESS MESSAGE --}}
 
 @if(session('success'))
 <div style="background:#d4edda;padding:10px;margin-bottom:10px">
@@ -153,15 +151,14 @@ cursor:pointer;
 @endif
 
 
-<form id="onboardingForm"
-method="POST"
+<form method="POST"
 action="{{ route('employee.store_on') }}"
 enctype="multipart/form-data">
 
 @csrf
 
 
-<!-- ================= BASIC DETAILS ================= -->
+<!-- BASIC DETAILS -->
 
 <fieldset>
 <legend>1. Basic details</legend>
@@ -174,7 +171,7 @@ enctype="multipart/form-data">
 </div>
 
 <div class="form-group">
-<label>Employee name</label>
+<label>Employee Name</label>
 <input type="text" name="empName">
 </div>
 
@@ -233,7 +230,7 @@ enctype="multipart/form-data">
 </fieldset>
 
 
-<!-- ================= ADDRESS ================= -->
+<!-- ADDRESS -->
 
 <fieldset>
 <legend>2. Address details</legend>
@@ -241,12 +238,12 @@ enctype="multipart/form-data">
 <div class="form-grid">
 
 <div class="form-group full-width">
-<label>Current address</label>
+<label>Current Address</label>
 <textarea name="currentAddress"></textarea>
 </div>
 
 <div class="form-group full-width">
-<label>Permanent address</label>
+<label>Permanent Address</label>
 <textarea name="permanentAddress"></textarea>
 </div>
 
@@ -269,7 +266,7 @@ enctype="multipart/form-data">
 </fieldset>
 
 
-<!-- ================= JOB ================= -->
+<!-- JOB -->
 
 <fieldset>
 <legend>3. Job details</legend>
@@ -287,17 +284,17 @@ enctype="multipart/form-data">
 </div>
 
 <div class="form-group">
-<label>Work location</label>
+<label>Work Location</label>
 <input type="text" name="workLocation">
 </div>
 
 <div class="form-group">
-<label>Date of joining</label>
+<label>Date of Joining</label>
 <input type="date" name="doj">
 </div>
 
 <div class="form-group">
-<label>Employment type</label>
+<label>Employment Type</label>
 <select name="employmentType">
 <option>Full Time</option>
 <option>Part Time</option>
@@ -306,12 +303,12 @@ enctype="multipart/form-data">
 </div>
 
 <div class="form-group">
-<label>Reporting manager</label>
+<label>Reporting Manager</label>
 <input type="text" name="reportingManager">
 </div>
 
 <div class="form-group full-width">
-<label>Shift timing</label>
+<label>Shift Timing</label>
 <input type="text" name="shiftTiming">
 </div>
 
@@ -319,11 +316,10 @@ enctype="multipart/form-data">
 </fieldset>
 
 
-<!-- ================= SALARY ================= -->
+<!-- SALARY STRUCTURE -->
 
 <fieldset>
-
-<legend>4. Salary</legend>
+<legend>4. Salary Structure</legend>
 
 <table class="comp-table">
 
@@ -338,47 +334,45 @@ enctype="multipart/form-data">
 <tbody>
 
 <tr>
-<td>Basic</td>
-<td><input type="number" name="basicMonthly"></td>
-<td><input type="number" name="basicAnnual"></td>
+<td>Basic Salary</td>
+<td><input type="number" id="basicMonthly" name="basicMonthly"></td>
+<td><input type="number" id="basicAnnual" name="basicAnnual" readonly></td>
 </tr>
 
 <tr>
 <td>HRA</td>
-<td><input type="number" name="hraMonthly"></td>
-<td><input type="number" name="hraAnnual"></td>
+<td><input type="number" id="hraMonthly" name="hraMonthly"></td>
+<td><input type="number" id="hraAnnual" name="hraAnnual" readonly></td>
 </tr>
 
 <tr>
-<td>Flexi</td>
-<td><input type="number" name="flexiMonthly"></td>
-<td><input type="number" name="flexiAnnual"></td>
+<td>Flexi Pay</td>
+<td><input type="number" id="flexiMonthly" name="flexiMonthly"></td>
+<td><input type="number" id="flexiAnnual" name="flexiAnnual" readonly></td>
 </tr>
 
 <tr>
 <td>PF</td>
-<td><input type="number" name="pfMonthly"></td>
-<td><input type="number" name="pfAnnual"></td>
+<td><input type="number" id="pfMonthly" name="pfMonthly"></td>
+<td><input type="number" id="pfAnnual" name="pfAnnual" readonly></td>
 </tr>
 
 <tr>
-<td>Total CTC</td>
-<td><input type="number" name="totalCTCMonthly"></td>
-<td><input type="number" name="totalCTCAnnual"></td>
+<td><b>Total CTC</b></td>
+<td><input type="number" id="totalMonthly" name="totalCTCMonthly" readonly></td>
+<td><input type="number" id="totalAnnual" name="totalCTCAnnual" readonly></td>
 </tr>
 
 </tbody>
-
 </table>
 
 </fieldset>
 
 
-<!-- ================= GOVT ================= -->
+<!-- GOVERNMENT -->
 
 <fieldset>
-
-<legend>5. Government & compliance</legend>
+<legend>5. Government Compliance</legend>
 
 <div class="form-grid">
 
@@ -397,29 +391,27 @@ enctype="multipart/form-data">
 </fieldset>
 
 
-<!-- ================= EMERGENCY ================= -->
+<!-- EMERGENCY -->
 
 <fieldset>
-
 <legend>6. Emergency Contact</legend>
 
 <div class="form-grid">
 
-<input type="text" name="emergencyName">
+<input type="text" name="emergencyName" placeholder="Name">
 
-<input type="text" name="emergencyPhone">
+<input type="text" name="emergencyPhone" placeholder="Phone">
 
-<input type="text" name="emergencyRelation">
+<input type="text" name="emergencyRelation" placeholder="Relation">
 
 </div>
 
 </fieldset>
 
 
-<!-- ================= HR STATUS ================= -->
+<!-- HR STATUS -->
 
 <fieldset>
-
 <legend>7. HR Status</legend>
 
 <select name="empStatus">
@@ -438,10 +430,40 @@ enctype="multipart/form-data">
 
 </div>
 
-
 </form>
-
 </div>
+
+
+<script>
+
+function calculateSalary(){
+
+let basic = Number(document.getElementById('basicMonthly').value) || 0
+let hra = Number(document.getElementById('hraMonthly').value) || 0
+let flexi = Number(document.getElementById('flexiMonthly').value) || 0
+let pf = Number(document.getElementById('pfMonthly').value) || 0
+
+document.getElementById('basicAnnual').value = basic*12
+document.getElementById('hraAnnual').value = hra*12
+document.getElementById('flexiAnnual').value = flexi*12
+document.getElementById('pfAnnual').value = pf*12
+
+let monthly = basic+hra+flexi+pf
+let annual = monthly*12
+
+document.getElementById('totalMonthly').value = monthly
+document.getElementById('totalAnnual').value = annual
+
+}
+
+document.querySelectorAll('#basicMonthly,#hraMonthly,#flexiMonthly,#pfMonthly')
+.forEach(el=>{
+
+el.addEventListener('input',calculateSalary)
+
+})
+
+</script>
 
 </body>
 </html>
