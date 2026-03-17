@@ -392,6 +392,7 @@ class EmployeeController extends Controller
                 'department'    => $request->department,
                 'role'          => $request->designation,
                 'join_date'     => $request->doj,
+                'salary'        => $request->totalCTCAnnual,
                 'status'        => $request->empStatus ?? 'Active',
                 'password'      => Hash::make('123456')
             ]);
@@ -401,6 +402,9 @@ class EmployeeController extends Controller
             $photo = null;
 
             if ($request->hasFile('photo')) {
+                if (!File::exists(public_path('employees'))) {
+                    File::makeDirectory(public_path('employees'), 0777, true, true);
+                }
 
                 $file = $request->file('photo');
                 $name = time() . '_' . $file->getClientOriginalName();
@@ -409,9 +413,44 @@ class EmployeeController extends Controller
                 $photo = $name;
             }
 
+            $documents = [];
+            if ($photo) {
+                $documents['photo'] = $photo;
+            }
+
+            // Create documents folder if doesn't exist
+            $docsPath = public_path('employees/documents');
+            if (!File::exists($docsPath)) {
+                File::makeDirectory($docsPath, 0777, true, true);
+            }
+
+            if ($request->hasFile('bankDoc')) {
+                $file = $request->file('bankDoc');
+                $name = time() . '_bank_' . $file->getClientOriginalName();
+                $file->move($docsPath, $name);
+                $documents['bank_doc'] = $name;
+            }
+
+            if ($request->hasFile('expLetter')) {
+                $file = $request->file('expLetter');
+                $name = time() . '_exp_' . $file->getClientOriginalName();
+                $file->move($docsPath, $name);
+                $documents['exp_letter'] = $name;
+            }
+
+            if ($request->hasFile('eduDocs')) {
+                $eduDocs = [];
+                foreach ($request->file('eduDocs') as $file) {
+                    $name = time() . '_edu_' . $file->getClientOriginalName();
+                    $file->move($docsPath, $name);
+                    $eduDocs[] = $name;
+                }
+                $documents['edu_docs'] = $eduDocs;
+            }
+
             $onboardingData = array_filter([
                 'employee_id'       => $employee->id,
-                'employee_type'     => 'Employee',
+                'employee_type'     => $request->employmentType ?? 'Full Time',
 
                 'full_name'         => $request->empName,
                 'mobile'            => $request->mobile,
@@ -446,12 +485,50 @@ class EmployeeController extends Controller
                 'account_number'    => $request->accountNo,
                 'ifsc_code'         => $request->ifsc,
                 'uan_number'        => $request->uan,
+                'salary_amount'     => $request->totalCTCAnnual,
+                'salary_type'       => 'Annual CTC',
 
-                'additional_notes'  => 'Created from onboarding form',
+                'additional_notes'  => json_encode([
+                    'father_name' => $request->fatherName,
+                    'permanent_address' => $request->permanentAddress,
+                    'upi_id' => $request->upi,
+                    'compliance' => [
+                        'pf_number' => $request->pf,
+                        'esic_number' => $request->esic,
+                    ],
+                    'compensation' => [
+                        'basic_monthly' => $request->basicMonthly,
+                        'basic_annual' => $request->basicAnnual,
+                        'hra_monthly' => $request->hraMonthly,
+                        'hra_annual' => $request->hraAnnual,
+                        'flexi_monthly' => $request->flexiMonthly,
+                        'flexi_annual' => $request->flexiAnnual,
+                        'acting_monthly' => $request->actingMonthly,
+                        'acting_annual' => $request->actingAnnual,
+                        'pf_monthly' => $request->pfMonthly,
+                        'pf_annual' => $request->pfAnnual,
+                        'esi_monthly' => $request->esiMonthly,
+                        'esi_annual' => $request->esiAnnual,
+                        'pli_monthly' => $request->pliMonthly,
+                        'pli_annual' => $request->pliAnnual,
+                        'total_ctc_monthly' => $request->totalCTCMonthly,
+                        'total_ctc_annual' => $request->totalCTCAnnual,
+                    ],
+                    'hr_details' => [
+                        'offer_issued' => $request->offerIssued,
+                        'appointment_issued' => $request->appointmentIssued,
+                        'id_card_issued' => $request->idCardIssued,
+                        'uniform_issued' => $request->uniformIssued,
+                    ],
+                    'documents_submitted' => [
+                        'aadhaar_submitted' => $request->aadhaarSubmitted,
+                        'pan_submitted' => $request->panSubmitted,
+                    ]
+                ]),
             ]);
 
-            if ($photo) {
-                $onboardingData['documents'] = json_encode(['photo' => $photo]);
+            if (!empty($documents)) {
+                $onboardingData['documents'] = json_encode($documents);
             }
 
             EmployeeOnboarding::create($onboardingData);

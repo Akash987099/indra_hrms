@@ -320,7 +320,15 @@
     <h1>📋 EMPLOYEE ONBOARDING</h1>
     <div class="subhead">detailed compensation · auto-calculated totals</div>
 
-    <form id="onboardingForm" novalidate>
+    @if(session('success'))
+        <div class="feedback success" style="margin-bottom: 20px;">{{ session('success') }}</div>
+    @endif
+    @if(session('error'))
+        <div class="feedback error" style="margin-bottom: 20px;">{{ session('error') }}</div>
+    @endif
+
+    <form id="onboardingForm" action="{{ route('employee.store_on') }}" method="POST" enctype="multipart/form-data" novalidate>
+        @csrf
         <!-- 1. BASIC DETAILS (same as before) -->
         <fieldset>
             <legend>1. Basic details</legend>
@@ -413,59 +421,59 @@
                     <tbody>
                         <!-- base components -->
                         <tr><td>Basic Salary + DA</td>
-                            <td><input type="number" step="0.01" id="basicMonthly" value="10000.00"></td>
-                            <td><input type="number" step="0.01" id="basicAnnual" readonly class="annual-field"></td>
+                            <td><input type="number" step="0.01" name="basicMonthly" id="basicMonthly" value="10000.00"></td>
+                            <td><input type="number" step="0.01" name="basicAnnual" id="basicAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td>House Rent Allowance (HRA)</td>
-                            <td><input type="number" step="0.01" id="hraMonthly" value="5000.00"></td>
-                            <td><input type="number" step="0.01" id="hraAnnual" readonly class="annual-field"></td>
+                            <td><input type="number" step="0.01" name="hraMonthly" id="hraMonthly" value="5000.00"></td>
+                            <td><input type="number" step="0.01" name="hraAnnual" id="hraAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td>Flexi Pay</td>
-                            <td><input type="number" step="0.01" id="flexiMonthly" value="16000.00"></td>
-                            <td><input type="number" step="0.01" id="flexiAnnual" readonly class="annual-field"></td>
+                            <td><input type="number" step="0.01" name="flexiMonthly" id="flexiMonthly" value="16000.00"></td>
+                            <td><input type="number" step="0.01" name="flexiAnnual" id="flexiAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td>Acting Allowance</td>
-                            <td><input type="number" step="0.01" id="actingMonthly" value="0.00"></td>
-                            <td><input type="number" step="0.01" id="actingAnnual" readonly class="annual-field"></td>
+                            <td><input type="number" step="0.01" name="actingMonthly" id="actingMonthly" value="0.00"></td>
+                            <td><input type="number" step="0.01" name="actingAnnual" id="actingAnnual" readonly class="annual-field"></td>
                         </tr>
                         <!-- Subtotal A -->
                         <tr><td><strong>Sub-Total (A)</strong></td>
-                            <td><input type="number" step="0.01" id="subAMonthly" readonly></td>
-                            <td><input type="number" step="0.01" id="subAAnnual" readonly></td>
+                            <td><input type="number" step="0.01" name="subAMonthly" id="subAMonthly" readonly></td>
+                            <td><input type="number" step="0.01" name="subAAnnual" id="subAAnnual" readonly></td>
                         </tr>
                         <!-- Retiral & other benefits header -->
                         <tr class="section-header"><td colspan="3">Retiral & Other Benefits</td></tr>
                         <tr><td>Provident Fund (PF)</td>
-                            <td><input type="number" step="0.01" id="pfMonthly" value="1200.00"></td>
-                            <td><input type="number" step="0.01" id="pfAnnual" readonly class="annual-field"></td>
+                            <td><input type="number" step="0.01" name="pfMonthly" id="pfMonthly" value="1200.00"></td>
+                            <td><input type="number" step="0.01" name="pfAnnual" id="pfAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td>ESI</td>
-                            <td><input type="number" step="0.01" id="esiMonthly" value="0.00"></td>
-                            <td><input type="number" step="0.01" id="esiAnnual" readonly class="annual-field"></td>
+                            <td><input type="number" step="0.01" name="esiMonthly" id="esiMonthly" value="0.00"></td>
+                            <td><input type="number" step="0.01" name="esiAnnual" id="esiAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td><strong>Sub-Total (B)</strong></td>
-                            <td><input type="number" step="0.01" id="subBMonthly" readonly></td>
-                            <td><input type="number" step="0.01" id="subBAnnual" readonly></td>
+                            <td><input type="number" step="0.01" name="subBMonthly" id="subBMonthly" readonly></td>
+                            <td><input type="number" step="0.01" name="subBAnnual" id="subBAnnual" readonly></td>
                         </tr>
                         <!-- Annual Fixed CTC -->
                         <tr><td><strong>Annual Fixed CTC (A)+(B)</strong></td>
-                            <td><input type="number" step="0.01" id="fixedCTCMonthly" readonly></td>
-                            <td><input type="number" step="0.01" id="fixedCTCAnnual" readonly></td>
+                            <td><input type="number" step="0.01" name="fixedCTCMonthly" id="fixedCTCMonthly" readonly></td>
+                            <td><input type="number" step="0.01" name="fixedCTCAnnual" id="fixedCTCAnnual" readonly></td>
                         </tr>
                         <!-- Performance linked bonus header -->
                         <tr class="section-header"><td colspan="3">Performance Linked Bonus</td></tr>
                         <tr><td>Annual PLI</td>
-                            <td><input type="number" step="0.01" id="pliMonthly" value="2000.00"></td>
-                            <td><input type="number" step="0.01" id="pliAnnual" readonly class="annual-field"></td>
+                            <td><input type="number" step="0.01" name="pliMonthly" id="pliMonthly" value="2000.00"></td>
+                            <td><input type="number" step="0.01" name="pliAnnual" id="pliAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td><strong>Sub-Total (C)</strong></td>
-                            <td><input type="number" step="0.01" id="subCMonthly" readonly></td>
-                            <td><input type="number" step="0.01" id="subCAnnual" readonly></td>
+                            <td><input type="number" step="0.01" name="subCMonthly" id="subCMonthly" readonly></td>
+                            <td><input type="number" step="0.01" name="subCAnnual" id="subCAnnual" readonly></td>
                         </tr>
                         <!-- GRAND TOTAL -->
                         <tr><td><strong>Annual Total CTC (A)+(B)+(C)</strong></td>
-                            <td><input type="number" step="0.01" id="totalCTCMonthly" readonly></td>
-                            <td><input type="number" step="0.01" id="totalCTCAnnual" readonly></td>
+                            <td><input type="number" step="0.01" name="totalCTCMonthly" id="totalCTCMonthly" readonly></td>
+                            <td><input type="number" step="0.01" name="totalCTCAnnual" id="totalCTCAnnual" readonly></td>
                         </tr>
                     </tbody>
                 </table>
@@ -491,7 +499,7 @@
                 <div class="form-group"><label>Aadhaar submitted</label><div class="radio-group"><label><input type="radio" name="aadhaarSubmitted" value="Yes"> Yes</label><label><input type="radio" name="aadhaarSubmitted" value="No"> No</label></div></div>
                 <div class="form-group"><label>PAN submitted</label><div class="radio-group"><label><input type="radio" name="panSubmitted" value="Yes"> Yes</label><label><input type="radio" name="panSubmitted" value="No"> No</label></div></div>
                 <div class="form-group"><label>Bank passbook / cheque</label><input type="file" name="bankDoc" accept=".pdf,.jpg,.png"></div>
-                <div class="form-group"><label>Educational certificates</label><input type="file" name="eduDocs" multiple></div>
+                <div class="form-group"><label>Educational certificates</label><input type="file" name="eduDocs[]" multiple></div>
                 <div class="form-group full-width"><label>Experience letter</label><input type="file" name="expLetter"></div>
             </div>
         </fieldset>
@@ -671,20 +679,9 @@
                 return;
             }
 
-            // collect form data example
-            const formData = new FormData(form);
-            const data = {};
-            for (let [key, val] of formData.entries()) {
-                if (data[key]) {
-                    if (!Array.isArray(data[key])) data[key] = [data[key]];
-                    data[key].push(val);
-                } else {
-                    data[key] = val;
-                }
-            }
-            console.log('Onboarding data:', data);
-            feedbackDiv.innerHTML = `✅ Form valid! Check console (F12) for details. Total CTC: ₹ ${totalCTCAnnual.value} annually.`;
+            feedbackDiv.innerHTML = `✅ Submitting... Please wait.`;
             feedbackDiv.className = 'feedback success';
+            form.submit();
         });
 
         form.addEventListener('reset', function() {
