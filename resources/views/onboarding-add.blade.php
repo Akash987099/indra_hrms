@@ -1,342 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Onboarding · detailed compensation</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Onboarding · detailed compensation</title>
 
-        body {
-            background: #eef2f7;
-            padding: 2rem 1rem;
-            display: flex;
-            justify-content: center;
-        }
+<style>
 
-        .container {
-            max-width: 1300px;
-            width: 100%;
-            background: white;
-            border-radius: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            padding: 2rem 2rem 2.5rem;
-        }
+/* ====== SAME CSS (UNCHANGED) ====== */
 
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: #0a2b3c;
-            margin-bottom: 0.25rem;
-            letter-spacing: -0.02em;
-            border-left: 8px solid #2b6f9b;
-            padding-left: 1.5rem;
-        }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',Roboto,system-ui,sans-serif;
+}
 
-        .subhead {
-            color: #4a5c6b;
-            margin: 0 0 2rem 2.2rem;
-            font-size: 1rem;
-        }
+body{
+background:#eef2f7;
+padding:2rem 1rem;
+display:flex;
+justify-content:center;
+}
 
-        fieldset {
-            border: 1px solid #d8e2ec;
-            border-radius: 1.5rem;
-            padding: 1.5rem 2rem;
-            margin-bottom: 2rem;
-            background: #fafcff;
-        }
+.container{
+max-width:1300px;
+width:100%;
+background:white;
+border-radius:2rem;
+box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);
+padding:2rem 2rem 2.5rem;
+}
 
-        legend {
-            font-size: 1.3rem;
-            font-weight: 600;
-            background: white;
-            padding: 0.3rem 1.2rem;
-            border-radius: 40px;
-            border: 1px solid #cbd5e1;
-            color: #1e4b6e;
-            margin-left: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
+h1{
+font-size:2.2rem;
+font-weight:600;
+color:#0a2b3c;
+margin-bottom:.25rem;
+border-left:8px solid #2b6f9b;
+padding-left:1.5rem;
+}
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem 2rem;
-            margin-top: 1rem;
-        }
+.subhead{
+color:#4a5c6b;
+margin:0 0 2rem 2.2rem;
+font-size:1rem;
+}
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
+fieldset{
+border:1px solid #d8e2ec;
+border-radius:1.5rem;
+padding:1.5rem 2rem;
+margin-bottom:2rem;
+background:#fafcff;
+}
 
-        .full-width {
-            grid-column: span 2;
-        }
+legend{
+font-size:1.3rem;
+font-weight:600;
+background:white;
+padding:.3rem 1.2rem;
+border-radius:40px;
+border:1px solid #cbd5e1;
+color:#1e4b6e;
+}
 
-        label {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #1e3b4f;
-            letter-spacing: 0.3px;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
+.form-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:1.5rem 2rem;
+margin-top:1rem;
+}
 
-        label i {
-            color: #b22234;
-            font-size: 0.8rem;
-        }
+.form-group{
+display:flex;
+flex-direction:column;
+gap:.4rem;
+}
 
-        input, select, textarea {
-            padding: 0.7rem 1rem;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 0.95rem;
-            transition: all 0.15s;
-            background: white;
-            width: 100%;
-        }
+.full-width{
+grid-column:span 2;
+}
 
-        input:focus, select:focus, textarea:focus {
-            border-color: #2b6f9b;
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(43, 111, 155, 0.12);
-        }
+input,select,textarea{
+padding:.7rem 1rem;
+border:1.5px solid #e2e8f0;
+border-radius:14px;
+font-size:.95rem;
+}
 
-        input[type="file"] {
-            padding: 0.4rem 0.5rem;
-            border-radius: 40px;
-            background: #f1f9ff;
-        }
+.comp-table{
+width:100%;
+border-collapse:collapse;
+}
 
-        .radio-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.2rem;
-            align-items: center;
-            background: #f2f6fa;
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            border: 1px solid #dae2ed;
-        }
+.comp-table th{
+background:#1f4662;
+color:white;
+padding:.8rem;
+}
 
-        .radio-group label {
-            font-weight: 500;
-            gap: 0.3rem;
-            color: #1f3a4b;
-            font-size: 0.95rem;
-        }
+.comp-table td{
+padding:.7rem;
+border-bottom:1px solid #e2eaf2;
+}
 
-        input[type="radio"] {
-            width: auto;
-            margin-right: 0.2rem;
-            accent-color: #1e6b9b;
-        }
+.comp-table input{
+width:140px;
+padding:.5rem;
+border-radius:30px;
+border:1px solid #cbdae8;
+}
 
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 0.5rem 0;
-        }
+.form-actions{
+display:flex;
+gap:1rem;
+justify-content:center;
+margin-top:2rem;
+}
 
-        .checkbox-group input {
-            width: auto;
-            margin-right: 0.3rem;
-        }
+button{
+background:#1a4b6d;
+color:white;
+border:none;
+padding:1rem 3rem;
+border-radius:60px;
+cursor:pointer;
+}
 
-        .address-utility {
-            background: #e7f0f9;
-            border-radius: 20px;
-            padding: 0.5rem 1.2rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 1rem;
-        }
+</style>
 
-        /* compensation table */
-        .comp-table-wrapper {
-            overflow-x: auto;
-            margin-top: 2rem;
-            border-radius: 20px;
-            border: 1px solid #dde5ed;
-            background: #ffffff;
-        }
-
-        .comp-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
-            min-width: 550px;
-        }
-
-        .comp-table th {
-            background: #1f4662;
-            color: white;
-            font-weight: 600;
-            padding: 0.9rem 1rem;
-            text-align: left;
-        }
-
-        .comp-table th:first-child {
-            border-top-left-radius: 18px;
-        }
-        .comp-table th:last-child {
-            border-top-right-radius: 18px;
-        }
-
-        .comp-table td {
-            padding: 0.7rem 1rem;
-            border-bottom: 1px solid #e2eaf2;
-        }
-
-        .comp-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .comp-table td:first-child {
-            font-weight: 500;
-            color: #153e54;
-            background-color: #f9fcff;
-            width: 40%;
-        }
-
-        .comp-table input {
-            width: 140px;
-            padding: 0.5rem 0.8rem;
-            border-radius: 30px;
-            border: 1.5px solid #cbdae8;
-            background: white;
-            font-size: 0.9rem;
-        }
-
-        .comp-table input:focus {
-            border-color: #1a6b9f;
-        }
-
-        .comp-table input[readonly] {
-            background-color: #edf3f9;
-            border-color: #c0d0df;
-            color: #1a4058;
-            font-weight: 500;
-        }
-
-        .section-header td {
-            background-color: #e6f0f9;
-            font-weight: 700;
-            color: #003153;
-            letter-spacing: 0.3px;
-        }
-
-        .section-header td:first-child {
-            background-color: #e6f0f9;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            margin: 2.5rem 0 1rem;
-        }
-
-        button {
-            background: #1a4b6d;
-            color: white;
-            border: none;
-            padding: 1rem 3rem;
-            border-radius: 60px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 8px 14px -8px #0b3144;
-            border: 1px solid #ffffff30;
-        }
-
-        button[type="reset"] {
-            background: #e1e9f1;
-            color: #1e3b4f;
-            box-shadow: none;
-        }
-
-        button:hover {
-            background: #0f3b57;
-            transform: scale(1.02);
-        }
-
-        button[type="reset"]:hover {
-            background: #ccd9e6;
-        }
-
-        .feedback {
-            text-align: center;
-            padding: 1rem;
-            font-weight: 500;
-            border-radius: 40px;
-            background: #f8fafd;
-            color: #153e54;
-        }
-
-        .feedback.error {
-            background: #ffe8e8;
-            color: #a41c1c;
-        }
-
-        .feedback.success {
-            background: #dff0dd;
-            color: #1d6b2b;
-        }
-
-        hr {
-            border: 1px dashed #cbd5e1;
-            margin: 1.5rem 0 0.5rem;
-        }
-
-        @media (max-width: 700px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            .full-width {
-                grid-column: span 1;
-            }
-            fieldset {
-                padding: 1.2rem;
-            }
-        }
-    </style>
 </head>
 <body>
-<div class="container">
-    <h1>📋 EMPLOYEE ONBOARDING</h1>
-    <div class="subhead">detailed compensation · auto-calculated totals</div>
 
-    @if(session('success'))
-<div style="padding:10px;background:#d4edda;color:#155724;margin-bottom:10px">
-    {{ session('success') }}
+<div class="container">
+
+<h1>📋 EMPLOYEE ONBOARDING</h1>
+<div class="subhead">detailed compensation · auto-calculated totals</div>
+
+{{-- SUCCESS MESSAGE --}}
+
+@if(session('success'))
+<div style="background:#d4edda;padding:10px;margin-bottom:10px">
+{{ session('success') }}
 </div>
 @endif
 
 @if(session('error'))
-<div style="padding:10px;background:#f8d7da;color:#721c24;margin-bottom:10px">
-    {{ session('error') }}
+<div style="background:#f8d7da;padding:10px;margin-bottom:10px">
+{{ session('error') }}
 </div>
 @endif
 
-    {{-- <form id="onboardingForm" novalidate> --}}
-        <form method="POST" action="{{ route('employee.store_on') }}" enctype="multipart/form-data">
+
+<form id="onboardingForm"
+method="POST"
+action="{{ route('employee.store_on') }}"
+enctype="multipart/form-data">
+
 @csrf
 
-<!-- 1. BASIC DETAILS -->
+
+<!-- ================= BASIC DETAILS ================= -->
+
 <fieldset>
 <legend>1. Basic details</legend>
 
@@ -344,49 +170,48 @@
 
 <div class="form-group">
 <label>Employee ID</label>
-<input type="text" name="empId" id="empId" placeholder="e.g. EMP-1234">
+<input type="text" name="empId">
 </div>
 
 <div class="form-group">
 <label>Employee name</label>
-<input type="text" name="empName" id="empName">
+<input type="text" name="empName">
 </div>
 
 <div class="form-group">
-<label>Father’s / Husband’s name</label>
+<label>Father / Husband name</label>
 <input type="text" name="fatherName">
 </div>
 
 <div class="form-group">
 <label>Date of birth</label>
-<input type="date" name="dob" id="dob">
+<input type="date" name="dob">
 </div>
 
 <div class="form-group">
 <label>Gender</label>
-
-<div class="radio-group">
-<label><input type="radio" name="gender" value="Male"> Male</label>
-<label><input type="radio" name="gender" value="Female"> Female</label>
-<label><input type="radio" name="gender" value="Other"> Other</label>
-</div>
-
-</div>
-
-<div class="form-group">
-<label>Mobile number</label>
-<input type="tel" name="mobile" id="mobile">
+<select name="gender">
+<option value="">Select</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
 </div>
 
 <div class="form-group">
-<label>Email ID</label>
-<input type="email" name="email" id="email">
+<label>Mobile</label>
+<input type="text" name="mobile">
 </div>
 
 <div class="form-group">
-<label>Marital status</label>
+<label>Email</label>
+<input type="email" name="email">
+</div>
+
+<div class="form-group">
+<label>Marital Status</label>
 <select name="maritalStatus">
-<option value="">-- select --</option>
+<option value="">Select</option>
 <option>Single</option>
 <option>Married</option>
 <option>Divorced</option>
@@ -395,18 +220,8 @@
 </div>
 
 <div class="form-group">
-<label>Blood group</label>
-<select name="bloodGroup">
-<option value="">-- select --</option>
-<option>A+</option>
-<option>A-</option>
-<option>B+</option>
-<option>B-</option>
-<option>O+</option>
-<option>O-</option>
-<option>AB+</option>
-<option>AB-</option>
-</select>
+<label>Blood Group</label>
+<input type="text" name="bloodGroup">
 </div>
 
 <div class="form-group full-width">
@@ -418,7 +233,8 @@
 </fieldset>
 
 
-<!-- ADDRESS -->
+<!-- ================= ADDRESS ================= -->
+
 <fieldset>
 <legend>2. Address details</legend>
 
@@ -426,12 +242,12 @@
 
 <div class="form-group full-width">
 <label>Current address</label>
-<textarea name="currentAddress" id="currentAddress"></textarea>
+<textarea name="currentAddress"></textarea>
 </div>
 
 <div class="form-group full-width">
 <label>Permanent address</label>
-<textarea name="permanentAddress" id="permanentAddress"></textarea>
+<textarea name="permanentAddress"></textarea>
 </div>
 
 <div class="form-group">
@@ -445,7 +261,7 @@
 </div>
 
 <div class="form-group full-width">
-<label>PIN code</label>
+<label>Pincode</label>
 <input type="text" name="pinCode">
 </div>
 
@@ -453,7 +269,7 @@
 </fieldset>
 
 
-<!-- JOB DETAILS -->
+<!-- ================= JOB ================= -->
 
 <fieldset>
 <legend>3. Job details</legend>
@@ -503,18 +319,17 @@
 </fieldset>
 
 
-<!-- SALARY TABLE -->
+<!-- ================= SALARY ================= -->
 
 <fieldset>
-<legend>4. Salary & bank details</legend>
 
-<div class="comp-table-wrapper">
+<legend>4. Salary</legend>
 
 <table class="comp-table">
 
 <thead>
 <tr>
-<th>Compensation Structure</th>
+<th>Component</th>
 <th>Monthly</th>
 <th>Annual</th>
 </tr>
@@ -523,59 +338,49 @@
 <tbody>
 
 <tr>
-<td>Basic Salary</td>
-<td><input type="number" name="basicMonthly" id="basicMonthly"></td>
-<td><input type="number" name="basicAnnual" id="basicAnnual" readonly></td>
+<td>Basic</td>
+<td><input type="number" name="basicMonthly"></td>
+<td><input type="number" name="basicAnnual"></td>
 </tr>
 
 <tr>
 <td>HRA</td>
-<td><input type="number" name="hraMonthly" id="hraMonthly"></td>
-<td><input type="number" name="hraAnnual" id="hraAnnual" readonly></td>
+<td><input type="number" name="hraMonthly"></td>
+<td><input type="number" name="hraAnnual"></td>
 </tr>
 
 <tr>
-<td>Flexi Pay</td>
-<td><input type="number" name="flexiMonthly" id="flexiMonthly"></td>
-<td><input type="number" name="flexiAnnual" id="flexiAnnual" readonly></td>
-</tr>
-
-<tr>
-<td>Acting Allowance</td>
-<td><input type="number" name="actingMonthly" id="actingMonthly"></td>
-<td><input type="number" name="actingAnnual" id="actingAnnual" readonly></td>
+<td>Flexi</td>
+<td><input type="number" name="flexiMonthly"></td>
+<td><input type="number" name="flexiAnnual"></td>
 </tr>
 
 <tr>
 <td>PF</td>
-<td><input type="number" name="pfMonthly" id="pfMonthly"></td>
-<td><input type="number" name="pfAnnual" id="pfAnnual" readonly></td>
+<td><input type="number" name="pfMonthly"></td>
+<td><input type="number" name="pfAnnual"></td>
 </tr>
 
 <tr>
-<td>ESI</td>
-<td><input type="number" name="esiMonthly" id="esiMonthly"></td>
-<td><input type="number" name="esiAnnual" id="esiAnnual" readonly></td>
-</tr>
-
-<tr>
-<td>Total CTC Monthly</td>
-<td><input type="number" name="totalCTCMonthly" id="totalCTCMonthly" readonly></td>
-<td><input type="number" name="totalCTCAnnual" id="totalCTCAnnual" readonly></td>
+<td>Total CTC</td>
+<td><input type="number" name="totalCTCMonthly"></td>
+<td><input type="number" name="totalCTCAnnual"></td>
 </tr>
 
 </tbody>
 
 </table>
 
-</div>
 </fieldset>
 
 
-<!-- GOVERNMENT -->
+<!-- ================= GOVT ================= -->
 
 <fieldset>
+
 <legend>5. Government & compliance</legend>
+
+<div class="form-grid">
 
 <input type="text" name="aadhaar" placeholder="Aadhaar">
 
@@ -587,196 +392,56 @@
 
 <input type="text" name="uan" placeholder="UAN">
 
+</div>
+
 </fieldset>
 
 
-<!-- EMERGENCY -->
+<!-- ================= EMERGENCY ================= -->
 
 <fieldset>
 
-<legend>Emergency Contact</legend>
+<legend>6. Emergency Contact</legend>
 
-<input type="text" name="emergencyName" placeholder="Name">
+<div class="form-grid">
 
-<input type="text" name="emergencyPhone" placeholder="Phone">
+<input type="text" name="emergencyName">
 
-<input type="text" name="emergencyRelation" placeholder="Relation">
+<input type="text" name="emergencyPhone">
+
+<input type="text" name="emergencyRelation">
+
+</div>
 
 </fieldset>
 
 
+<!-- ================= HR STATUS ================= -->
+
+<fieldset>
+
+<legend>7. HR Status</legend>
+
+<select name="empStatus">
+<option value="Active">Active</option>
+<option value="Left">Left</option>
+</select>
+
+</fieldset>
+
+
+<div class="form-actions">
+
 <button type="submit">Submit Onboarding</button>
 
-</form>
+<button type="reset">Reset</button>
+
 </div>
 
-<script>
-    (function() {
-        const form = document.getElementById('onboardingForm');
-        const feedbackDiv = document.getElementById('formFeedback');
 
-        // ---------- SAME AS CURRENT ADDRESS ----------
-        const sameAsCurrentChk = document.getElementById('sameAsCurrent');
-        const currentAddr = document.getElementById('currentAddress');
-        const permanentAddr = document.getElementById('permanentAddress');
+</form>
 
-        function copyCurrentToPermanent() {
-            if (sameAsCurrentChk.checked) {
-                permanentAddr.value = currentAddr.value;
-                permanentAddr.readOnly = true;
-                permanentAddr.style.background = '#f0f7fc';
-            } else {
-                permanentAddr.readOnly = false;
-                permanentAddr.style.background = 'white';
-            }
-        }
-        sameAsCurrentChk.addEventListener('change', copyCurrentToPermanent);
-        currentAddr.addEventListener('input', function() {
-            if (sameAsCurrentChk.checked) permanentAddr.value = currentAddr.value;
-        });
+</div>
 
-        // ---------- COMPENSATION AUTO CALCULATION ----------
-        // Get all monthly input elements
-        const basicMonthly = document.getElementById('basicMonthly');
-        const hraMonthly = document.getElementById('hraMonthly');
-        const flexiMonthly = document.getElementById('flexiMonthly');
-        const actingMonthly = document.getElementById('actingMonthly');
-        const pfMonthly = document.getElementById('pfMonthly');
-        const esiMonthly = document.getElementById('esiMonthly');
-        const pliMonthly = document.getElementById('pliMonthly');
-
-        // Annual readonly fields
-        const basicAnnual = document.getElementById('basicAnnual');
-        const hraAnnual = document.getElementById('hraAnnual');
-        const flexiAnnual = document.getElementById('flexiAnnual');
-        const actingAnnual = document.getElementById('actingAnnual');
-        const pfAnnual = document.getElementById('pfAnnual');
-        const esiAnnual = document.getElementById('esiAnnual');
-        const pliAnnual = document.getElementById('pliAnnual');
-
-        // Sub / total fields
-        const subAMonthly = document.getElementById('subAMonthly');
-        const subAAnnual = document.getElementById('subAAnnual');
-        const subBMonthly = document.getElementById('subBMonthly');
-        const subBAnnual = document.getElementById('subBAnnual');
-        const fixedCTCMonthly = document.getElementById('fixedCTCMonthly');
-        const fixedCTCAnnual = document.getElementById('fixedCTCAnnual');
-        const subCMonthly = document.getElementById('subCMonthly');
-        const subCAnnual = document.getElementById('subCAnnual');
-        const totalCTCMonthly = document.getElementById('totalCTCMonthly');
-        const totalCTCAnnual = document.getElementById('totalCTCAnnual');
-
-        function updateCompensation() {
-            // parse monthly values (default 0 if empty)
-            const basic = parseFloat(basicMonthly.value) || 0;
-            const hra = parseFloat(hraMonthly.value) || 0;
-            const flexi = parseFloat(flexiMonthly.value) || 0;
-            const acting = parseFloat(actingMonthly.value) || 0;
-            const pf = parseFloat(pfMonthly.value) || 0;
-            const esi = parseFloat(esiMonthly.value) || 0;
-            const pli = parseFloat(pliMonthly.value) || 0;
-
-            // update annual columns (monthly * 12)
-            basicAnnual.value = (basic * 12).toFixed(2);
-            hraAnnual.value = (hra * 12).toFixed(2);
-            flexiAnnual.value = (flexi * 12).toFixed(2);
-            actingAnnual.value = (acting * 12).toFixed(2);
-            pfAnnual.value = (pf * 12).toFixed(2);
-            esiAnnual.value = (esi * 12).toFixed(2);
-            pliAnnual.value = (pli * 12).toFixed(2);
-
-            // Sub-Total (A) = basic+hra+flexi+acting
-            const subAMon = basic + hra + flexi + acting;
-            const subAAnn = subAMon * 12;
-            subAMonthly.value = subAMon.toFixed(2);
-            subAAnnual.value = subAAnn.toFixed(2);
-
-            // Sub-Total (B) = pf + esi
-            const subBMon = pf + esi;
-            const subBAnn = subBMon * 12;
-            subBMonthly.value = subBMon.toFixed(2);
-            subBAnnual.value = subBAnn.toFixed(2);
-
-            // Annual Fixed CTC = A + B
-            const fixedMon = subAMon + subBMon;
-            const fixedAnn = fixedMon * 12;
-            fixedCTCMonthly.value = fixedMon.toFixed(2);
-            fixedCTCAnnual.value = fixedAnn.toFixed(2);
-
-            // Sub-Total (C) = pli (only one component)
-            const subCMon = pli;
-            const subCAnn = subCMon * 12;
-            subCMonthly.value = subCMon.toFixed(2);
-            subCAnnual.value = subCAnn.toFixed(2);
-
-            // Total CTC = Fixed CTC + C
-            const totalMon = fixedMon + subCMon;
-            const totalAnn = totalMon * 12;
-            totalCTCMonthly.value = totalMon.toFixed(2);
-            totalCTCAnnual.value = totalAnn.toFixed(2);
-        }
-
-        // Attach input event to all monthly fields
-        const monthlyInputs = [basicMonthly, hraMonthly, flexiMonthly, actingMonthly, pfMonthly, esiMonthly, pliMonthly];
-        monthlyInputs.forEach(input => {
-            input.addEventListener('input', updateCompensation);
-        });
-
-        // initial calculation on page load
-        updateCompensation();
-
-        // ---------- FORM VALIDATION (required fields) ----------
-        form.addEventListener('submit', function(e) {
-            // e.preventDefault();
-
-            const requiredIds = ['empId', 'empName', 'dob', 'mobile', 'email'];
-            let missing = [];
-            for (let id of requiredIds) {
-                let field = document.getElementById(id);
-                if (!field.value.trim()) {
-                    missing.push(field.previousElementSibling?.innerText?.replace('*','') || id);
-                }
-            }
-
-            const genderRadios = document.getElementsByName('gender');
-            let genderChecked = false;
-            for (let r of genderRadios) if (r.checked) genderChecked = true;
-            if (!genderChecked) missing.push('Gender');
-
-            if (missing.length > 0) {
-                feedbackDiv.innerHTML = `❌ Missing required fields: ${missing.join(', ')}`;
-                feedbackDiv.className = 'feedback error';
-                return;
-            }
-
-            // collect form data example
-            const formData = new FormData(form);
-            const data = {};
-            for (let [key, val] of formData.entries()) {
-                if (data[key]) {
-                    if (!Array.isArray(data[key])) data[key] = [data[key]];
-                    data[key].push(val);
-                } else {
-                    data[key] = val;
-                }
-            }
-            console.log('Onboarding data:', data);
-            feedbackDiv.innerHTML = `✅ Form valid! Check console (F12) for details. Total CTC: ₹ ${totalCTCAnnual.value} annually.`;
-            feedbackDiv.className = 'feedback success';
-        });
-
-        form.addEventListener('reset', function() {
-            feedbackDiv.innerHTML = 'Form cleared — ready for new entry';
-            feedbackDiv.className = 'feedback';
-            sameAsCurrentChk.checked = false;
-            permanentAddr.readOnly = false;
-            permanentAddr.style.background = 'white';
-            // compensation will reset to default values because of value attributes, but we need to recalc after reset
-            setTimeout(updateCompensation, 10); // small delay to let reset populate defaults
-        });
-    })();
-</script>
-
-<!-- photograph and file inputs are not required -->
 </body>
 </html>
