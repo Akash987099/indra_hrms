@@ -448,7 +448,7 @@ class EmployeeController extends Controller
                 $documents['edu_docs'] = $eduDocs;
             }
 
-            $onboardingData = array_filter([
+            $onboardingData = [
                 'employee_id'       => $employee->id,
                 'employee_type'     => $request->employmentType ?? 'Full Time',
 
@@ -505,12 +505,20 @@ class EmployeeController extends Controller
                         'flexi_annual' => $request->flexiAnnual,
                         'acting_monthly' => $request->actingMonthly,
                         'acting_annual' => $request->actingAnnual,
+                        'sub_a_monthly' => $request->subAMonthly,
+                        'sub_a_annual'  => $request->subAAnnual,
                         'pf_monthly' => $request->pfMonthly,
                         'pf_annual' => $request->pfAnnual,
                         'esi_monthly' => $request->esiMonthly,
                         'esi_annual' => $request->esiAnnual,
+                        'sub_b_monthly' => $request->subBMonthly,
+                        'sub_b_annual'  => $request->subBAnnual,
+                        'fixed_ctc_monthly' => $request->fixedCTCMonthly,
+                        'fixed_ctc_annual'  => $request->fixedCTCAnnual,
                         'pli_monthly' => $request->pliMonthly,
                         'pli_annual' => $request->pliAnnual,
+                        'sub_c_monthly' => $request->subCMonthly,
+                        'sub_c_annual'  => $request->subCAnnual,
                         'total_ctc_monthly' => $request->totalCTCMonthly,
                         'total_ctc_annual' => $request->totalCTCAnnual,
                     ],
@@ -525,7 +533,7 @@ class EmployeeController extends Controller
                         'pan_submitted' => $request->panSubmitted,
                     ]
                 ]),
-            ]);
+            ];
 
             if (!empty($documents)) {
                 $onboardingData['documents'] = json_encode($documents);
