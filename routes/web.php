@@ -35,13 +35,13 @@ Route::get('/', function () {
 Route::prefix('employee')->controller(EmployeeController::class)->name('employee.')->group(function () {
     Route::get('view/{id}', 'view')->name('view');
     Route::get('add', 'add')->name('add');
+    Route::get('edit/{id}', 'edit')->name('edit');
     Route::post('store_on', 'store_on')->name('store_on');
     Route::get('employees/export', 'exportEmployees')->name('export');
 });
 
 Route::prefix('employee-onboarding')->group(function () {
     Route::match(['get', 'post'], '/store', [EmployeeOnboardingController::class, 'store']);
-    Route::get('edit/{id}', [EmployeeOnboardingController::class, 'edit'])->name('edit');
     Route::post('/update', [EmployeeOnboardingController::class, 'update']);
 });
 
