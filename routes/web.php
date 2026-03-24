@@ -35,6 +35,10 @@ Route::get('/', function () {
 Route::prefix('employee')->controller(EmployeeController::class)->name('employee.')->group(function () {
     Route::get('view/{id}', 'view')->name('view');
     Route::get('add', 'add')->name('add');
+    Route::get('edit/{id}', 'edit')->name('edit');
+    Route::post('store', 'store')->name('store');
+    Route::post('update/{id}', 'update')->name('update');
+    Route::get('delete/{id}', 'delete')->name('delete');
     Route::post('store_on', 'store_on')->name('store_on');
     Route::get('employees/export', 'exportEmployees')->name('export');
 });

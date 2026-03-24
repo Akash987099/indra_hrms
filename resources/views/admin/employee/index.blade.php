@@ -24,28 +24,28 @@
                     <h3 class="mb-0">Employee Database</h3>
 
                     <button type="button" class="btn btn-primary" id="addEmployeeBtn">
-                            <i class="fas fa-plus"></i> Add Employee
-                        </button>
+                        <i class="fas fa-plus"></i> Add Employee
+                    </button>
 
-                        <a href="{{ route('employee.add') }}" class="btn btn-primary">
-                            Add Onboarding
-                        </a>
+                    <a href="{{ route('employee.add') }}" class="btn btn-primary">
+                        Add Onboarding
+                    </a>
 
-                        <a href="{{ route('admin.department.index') }}" class="btn btn-primary">
-                            Department
-                        </a>
+                    <a href="{{ route('admin.department.index') }}" class="btn btn-primary">
+                        Department
+                    </a>
 
-                        <a href="{{ route('admin.designation.index') }}" class="btn btn-primary">
-                            Designation
-                        </a>
+                    <a href="{{ route('admin.designation.index') }}" class="btn btn-primary">
+                        Designation
+                    </a>
 
-                        <a href="{{ route('admin.module.index') }}" class="btn btn-primary">
-                            Modules
-                        </a>
+                    <a href="{{ route('admin.module.index') }}" class="btn btn-primary">
+                        Modules
+                    </a>
 
-                        <a href="{{ route('employee.export') }}" class="btn btn-success">
-<i class="fas fa-file-excel"></i> Export Excel
-</a>
+                    <a href="{{ route('employee.export') }}" class="btn btn-success">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </a>
 
                     <!-- RIGHT BUTTONS -->
                     {{-- <div class="d-flex flex-wrap gap-2">
@@ -112,8 +112,10 @@
                                 <label>Status</label>
                                 <select name="status" class="form-control">
                                     <option value="">All</option>
-                                    <option value="Active" {{ request('status') == 'Active' ? 'selected' : '' }}>Active</option>
-                                    <option value="Inactive" {{ request('status') == 'Inactive' ? 'selected' : '' }}>Inactive
+                                    <option value="Active" {{ request('status') == 'Active' ? 'selected' : '' }}>Active
+                                    </option>
+                                    <option value="Inactive" {{ request('status') == 'Inactive' ? 'selected' : '' }}>
+                                        Inactive
                                     </option>
                                 </select>
                             </div>
@@ -225,10 +227,15 @@
 
                                         <td>
 
-                                            <button class="btn btn-warning btn-sm editEmployeeBtn"
+                                            {{-- <button class="btn btn-warning btn-sm editEmployeeBtn"
                                                 data-id="{{ $item->id }}">
                                                 Edit
-                                            </button>
+                                            </button> --}}
+
+                                            <a href="{{route('admin.employee.edit', $item->id)}}" class="btn btn-warning btn-sm editEmployeeBtn"
+                                                data-id="{{ $item->id }}">
+                                                Edit
+                                            </a>
 
                                             <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $item->id }}"
                                                 data-url="{{ route('admin.employee.delete', $item->id) }}">

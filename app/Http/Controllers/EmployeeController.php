@@ -551,4 +551,13 @@ class EmployeeController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
+
+    public function edit($id)
+    {
+        $employee = Employee::findOrFail($id);
+        $employeedata = EmployeeOnboarding::where('employee_id', $employee->id)->first();
+        
+        return view('onboarding-edit', compact('employee', 'employeedata'));
+    }
+    
 }
