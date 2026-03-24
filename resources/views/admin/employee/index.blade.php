@@ -232,7 +232,7 @@
                                                 Edit
                                             </button> --}}
 
-                                            <a href="{{route('employee.add', $item->id)}}" class="btn btn-warning btn-sm editEmployeeBtn"
+                                            <a href="{{route('employee.edit', $item->id)}}" class="btn btn-warning btn-sm editEmployeeBtn"
                                                 data-id="{{ $item->id }}">
                                                 Edit
                                             </a>
