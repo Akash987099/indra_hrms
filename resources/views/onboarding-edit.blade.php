@@ -327,7 +327,7 @@
         <div class="feedback error" style="margin-bottom: 20px;">{{ session('error') }}</div>
     @endif
 
-    <form id="onboardingForm" action="{{ route('employee.update_on', $employee->id) }}" method="POST" enctype="multipart/form-data" novalidate>
+    <form id="onboardingForm" action="{{ route('employee.update_on') }}" method="POST" enctype="multipart/form-data" novalidate>
         @csrf
         @method('PUT')
         <!-- 1. BASIC DETAILS (same as before) -->

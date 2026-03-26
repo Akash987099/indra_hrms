@@ -37,6 +37,7 @@ Route::prefix('employee')->controller(EmployeeController::class)->name('employee
     Route::get('add', 'add')->name('add');
     Route::get('edit/{id}', 'edit')->name('edit');
     Route::post('store_on', 'store_on')->name('store_on');
+    Route::post('update_on', 'update_on')->name('update_on');
     Route::get('employees/export', 'exportEmployees')->name('export');
 });
 
