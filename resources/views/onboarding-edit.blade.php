@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Onboarding · detailed compensation</title>
+    <title>Edit Employee Details · {{ $employeedata->empName ?? 'Employee' }}</title>
     <style>
         * {
             margin: 0;
@@ -317,8 +317,8 @@
 </head>
 <body>
 <div class="container">
-    <h1>📋 EMPLOYEE ONBOARDING</h1>
-    <div class="subhead">detailed compensation · auto-calculated totals</div>
+    <h1>📋 EDIT EMPLOYEE DETAILS</h1>
+    <div class="subhead">Editing onboarding information for {{ $employeedata->empName ?? 'Employee' }} (ID: {{ $employeedata->empId ?? 'N/A' }})</div>
 
     @if(session('success'))
         <div class="feedback success" style="margin-bottom: 20px;">{{ session('success') }}</div>
@@ -327,39 +327,40 @@
         <div class="feedback error" style="margin-bottom: 20px;">{{ session('error') }}</div>
     @endif
 
-    <form id="onboardingForm" action="{{ route('employee.store_on') }}" method="POST" enctype="multipart/form-data" novalidate>
+    <form id="onboardingForm" action="{{ route('employee.update_on', $employee->id) }}" method="POST" enctype="multipart/form-data" novalidate>
         @csrf
+        @method('PUT')
         <!-- 1. BASIC DETAILS (same as before) -->
         <fieldset>
             <legend>1. Basic details</legend>
             <div class="form-grid">
-                <div class="form-group"><label>Employee ID <i>*</i></label><input type="text" name="empId" id="empId" placeholder="e.g. EMP-1234" required></div>
-                <div class="form-group"><label>Employee name <i>*</i></label><input type="text" name="empName" id="empName" placeholder="Full name" required></div>
-                <div class="form-group"><label>Father’s / Husband’s name</label><input type="text" name="fatherName" placeholder="Father or spouse name"></div>
-                <div class="form-group"><label>Date of birth <i>*</i></label><input type="date" name="dob" id="dob" required></div>
+                <div class="form-group"><label>Employee ID <i>*</i></label><input type="text" name="empId" id="empId" placeholder="e.g. EMP-1234" required value="{{ old('empId', $employeedata->empId ?? '') }}"></div>
+                <div class="form-group"><label>Employee name <i>*</i></label><input type="text" name="empName" id="empName" placeholder="Full name" required value="{{ old('empName', $employeedata->empName ?? '') }}"></div>
+                <div class="form-group"><label>Father’s / Husband’s name</label><input type="text" name="fatherName" placeholder="Father or spouse name" value="{{ old('fatherName', $employeedata->fatherName ?? '') }}"></div>
+                <div class="form-group"><label>Date of birth <i>*</i></label><input type="date" name="dob" id="dob" required value="{{ old('dob', $employeedata->dob ?? '') }}"></div>
                 <div class="form-group"><label>Gender <i>*</i></label>
                     <div class="radio-group" id="genderGroup">
-                        <label><input type="radio" name="gender" value="Male" required> Male</label>
-                        <label><input type="radio" name="gender" value="Female"> Female</label>
-                        <label><input type="radio" name="gender" value="Other"> Other</label>
+                        <label><input type="radio" name="gender" value="Male" required {{ old('gender', $employeedata->gender ?? '') == 'Male' ? 'checked' : '' }}> Male</label>
+                        <label><input type="radio" name="gender" value="Female" {{ old('gender', $employeedata->gender ?? '') == 'Female' ? 'checked' : '' }}> Female</label>
+                        <label><input type="radio" name="gender" value="Other" {{ old('gender', $employeedata->gender ?? '') == 'Other' ? 'checked' : '' }}> Other</label>
                     </div>
                 </div>
-                <div class="form-group"><label>Mobile number <i>*</i></label><input type="tel" name="mobile" id="mobile" placeholder="9876543210" required></div>
-                <div class="form-group"><label>Email ID <i>*</i></label><input type="email" name="email" id="email" placeholder="employee@company.com" required></div>
+                <div class="form-group"><label>Mobile number <i>*</i></label><input type="tel" name="mobile" id="mobile" placeholder="9876543210" required value="{{ old('mobile', $employeedata->mobile ?? '') }}"></div>
+                <div class="form-group"><label>Email ID <i>*</i></label><input type="email" name="email" id="email" placeholder="employee@company.com" required value="{{ old('email', $employeedata->email ?? '') }}"></div>
                 <div class="form-group"><label>Marital status</label>
                     <select name="maritalStatus">
                         <option value="">-- select --</option>
-                        <option>Single</option>
-                        <option>Married</option>
-                        <option>Divorced</option>
-                        <option>Widowed</option>
+                        <option @if(old('maritalStatus', $employeedata->maritalStatus ?? '') == 'Single') selected @endif>Single</option>
+                        <option @if(old('maritalStatus', $employeedata->maritalStatus ?? '') == 'Married') selected @endif>Married</option>
+                        <option @if(old('maritalStatus', $employeedata->maritalStatus ?? '') == 'Divorced') selected @endif>Divorced</option>
+                        <option @if(old('maritalStatus', $employeedata->maritalStatus ?? '') == 'Widowed') selected @endif>Widowed</option>
                     </select>
                 </div>
                 <div class="form-group"><label>Blood group</label>
                     <select name="bloodGroup">
                         <option value="">-- select --</option>
-                        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                        <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+                        <option @if(old('bloodGroup', $employeedata->bloodGroup ?? '') == 'A+') selected @endif>A+</option><option @if(old('bloodGroup', $employeedata->bloodGroup ?? '') == 'A-') selected @endif>A-</option><option @if(old('bloodGroup', $employeedata->bloodGroup ?? '') == 'B+') selected @endif>B+</option><option @if(old('bloodGroup', $employeedata->bloodGroup ?? '') == 'B-') selected @endif>B-</option>
+                        <option @if(old('bloodGroup', $employeedata->bloodGroup ?? '') == 'O+') selected @endif>O+</option><option @if(old('bloodGroup', $employeedata->bloodGroup ?? '') == 'O-') selected @endif>O-</option><option @if(old('bloodGroup', $employeedata->bloodGroup ?? '') == 'AB+') selected @endif>AB+</option><option @if(old('bloodGroup', $employeedata->bloodGroup ?? '') == 'AB-') selected @endif>AB-</option>
                     </select>
                 </div>
                 <div class="form-group full-width"><label>Photograph</label><input type="file" name="photo" accept="image/*"></div>
@@ -374,11 +375,11 @@
                 <label for="sameAsCurrent" style="font-weight:500; color:#0c344b;">🔁 Same as Current Address (copies to permanent)</label>
             </div>
             <div class="form-grid">
-                <div class="form-group full-width"><label>Current address</label><textarea name="currentAddress" id="currentAddress" rows="2" placeholder="Street, locality ..."></textarea></div>
-                <div class="form-group full-width"><label>Permanent address</label><textarea name="permanentAddress" id="permanentAddress" rows="2" placeholder="Full permanent address"></textarea></div>
-                <div class="form-group"><label>City</label><input type="text" name="city" placeholder="e.g. Mumbai"></div>
-                <div class="form-group"><label>State</label><input type="text" name="state" placeholder="Maharashtra"></div>
-                <div class="form-group full-width"><label>PIN code</label><input type="text" name="pinCode" placeholder="400001"></div>
+                <div class="form-group full-width"><label>Current address</label><textarea name="currentAddress" id="currentAddress" rows="2" placeholder="Street, locality ...">{{ old('currentAddress', $employeedata->currentAddress ?? '') }}</textarea></div>
+                <div class="form-group full-width"><label>Permanent address</label><textarea name="permanentAddress" id="permanentAddress" rows="2" placeholder="Full permanent address">{{ old('permanentAddress', $employeedata->permanentAddress ?? '') }}</textarea></div>
+                <div class="form-group"><label>City</label><input type="text" name="city" placeholder="e.g. Mumbai" value="{{ old('city', $employeedata->city ?? '') }}"></div>
+                <div class="form-group"><label>State</label><input type="text" name="state" placeholder="Maharashtra" value="{{ old('state', $employeedata->state ?? '') }}"></div>
+                <div class="form-group full-width"><label>PIN code</label><input type="text" name="pinCode" placeholder="400001" value="{{ old('pinCode', $employeedata->pinCode ?? '') }}"></div>
             </div>
         </fieldset>
 
@@ -386,19 +387,19 @@
         <fieldset>
             <legend>3. Job details</legend>
             <div class="form-grid">
-                <div class="form-group"><label>Department</label><input type="text" name="department" placeholder="Engineering / Sales"></div>
-                <div class="form-group"><label>Designation</label><input type="text" name="designation" placeholder="Software Engineer"></div>
-                <div class="form-group"><label>Work location / Branch</label><input type="text" name="workLocation" placeholder="Pune office"></div>
-                <div class="form-group"><label>Date of joining</label><input type="date" name="doj"></div>
+                <div class="form-group"><label>Department</label><input type="text" name="department" placeholder="Engineering / Sales" value="{{ old('department', $employeedata->department ?? '') }}"></div>
+                <div class="form-group"><label>Designation</label><input type="text" name="designation" placeholder="Software Engineer" value="{{ old('designation', $employeedata->designation ?? '') }}"></div>
+                <div class="form-group"><label>Work location / Branch</label><input type="text" name="workLocation" placeholder="Pune office" value="{{ old('workLocation', $employeedata->workLocation ?? '') }}"></div>
+                <div class="form-group"><label>Date of joining</label><input type="date" name="doj" value="{{ old('doj', $employeedata->doj ?? '') }}"></div>
                 <div class="form-group"><label>Employment type</label>
                     <select name="employmentType">
-                        <option>Full Time</option>
-                        <option>Part Time</option>
-                        <option>Contract</option>
+                        <option @if(old('employmentType', $employeedata->employmentType ?? '') == 'Full Time') selected @endif>Full Time</option>
+                        <option @if(old('employmentType', $employeedata->employmentType ?? '') == 'Part Time') selected @endif>Part Time</option>
+                        <option @if(old('employmentType', $employeedata->employmentType ?? '') == 'Contract') selected @endif>Contract</option>
                     </select>
                 </div>
-                <div class="form-group"><label>Reporting manager</label><input type="text" name="reportingManager" placeholder="Manager name"></div>
-                <div class="form-group full-width"><label>Shift timing</label><input type="text" name="shiftTiming" placeholder="e.g. 9am–6pm / rotational"></div>
+                <div class="form-group"><label>Reporting manager</label><input type="text" name="reportingManager" placeholder="Manager name" value="{{ old('reportingManager', $employeedata->reportingManager ?? '') }}"></div>
+                <div class="form-group full-width"><label>Shift timing</label><input type="text" name="shiftTiming" placeholder="e.g. 9am–6pm / rotational" value="{{ old('shiftTiming', $employeedata->shiftTiming ?? '') }}"></div>
             </div>
         </fieldset>
 
@@ -406,10 +407,10 @@
         <fieldset>
             <legend>4. Salary & bank details</legend>
             <div class="form-grid" style="margin-bottom: 1rem;">
-                <div class="form-group"><label>Bank name</label><input type="text" name="bankName" placeholder="SBI / HDFC ..."></div>
-                <div class="form-group"><label>Account number</label><input type="text" name="accountNo" placeholder="1234567890"></div>
-                <div class="form-group"><label>IFSC code</label><input type="text" name="ifsc" placeholder="SBIN0001234"></div>
-                <div class="form-group full-width"><label>UPI ID (optional)</label><input type="text" name="upi" placeholder="name@bank"></div>
+                <div class="form-group"><label>Bank name</label><input type="text" name="bankName" placeholder="SBI / HDFC ..." value="{{ old('bankName', $employeedata->bankName ?? '') }}"></div>
+                <div class="form-group"><label>Account number</label><input type="text" name="accountNo" placeholder="1234567890" value="{{ old('accountNo', $employeedata->accountNo ?? '') }}"></div>
+                <div class="form-group"><label>IFSC code</label><input type="text" name="ifsc" placeholder="SBIN0001234" value="{{ old('ifsc', $employeedata->ifsc ?? '') }}"></div>
+                <div class="form-group full-width"><label>UPI ID (optional)</label><input type="text" name="upi" placeholder="name@bank" value="{{ old('upi', $employeedata->upi ?? '') }}"></div>
             </div>
 
             <!-- Compensation table (monthly / annual) -->
@@ -421,19 +422,19 @@
                     <tbody>
                         <!-- base components -->
                         <tr><td>Basic Salary + DA</td>
-                            <td><input type="number" step="0.01" name="basicMonthly" id="basicMonthly" value="10000.00"></td>
+                            <td><input type="number" step="0.01" name="basicMonthly" id="basicMonthly" value="{{ old('basicMonthly', $employeedata->basicMonthly ?? '0.00') }}"></td>
                             <td><input type="number" step="0.01" name="basicAnnual" id="basicAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td>House Rent Allowance (HRA)</td>
-                            <td><input type="number" step="0.01" name="hraMonthly" id="hraMonthly" value="5000.00"></td>
+                            <td><input type="number" step="0.01" name="hraMonthly" id="hraMonthly" value="{{ old('hraMonthly', $employeedata->hraMonthly ?? '0.00') }}"></td>
                             <td><input type="number" step="0.01" name="hraAnnual" id="hraAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td>Flexi Pay</td>
-                            <td><input type="number" step="0.01" name="flexiMonthly" id="flexiMonthly" value="16000.00"></td>
+                            <td><input type="number" step="0.01" name="flexiMonthly" id="flexiMonthly" value="{{ old('flexiMonthly', $employeedata->flexiMonthly ?? '0.00') }}"></td>
                             <td><input type="number" step="0.01" name="flexiAnnual" id="flexiAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td>Acting Allowance</td>
-                            <td><input type="number" step="0.01" name="actingMonthly" id="actingMonthly" value="0.00"></td>
+                            <td><input type="number" step="0.01" name="actingMonthly" id="actingMonthly" value="{{ old('actingMonthly', $employeedata->actingMonthly ?? '0.00') }}"></td>
                             <td><input type="number" step="0.01" name="actingAnnual" id="actingAnnual" readonly class="annual-field"></td>
                         </tr>
                         <!-- Subtotal A -->
@@ -444,11 +445,11 @@
                         <!-- Retiral & other benefits header -->
                         <tr class="section-header"><td colspan="3">Retiral & Other Benefits</td></tr>
                         <tr><td>Provident Fund (PF)</td>
-                            <td><input type="number" step="0.01" name="pfMonthly" id="pfMonthly" value="1200.00"></td>
+                            <td><input type="number" step="0.01" name="pfMonthly" id="pfMonthly" value="{{ old('pfMonthly', $employeedata->pfMonthly ?? '0.00') }}"></td>
                             <td><input type="number" step="0.01" name="pfAnnual" id="pfAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td>ESI</td>
-                            <td><input type="number" step="0.01" name="esiMonthly" id="esiMonthly" value="0.00"></td>
+                            <td><input type="number" step="0.01" name="esiMonthly" id="esiMonthly" value="{{ old('esiMonthly', $employeedata->esiMonthly ?? '0.00') }}"></td>
                             <td><input type="number" step="0.01" name="esiAnnual" id="esiAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td><strong>Sub-Total (B)</strong></td>
@@ -463,7 +464,7 @@
                         <!-- Performance linked bonus header -->
                         <tr class="section-header"><td colspan="3">Performance Linked Bonus</td></tr>
                         <tr><td>Annual PLI</td>
-                            <td><input type="number" step="0.01" name="pliMonthly" id="pliMonthly" value="2000.00"></td>
+                            <td><input type="number" step="0.01" name="pliMonthly" id="pliMonthly" value="{{ old('pliMonthly', $employeedata->pliMonthly ?? '0.00') }}"></td>
                             <td><input type="number" step="0.01" name="pliAnnual" id="pliAnnual" readonly class="annual-field"></td>
                         </tr>
                         <tr><td><strong>Sub-Total (C)</strong></td>
@@ -484,11 +485,11 @@
         <fieldset>
             <legend>5. Government & compliance</legend>
             <div class="form-grid">
-                <div class="form-group"><label>Aadhaar number</label><input type="text" name="aadhaar" placeholder="12 digits" maxlength="12"></div>
-                <div class="form-group"><label>PAN number</label><input type="text" name="pan" placeholder="ABCDE1234F" maxlength="10"></div>
-                <div class="form-group"><label>PF number</label><input type="text" name="pf" placeholder="PF/12345"></div>
-                <div class="form-group"><label>ESIC number</label><input type="text" name="esic" placeholder="ESIC/123"></div>
-                <div class="form-group full-width"><label>UAN number</label><input type="text" name="uan" placeholder="Universal account number"></div>
+                <div class="form-group"><label>Aadhaar number</label><input type="text" name="aadhaar" placeholder="12 digits" maxlength="12" value="{{ old('aadhaar', $employeedata->aadhaar ?? '') }}"></div>
+                <div class="form-group"><label>PAN number</label><input type="text" name="pan" placeholder="ABCDE1234F" maxlength="10" value="{{ old('pan', $employeedata->pan ?? '') }}"></div>
+                <div class="form-group"><label>PF number</label><input type="text" name="pf" placeholder="PF/12345" value="{{ old('pf', $employeedata->pf ?? '') }}"></div>
+                <div class="form-group"><label>ESIC number</label><input type="text" name="esic" placeholder="ESIC/123" value="{{ old('esic', $employeedata->esic ?? '') }}"></div>
+                <div class="form-group full-width"><label>UAN number</label><input type="text" name="uan" placeholder="Universal account number" value="{{ old('uan', $employeedata->uan ?? '') }}"></div>
             </div>
         </fieldset>
 
@@ -496,8 +497,8 @@
         <fieldset>
             <legend>6. Documents submission</legend>
             <div class="form-grid">
-                <div class="form-group"><label>Aadhaar submitted</label><div class="radio-group"><label><input type="radio" name="aadhaarSubmitted" value="Yes"> Yes</label><label><input type="radio" name="aadhaarSubmitted" value="No"> No</label></div></div>
-                <div class="form-group"><label>PAN submitted</label><div class="radio-group"><label><input type="radio" name="panSubmitted" value="Yes"> Yes</label><label><input type="radio" name="panSubmitted" value="No"> No</label></div></div>
+                <div class="form-group"><label>Aadhaar submitted</label><div class="radio-group"><label><input type="radio" name="aadhaarSubmitted" value="Yes" {{ old('aadhaarSubmitted', $employeedata->aadhaarSubmitted ?? '') == 'Yes' ? 'checked' : '' }}> Yes</label><label><input type="radio" name="aadhaarSubmitted" value="No" {{ old('aadhaarSubmitted', $employeedata->aadhaarSubmitted ?? 'No') == 'No' ? 'checked' : '' }}> No</label></div></div>
+                <div class="form-group"><label>PAN submitted</label><div class="radio-group"><label><input type="radio" name="panSubmitted" value="Yes" {{ old('panSubmitted', $employeedata->panSubmitted ?? '') == 'Yes' ? 'checked' : '' }}> Yes</label><label><input type="radio" name="panSubmitted" value="No" {{ old('panSubmitted', $employeedata->panSubmitted ?? 'No') == 'No' ? 'checked' : '' }}> No</label></div></div>
                 <div class="form-group"><label>Bank passbook / cheque</label><input type="file" name="bankDoc" accept=".pdf,.jpg,.png"></div>
                 <div class="form-group"><label>Educational certificates</label><input type="file" name="eduDocs[]" multiple></div>
                 <div class="form-group full-width"><label>Experience letter</label><input type="file" name="expLetter"></div>
@@ -508,9 +509,9 @@
         <fieldset>
             <legend>7. Emergency contact</legend>
             <div class="form-grid">
-                <div class="form-group"><label>Contact name</label><input type="text" name="emergencyName" placeholder="Next of kin"></div>
-                <div class="form-group"><label>Contact number</label><input type="tel" name="emergencyPhone" placeholder="9876543210"></div>
-                <div class="form-group full-width"><label>Relationship</label><input type="text" name="emergencyRelation" placeholder="Spouse / parent / friend"></div>
+                <div class="form-group"><label>Contact name</label><input type="text" name="emergencyName" placeholder="Next of kin" value="{{ old('emergencyName', $employeedata->emergencyName ?? '') }}"></div>
+                <div class="form-group"><label>Contact number</label><input type="tel" name="emergencyPhone" placeholder="9876543210" value="{{ old('emergencyPhone', $employeedata->emergencyPhone ?? '') }}"></div>
+                <div class="form-group full-width"><label>Relationship</label><input type="text" name="emergencyRelation" placeholder="Spouse / parent / friend" value="{{ old('emergencyRelation', $employeedata->emergencyRelation ?? '') }}"></div>
             </div>
         </fieldset>
 
@@ -518,14 +519,14 @@
         <fieldset>
             <legend>8. Other HR details</legend>
             <div class="form-grid">
-                <div class="form-group"><label>Offer letter issued</label><div class="radio-group"><label><input type="radio" name="offerIssued" value="Yes"> Yes</label><label><input type="radio" name="offerIssued" value="No"> No</label></div></div>
-                <div class="form-group"><label>Appointment letter issued</label><div class="radio-group"><label><input type="radio" name="appointmentIssued" value="Yes"> Yes</label><label><input type="radio" name="appointmentIssued" value="No"> No</label></div></div>
-                <div class="form-group"><label>ID card issued</label><div class="radio-group"><label><input type="radio" name="idCardIssued" value="Yes"> Yes</label><label><input type="radio" name="idCardIssued" value="No"> No</label></div></div>
-                <div class="form-group"><label>Uniform issued</label><div class="radio-group"><label><input type="radio" name="uniformIssued" value="Yes"> Yes</label><label><input type="radio" name="uniformIssued" value="No"> No</label></div></div>
+                <div class="form-group"><label>Offer letter issued</label><div class="radio-group"><label><input type="radio" name="offerIssued" value="Yes" {{ old('offerIssued', $employeedata->offerIssued ?? '') == 'Yes' ? 'checked' : '' }}> Yes</label><label><input type="radio" name="offerIssued" value="No" {{ old('offerIssued', $employeedata->offerIssued ?? 'No') == 'No' ? 'checked' : '' }}> No</label></div></div>
+                <div class="form-group"><label>Appointment letter issued</label><div class="radio-group"><label><input type="radio" name="appointmentIssued" value="Yes" {{ old('appointmentIssued', $employeedata->appointmentIssued ?? '') == 'Yes' ? 'checked' : '' }}> Yes</label><label><input type="radio" name="appointmentIssued" value="No" {{ old('appointmentIssued', $employeedata->appointmentIssued ?? 'No') == 'No' ? 'checked' : '' }}> No</label></div></div>
+                <div class="form-group"><label>ID card issued</label><div class="radio-group"><label><input type="radio" name="idCardIssued" value="Yes" {{ old('idCardIssued', $employeedata->idCardIssued ?? '') == 'Yes' ? 'checked' : '' }}> Yes</label><label><input type="radio" name="idCardIssued" value="No" {{ old('idCardIssued', $employeedata->idCardIssued ?? 'No') == 'No' ? 'checked' : '' }}> No</label></div></div>
+                <div class="form-group"><label>Uniform issued</label><div class="radio-group"><label><input type="radio" name="uniformIssued" value="Yes" {{ old('uniformIssued', $employeedata->uniformIssued ?? '') == 'Yes' ? 'checked' : '' }}> Yes</label><label><input type="radio" name="uniformIssued" value="No" {{ old('uniformIssued', $employeedata->uniformIssued ?? 'No') == 'No' ? 'checked' : '' }}> No</label></div></div>
                 <div class="form-group full-width"><label>Status</label>
                     <select name="empStatus">
-                        <option>Active</option>
-                        <option>Left</option>
+                        <option @if(old('empStatus', $employeedata->empStatus ?? 'Active') == 'Active') selected @endif>Active</option>
+                        <option @if(old('empStatus', $employeedata->empStatus ?? '') == 'Left') selected @endif>Left</option>
                     </select>
                 </div>
             </div>
@@ -533,7 +534,7 @@
 
         <hr>
         <div class="form-actions">
-            <button type="submit">✅ SUBMIT ONBOARDING</button>
+            <button type="submit">✅ UPDATE DETAILS</button>
             <button type="reset">⟲ RESET</button>
         </div>
         <div id="formFeedback" class="feedback">All information is secure — compensation auto-calculated</div>
