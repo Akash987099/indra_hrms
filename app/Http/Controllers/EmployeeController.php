@@ -555,9 +555,101 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::findOrFail($id);
-        $employeedata = EmployeeOnboarding::where('employee_id', $employee->id)->first();
-        
+        $onboarding = EmployeeOnboarding::where('employee_id', $employee->id)->first();
+        $employeedata = $this->mapOnboardingForEdit($employee, $onboarding);
+
         return view('onboarding-edit', compact('employee', 'employeedata'));
     }
-    
+
+    private function mapOnboardingForEdit(Employee $employee, ?EmployeeOnboarding $onboarding): object
+    {
+        $notes = [];
+
+        if ($onboarding?->additional_notes) {
+            $notes = is_array($onboarding->additional_notes)
+                ? $onboarding->additional_notes
+                : (json_decode($onboarding->additional_notes, true) ?: []);
+        }
+
+        $compensation = $notes['compensation'] ?? [];
+        $compliance = $notes['compliance'] ?? [];
+        $hrDetails = $notes['hr_details'] ?? [];
+        $documentsSubmitted = $notes['documents_submitted'] ?? [];
+
+        return (object) [
+            'empId' => $employee->employee_code ?? '',
+            'empName' => $onboarding?->full_name ?? $employee->first_name ?? '',
+            'fatherName' => $notes['father_name'] ?? '',
+            'dob' => optional($onboarding?->dob)->format('Y-m-d'),
+            'gender' => $onboarding?->gender ?? '',
+            'mobile' => $onboarding?->mobile ?? $employee->phone ?? '',
+            'email' => $onboarding?->email ?? $employee->email ?? '',
+            'maritalStatus' => $onboarding?->marital_status ?? '',
+            'bloodGroup' => $onboarding?->blood_group ?? '',
+
+            'currentAddress' => $onboarding?->address ?? '',
+            'permanentAddress' => $notes['permanent_address'] ?? '',
+            'city' => $onboarding?->district ?? '',
+            'state' => $onboarding?->state ?? '',
+            'pinCode' => $onboarding?->pincode ?? '',
+
+            'department' => $onboarding?->department ?? $employee->department ?? '',
+            'designation' => $onboarding?->designation ?? $employee->role ?? '',
+            'workLocation' => $onboarding?->work_area ?? '',
+            'doj' => optional($onboarding?->joining_date)->format('Y-m-d'),
+            'employmentType' => $onboarding?->employee_type ?? 'Full Time',
+            'reportingManager' => $onboarding?->reporting_manager ?? '',
+            'shiftTiming' => $onboarding?->shift ?? '',
+
+            'bankName' => $onboarding?->bank_name ?? '',
+            'accountNo' => $onboarding?->account_number ?? '',
+            'ifsc' => $onboarding?->ifsc_code ?? '',
+            'upi' => $notes['upi_id'] ?? '',
+
+            'basicMonthly' => $compensation['basic_monthly'] ?? '0.00',
+            'basicAnnual' => $compensation['basic_annual'] ?? '0.00',
+            'hraMonthly' => $compensation['hra_monthly'] ?? '0.00',
+            'hraAnnual' => $compensation['hra_annual'] ?? '0.00',
+            'flexiMonthly' => $compensation['flexi_monthly'] ?? '0.00',
+            'flexiAnnual' => $compensation['flexi_annual'] ?? '0.00',
+            'actingMonthly' => $compensation['acting_monthly'] ?? '0.00',
+            'actingAnnual' => $compensation['acting_annual'] ?? '0.00',
+            'subAMonthly' => $compensation['sub_a_monthly'] ?? '0.00',
+            'subAAnnual' => $compensation['sub_a_annual'] ?? '0.00',
+            'pfMonthly' => $compensation['pf_monthly'] ?? '0.00',
+            'pfAnnual' => $compensation['pf_annual'] ?? '0.00',
+            'esiMonthly' => $compensation['esi_monthly'] ?? '0.00',
+            'esiAnnual' => $compensation['esi_annual'] ?? '0.00',
+            'subBMonthly' => $compensation['sub_b_monthly'] ?? '0.00',
+            'subBAnnual' => $compensation['sub_b_annual'] ?? '0.00',
+            'fixedCTCMonthly' => $compensation['fixed_ctc_monthly'] ?? '0.00',
+            'fixedCTCAnnual' => $compensation['fixed_ctc_annual'] ?? ($onboarding?->salary_amount ?? '0.00'),
+            'pliMonthly' => $compensation['pli_monthly'] ?? '0.00',
+            'pliAnnual' => $compensation['pli_annual'] ?? '0.00',
+            'subCMonthly' => $compensation['sub_c_monthly'] ?? '0.00',
+            'subCAnnual' => $compensation['sub_c_annual'] ?? '0.00',
+            'totalCTCMonthly' => $compensation['total_ctc_monthly'] ?? '0.00',
+            'totalCTCAnnual' => $compensation['total_ctc_annual'] ?? ($onboarding?->salary_amount ?? '0.00'),
+
+            'aadhaar' => $onboarding?->aadhaar ?? '',
+            'pan' => $onboarding?->pan ?? '',
+            'pf' => $compliance['pf_number'] ?? '',
+            'esic' => $compliance['esic_number'] ?? '',
+            'uan' => $onboarding?->uan_number ?? '',
+
+            'aadhaarSubmitted' => $documentsSubmitted['aadhaar_submitted'] ?? 'No',
+            'panSubmitted' => $documentsSubmitted['pan_submitted'] ?? 'No',
+
+            'emergencyName' => $onboarding?->emergency_name ?? '',
+            'emergencyPhone' => $onboarding?->emergency_phone ?? '',
+            'emergencyRelation' => $onboarding?->emergency_relation ?? '',
+
+            'offerIssued' => $hrDetails['offer_issued'] ?? 'No',
+            'appointmentIssued' => $hrDetails['appointment_issued'] ?? 'No',
+            'idCardIssued' => $hrDetails['id_card_issued'] ?? 'No',
+            'uniformIssued' => $hrDetails['uniform_issued'] ?? 'No',
+            'empStatus' => $employee->status ?? 'Active',
+        ];
+    }
+
 }
