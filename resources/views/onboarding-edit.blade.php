@@ -330,6 +330,8 @@
     <form id="onboardingForm" action="{{ route('employee.update_on') }}" method="POST" enctype="multipart/form-data" novalidate>
         @csrf
         @method('PUT')
+        <input type="hidden" name="employee_record_id" value="{{ old('employee_record_id', $employeedata->employee_record_id ?? $employee->id) }}">
+        <input type="hidden" name="onboarding_record_id" value="{{ old('onboarding_record_id', $employeedata->onboarding_record_id ?? '') }}">
         <!-- 1. BASIC DETAILS (same as before) -->
         <fieldset>
             <legend>1. Basic details</legend>

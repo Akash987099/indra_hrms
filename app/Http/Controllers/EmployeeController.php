@@ -552,6 +552,174 @@ class EmployeeController extends Controller
         }
     }
 
+    public function update_on(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $employee = Employee::findOrFail($request->employee_record_id);
+            $onboarding = EmployeeOnboarding::where('employee_id', $employee->id)
+                ->when($request->onboarding_record_id, function ($query) use ($request) {
+                    $query->where('id', $request->onboarding_record_id);
+                })
+                ->first();
+
+            if (!$onboarding) {
+                $onboarding = new EmployeeOnboarding([
+                    'employee_id' => $employee->id,
+                ]);
+            }
+
+            $employeeData = [
+                'employee_code' => $request->empId,
+                'first_name'    => $request->empName,
+                'email'         => $request->email,
+                'phone'         => $request->mobile,
+                'department'    => $request->department,
+                'role'          => $request->designation,
+                'join_date'     => $request->doj,
+                'salary'        => $request->totalCTCAnnual,
+                'status'        => $request->empStatus ?? 'Active',
+            ];
+
+            $employee->update($employeeData);
+
+            $documents = is_array($onboarding->documents) ? $onboarding->documents : [];
+            $photo = $documents['photo'] ?? null;
+
+            if ($request->hasFile('photo')) {
+                if (!File::exists(public_path('employees'))) {
+                    File::makeDirectory(public_path('employees'), 0777, true, true);
+                }
+
+                $file = $request->file('photo');
+                $name = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('employees'), $name);
+
+                $photo = $name;
+                $documents['photo'] = $photo;
+            }
+
+            $docsPath = public_path('employees/documents');
+            if (!File::exists($docsPath)) {
+                File::makeDirectory($docsPath, 0777, true, true);
+            }
+
+            if ($request->hasFile('bankDoc')) {
+                $file = $request->file('bankDoc');
+                $name = time() . '_bank_' . $file->getClientOriginalName();
+                $file->move($docsPath, $name);
+                $documents['bank_doc'] = $name;
+            }
+
+            if ($request->hasFile('expLetter')) {
+                $file = $request->file('expLetter');
+                $name = time() . '_exp_' . $file->getClientOriginalName();
+                $file->move($docsPath, $name);
+                $documents['exp_letter'] = $name;
+            }
+
+            if ($request->hasFile('eduDocs')) {
+                $eduDocs = [];
+                foreach ($request->file('eduDocs') as $file) {
+                    $name = time() . '_edu_' . $file->getClientOriginalName();
+                    $file->move($docsPath, $name);
+                    $eduDocs[] = $name;
+                }
+                $documents['edu_docs'] = $eduDocs;
+            }
+
+            $onboardingData = [
+                'employee_id'        => $employee->id,
+                'employee_type'      => $request->employmentType ?? 'Full Time',
+                'full_name'          => $request->empName,
+                'mobile'             => $request->mobile,
+                'email'              => $request->email,
+                'aadhaar'            => $request->aadhaar,
+                'pan'                => $request->pan,
+                'dob'                => $request->dob,
+                'joining_date'       => $request->doj,
+                'gender'             => $request->gender,
+                'blood_group'        => $request->bloodGroup,
+                'marital_status'     => $request->maritalStatus,
+                'address'            => $request->currentAddress,
+                'district'           => $request->city,
+                'state'              => $request->state,
+                'pincode'            => $request->pinCode,
+                'emergency_name'     => $request->emergencyName,
+                'emergency_phone'    => $request->emergencyPhone,
+                'emergency_relation' => $request->emergencyRelation,
+                'department'         => $request->department,
+                'designation'        => $request->designation,
+                'work_area'          => $request->workLocation,
+                'shift'              => $request->shiftTiming,
+                'reporting_manager'  => $request->reportingManager,
+                'bank_name'          => $request->bankName,
+                'account_number'     => $request->accountNo,
+                'ifsc_code'          => $request->ifsc,
+                'uan_number'         => $request->uan,
+                'salary_amount'      => $request->totalCTCAnnual,
+                'salary_type'        => 'Annual CTC',
+                'additional_notes'   => json_encode([
+                    'father_name' => $request->fatherName,
+                    'permanent_address' => $request->permanentAddress,
+                    'upi_id' => $request->upi,
+                    'compliance' => [
+                        'pf_number' => $request->pf,
+                        'esic_number' => $request->esic,
+                    ],
+                    'compensation' => [
+                        'basic_monthly' => $request->basicMonthly,
+                        'basic_annual' => $request->basicAnnual,
+                        'hra_monthly' => $request->hraMonthly,
+                        'hra_annual' => $request->hraAnnual,
+                        'flexi_monthly' => $request->flexiMonthly,
+                        'flexi_annual' => $request->flexiAnnual,
+                        'acting_monthly' => $request->actingMonthly,
+                        'acting_annual' => $request->actingAnnual,
+                        'sub_a_monthly' => $request->subAMonthly,
+                        'sub_a_annual'  => $request->subAAnnual,
+                        'pf_monthly' => $request->pfMonthly,
+                        'pf_annual' => $request->pfAnnual,
+                        'esi_monthly' => $request->esiMonthly,
+                        'esi_annual' => $request->esiAnnual,
+                        'sub_b_monthly' => $request->subBMonthly,
+                        'sub_b_annual'  => $request->subBAnnual,
+                        'fixed_ctc_monthly' => $request->fixedCTCMonthly,
+                        'fixed_ctc_annual'  => $request->fixedCTCAnnual,
+                        'pli_monthly' => $request->pliMonthly,
+                        'pli_annual' => $request->pliAnnual,
+                        'sub_c_monthly' => $request->subCMonthly,
+                        'sub_c_annual'  => $request->subCAnnual,
+                        'total_ctc_monthly' => $request->totalCTCMonthly,
+                        'total_ctc_annual' => $request->totalCTCAnnual,
+                    ],
+                    'hr_details' => [
+                        'offer_issued' => $request->offerIssued,
+                        'appointment_issued' => $request->appointmentIssued,
+                        'id_card_issued' => $request->idCardIssued,
+                        'uniform_issued' => $request->uniformIssued,
+                    ],
+                    'documents_submitted' => [
+                        'aadhaar_submitted' => $request->aadhaarSubmitted,
+                        'pan_submitted' => $request->panSubmitted,
+                    ],
+                ]),
+                'documents' => $documents,
+            ];
+
+            $onboarding->update($onboardingData);
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Employee onboarding updated successfully');
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
     public function edit($id)
     {
         $employee = Employee::findOrFail($id);
@@ -577,6 +745,8 @@ class EmployeeController extends Controller
         $documentsSubmitted = $notes['documents_submitted'] ?? [];
 
         return (object) [
+            'employee_record_id' => $employee->id,
+            'onboarding_record_id' => $onboarding?->id,
             'empId' => $employee->employee_code ?? '',
             'empName' => $onboarding?->full_name ?? $employee->first_name ?? '',
             'fatherName' => $notes['father_name'] ?? '',
