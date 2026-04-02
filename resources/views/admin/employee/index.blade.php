@@ -232,6 +232,11 @@
                                                 Edit
                                             </button> --}}
 
+                                            <a href="{{route('admin.document.index', )}}" class="btn btn-warning btn-sm"
+                                                data-id="{{ $item->id }}">
+                                                File
+                                            </a>
+
                                             <a href="{{route('employee.edit', $item->id)}}" class="btn btn-warning btn-sm"
                                                 data-id="{{ $item->id }}">
                                                 Edit
