@@ -122,7 +122,7 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::post('update', 'update')->name('update');
     });
 
-    Route::prefix('documents')->controller(DocumentController::class)->name('document.')->group(function () {
+    Route::prefix('employee/document')->controller(DocumentController::class)->name('document.')->group(function () {
         Route::get('{id}', 'index')->name('index');
         // Route::get('get', 'get')->name('get');
         Route::delete('delete/{id}', 'delete')->name('delete');
