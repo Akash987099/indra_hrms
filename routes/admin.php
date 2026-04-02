@@ -124,7 +124,7 @@ Route::middleware(['auth:admin'])->group(function () {
 
     Route::prefix('document')->controller(DocumentController::class)->name('document.')->group(function () {
         Route::get('get/{id}', 'index')->name('index');
-        Route::get('get', 'get')->name('get');
+        // Route::get('get', 'get')->name('get');
         Route::delete('delete/{id}', 'delete')->name('delete');
         Route::post('store', 'store')->name('store');
         Route::get('export', 'export')->name('export');
